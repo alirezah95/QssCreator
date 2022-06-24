@@ -21,6 +21,9 @@ set(PROJECT_SOURCES
         src/mainwindow.cpp
         src/mainwindow.h
         src/mainwindow.ui
+        src/widgetspreview.cpp
+        src/widgetspreview.h
+        src/widgetspreview.ui
 )
 
 qt_add_resources(PROJECT_SOURCES resources/res.qrc)
@@ -48,6 +51,7 @@ else()
     endif()
 endif()
 
+target_include_directories(${PROJECT_NAME} PRIVATE src/)
 target_link_libraries(QssCreator PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 set_target_properties(QssCreator PROPERTIES
