@@ -27,6 +27,11 @@ public:
         return mLineNumbersAreaWidth;
     };
 
+    /*!
+     * \brief Getter for line number area widget
+     */
+    inline auto getLineNumbersWidget() const { return mLineNumbersAreaWidget; }
+
 protected:
     /*!
      * \brief Reimplements \a\b QWidget::eventFilter(QObject*, QEvent*)
