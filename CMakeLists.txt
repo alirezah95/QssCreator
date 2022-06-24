@@ -28,6 +28,9 @@ set(PROJECT_SOURCES
         src/widgetspreview.cpp
         src/widgetspreview.h
         forms/widgetspreview.ui
+
+        src/stylesheeteditor.h
+        src/stylesheeteditor.cpp
 )
 
 qt_add_resources(PROJECT_SOURCES resources/res.qrc)
