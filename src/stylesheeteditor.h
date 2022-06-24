@@ -35,9 +35,9 @@ private slots:
     void updateLineNumbersAreaWidth();
 
 private:
-    QWidget* mLineNumberArea; /*!< A \a\b QWidget used for drawing line numbers
-                               * onto
-                               */
+    QWidget* mLineNumberAreaWidget; /*!< A \a\b QWidget used for drawing line
+                                     * numbers onto
+                                     */
     int mLineNumbersAreaWidth = 0;
 };
 
