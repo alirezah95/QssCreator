@@ -32,7 +32,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="basic1">
       <attribute name="title">
@@ -63,7 +63,7 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>0</y>
+            <y>-174</y>
             <width>921</width>
             <height>738</height>
            </rect>
@@ -531,7 +531,7 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>0</y>
+            <y>-177</y>
             <width>921</width>
             <height>741</height>
            </rect>
@@ -723,13 +723,764 @@ p, li { white-space: pre-wrap; }
       <attribute name="title">
        <string>Specials</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_4"/>
+      <layout class="QVBoxLayout" name="verticalLayout_15">
+       <property name="spacing">
+        <number>4</number>
+       </property>
+       <property name="leftMargin">
+        <number>4</number>
+       </property>
+       <property name="topMargin">
+        <number>4</number>
+       </property>
+       <property name="rightMargin">
+        <number>4</number>
+       </property>
+       <property name="bottomMargin">
+        <number>4</number>
+       </property>
+       <item>
+        <widget class="QScrollArea" name="scrollArea_3">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_4">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>935</width>
+            <height>564</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_9">
+           <property name="leftMargin">
+            <number>4</number>
+           </property>
+           <property name="topMargin">
+            <number>4</number>
+           </property>
+           <property name="rightMargin">
+            <number>4</number>
+           </property>
+           <property name="bottomMargin">
+            <number>4</number>
+           </property>
+           <property name="spacing">
+            <number>8</number>
+           </property>
+           <item row="2" column="0" colspan="2">
+            <widget class="QWidget" name="widget" native="true">
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>120</height>
+              </size>
+             </property>
+             <widget class="QLCDNumber" name="lcdNumber">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>10</y>
+                <width>260</width>
+                <height>101</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QGroupBox" name="groupBox_14">
+             <property name="title">
+              <string>Calendar</string>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <property name="leftMargin">
+               <number>4</number>
+              </property>
+              <property name="topMargin">
+               <number>4</number>
+              </property>
+              <property name="rightMargin">
+               <number>4</number>
+              </property>
+              <property name="bottomMargin">
+               <number>4</number>
+              </property>
+              <item>
+               <widget class="QCalendarWidget" name="calendarWidget"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="2">
+            <widget class="QGroupBox" name="groupBox_13">
+             <property name="title">
+              <string>Dialogs</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_10">
+              <item row="0" column="0">
+               <widget class="QPushButton" name="dlgInfoBtn">
+                <property name="text">
+                 <string>Info</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" colspan="2">
+               <widget class="QPushButton" name="dlgQuestionBtn">
+                <property name="text">
+                 <string>Question</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3" colspan="2">
+               <widget class="QPushButton" name="dlgWarningBtn">
+                <property name="text">
+                 <string>Warning</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="5" colspan="2">
+               <widget class="QPushButton" name="dlgErrorBtn">
+                <property name="text">
+                 <string>Error</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="dlgInputBtn">
+                <property name="text">
+                 <string>Input</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1" colspan="2">
+               <widget class="QPushButton" name="dlgColorBtn">
+                <property name="text">
+                 <string>Color</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="3" colspan="2">
+               <widget class="QPushButton" name="dlgFontBtn">
+                <property name="text">
+                 <string>Font</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="7">
+               <widget class="QPushButton" name="dlgAboutBtn">
+                <property name="text">
+                 <string>About</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="5" colspan="2">
+               <widget class="QPushButton" name="dlgOpenFileBtn">
+                <property name="text">
+                 <string>Open File</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="7">
+               <widget class="QPushButton" name="dlgSaveFileBtn">
+                <property name="text">
+                 <string>Save File</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QGraphicsView" name="graphicsView"/>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="views">
       <attribute name="title">
        <string>Views</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_5"/>
+      <layout class="QVBoxLayout" name="verticalLayout_17">
+       <property name="spacing">
+        <number>4</number>
+       </property>
+       <property name="leftMargin">
+        <number>4</number>
+       </property>
+       <property name="topMargin">
+        <number>4</number>
+       </property>
+       <property name="rightMargin">
+        <number>4</number>
+       </property>
+       <property name="bottomMargin">
+        <number>4</number>
+       </property>
+       <item>
+        <widget class="QScrollArea" name="scrollArea_4">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_5">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>935</width>
+            <height>564</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_11">
+           <property name="leftMargin">
+            <number>4</number>
+           </property>
+           <property name="topMargin">
+            <number>4</number>
+           </property>
+           <property name="rightMargin">
+            <number>4</number>
+           </property>
+           <property name="bottomMargin">
+            <number>4</number>
+           </property>
+           <property name="spacing">
+            <number>8</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QListWidget" name="viewListWidget">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <item>
+              <property name="text">
+               <string>Item 0</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Item 1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Item 2</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QListWidget" name="listWidget">
+             <item>
+              <property name="text">
+               <string>Blue Flag</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../QsstEditor/res.qrc">
+                <normaloff>:/assets/assets/icons/flag-blue.png</normaloff>:/assets/assets/icons/flag-blue.png</iconset>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Red Flag</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../QsstEditor/res.qrc">
+                <normaloff>:/assets/assets/icons/flag-red.png</normaloff>:/assets/assets/icons/flag-red.png</iconset>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Green Flag</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../QsstEditor/res.qrc">
+                <normaloff>:/assets/assets/icons/flag-green.png</normaloff>:/assets/assets/icons/flag-green.png</iconset>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QListWidget" name="listWidget_2">
+             <item>
+              <property name="text">
+               <string>Checkable Item</string>
+              </property>
+              <property name="checkState">
+               <enum>Checked</enum>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Tristate Item</string>
+              </property>
+              <property name="checkState">
+               <enum>PartiallyChecked</enum>
+              </property>
+              <property name="flags">
+               <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsAutoTristate</set>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Editable Item</string>
+              </property>
+              <property name="flags">
+               <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QTableWidget" name="viewTableWidget">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <row>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>1</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>2</string>
+              </property>
+             </row>
+             <column>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>1</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>2</string>
+              </property>
+             </column>
+             <item row="0" column="0">
+              <property name="text">
+               <string>Item 0 0</string>
+              </property>
+             </item>
+             <item row="0" column="1">
+              <property name="text">
+               <string>Item 0 1</string>
+              </property>
+             </item>
+             <item row="0" column="2">
+              <property name="text">
+               <string>Item 0 2</string>
+              </property>
+             </item>
+             <item row="1" column="0">
+              <property name="text">
+               <string>Item 1 0 </string>
+              </property>
+             </item>
+             <item row="1" column="1">
+              <property name="text">
+               <string>Item 1 1</string>
+              </property>
+             </item>
+             <item row="1" column="2">
+              <property name="text">
+               <string>Item 1 2</string>
+              </property>
+             </item>
+             <item row="2" column="0">
+              <property name="text">
+               <string>Item 2 0</string>
+              </property>
+             </item>
+             <item row="2" column="1">
+              <property name="text">
+               <string>Item 2 1</string>
+              </property>
+             </item>
+             <item row="2" column="2">
+              <property name="text">
+               <string>Item 2 2</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QTableWidget" name="viewTableWidget_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <attribute name="horizontalHeaderDefaultSectionSize">
+              <number>160</number>
+             </attribute>
+             <row>
+              <property name="text">
+               <string>1</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>2</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>3</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>4</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>5</string>
+              </property>
+             </row>
+             <column>
+              <property name="text">
+               <string>Name</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Length Of Year</string>
+              </property>
+             </column>
+             <item row="0" column="0">
+              <property name="text">
+               <string>Venus</string>
+              </property>
+             </item>
+             <item row="0" column="1">
+              <property name="text">
+               <string>225 Earth Days</string>
+              </property>
+             </item>
+             <item row="1" column="0">
+              <property name="text">
+               <string>Earth</string>
+              </property>
+             </item>
+             <item row="1" column="1">
+              <property name="text">
+               <string>365 Earch Days</string>
+              </property>
+             </item>
+             <item row="2" column="0">
+              <property name="text">
+               <string>Mars</string>
+              </property>
+             </item>
+             <item row="2" column="1">
+              <property name="text">
+               <string>687 Earth Days</string>
+              </property>
+             </item>
+             <item row="3" column="0">
+              <property name="text">
+               <string>Jupiter</string>
+              </property>
+             </item>
+             <item row="3" column="1">
+              <property name="text">
+               <string>4333 Earth Days</string>
+              </property>
+             </item>
+             <item row="4" column="0">
+              <property name="text">
+               <string>Saturn</string>
+              </property>
+             </item>
+             <item row="4" column="1">
+              <property name="text">
+               <string>10759 Earch Days</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QTableWidget" name="tableWidget">
+             <attribute name="horizontalHeaderDefaultSectionSize">
+              <number>150</number>
+             </attribute>
+             <row>
+              <property name="text">
+               <string>Row 0</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Row 1</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Row 2</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Row 3</string>
+              </property>
+             </row>
+             <column>
+              <property name="text">
+               <string>Item</string>
+              </property>
+             </column>
+             <item row="0" column="0">
+              <property name="text">
+               <string>Icon</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../QsstEditor/res.qrc">
+                <normaloff>:/assets/assets/icons/flag-red.png</normaloff>:/assets/assets/icons/flag-red.png</iconset>
+              </property>
+             </item>
+             <item row="1" column="0">
+              <property name="text">
+               <string>Checkable</string>
+              </property>
+              <property name="checkState">
+               <enum>Checked</enum>
+              </property>
+             </item>
+             <item row="2" column="0">
+              <property name="text">
+               <string>Tristate</string>
+              </property>
+              <property name="checkState">
+               <enum>PartiallyChecked</enum>
+              </property>
+              <property name="flags">
+               <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsAutoTristate</set>
+              </property>
+             </item>
+             <item row="3" column="0">
+              <property name="text">
+               <string>ComboBox</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QTreeWidget" name="viewTreeWidget">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <attribute name="headerMinimumSectionSize">
+              <number>50</number>
+             </attribute>
+             <attribute name="headerDefaultSectionSize">
+              <number>160</number>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>1</string>
+              </property>
+             </column>
+             <item>
+              <property name="text">
+               <string>Item 0</string>
+              </property>
+              <property name="text">
+               <string>Root Item</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>Item 0 1</string>
+               </property>
+               <property name="text">
+                <string>Child 0</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Item 0 1 0</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+              </item>
+              <item>
+               <property name="text">
+                <string>Iem 0 2</string>
+               </property>
+               <property name="text">
+                <string>Child 1</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Item 0 2 0</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Item 0 2 1</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+              </item>
+             </item>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QTreeWidget" name="viewTreeWidget_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="columnCount">
+              <number>2</number>
+             </property>
+             <attribute name="headerMinimumSectionSize">
+              <number>50</number>
+             </attribute>
+             <attribute name="headerDefaultSectionSize">
+              <number>180</number>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>1</string>
+              </property>
+             </column>
+             <item>
+              <property name="text">
+               <string>Root</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../QsstEditor/res.qrc">
+                <normaloff>:/assets/assets/icons/qt.png</normaloff>:/assets/assets/icons/qt.png</iconset>
+              </property>
+              <property name="text">
+               <string>Root Item</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>Child 1</string>
+               </property>
+               <property name="text">
+                <string>Child 0</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Checkable</string>
+                </property>
+                <property name="checkState">
+                 <enum>Checked</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+              </item>
+              <item>
+               <property name="text">
+                <string>Child 2</string>
+               </property>
+               <property name="text">
+                <string>Child 1</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Tristate</string>
+                </property>
+                <property name="checkState">
+                 <enum>PartiallyChecked</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="flags">
+                 <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsAutoTristate</set>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Editable</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="flags">
+                 <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+                </property>
+               </item>
+              </item>
+              <item>
+               <property name="text">
+                <string>Child 3</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Icon</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="../../QsstEditor/res.qrc">
+                  <normaloff>:/assets/assets/icons/flag-blue.png</normaloff>:/assets/assets/icons/flag-blue.png</iconset>
+                </property>
+               </item>
+              </item>
+             </item>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QTreeWidget" name="docDirTreeWidget">
+             <column>
+              <property name="text">
+               <string notr="true">1</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="containers">
       <attribute name="title">
