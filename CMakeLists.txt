@@ -23,6 +23,8 @@ set(PROJECT_SOURCES
         src/mainwindow.ui
 )
 
+qt_add_resources(PROJECT_SOURCES resources/res.qrc)
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(QssCreator
         MANUAL_FINALIZATION
