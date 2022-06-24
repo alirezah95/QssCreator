@@ -27,6 +27,21 @@ public:
         return mLineNumbersAreaWidth;
     };
 
+protected:
+    /*!
+     * \brief Reimplements \a\b QWidget::eventFilter(QObject*, QEvent*)
+     * \param obj
+     * \param event
+     * \return
+     */
+    bool eventFilter(QObject* obj, QEvent* event) override;
+
+    /*!
+     * \brief Overrides \a\b QTextEdti::resizeEvent(QResizeEvent*).
+     * \param event
+     */
+    void resizeEvent(QResizeEvent* event) override;
+
 private slots:
     /*!
      * \brief Sets a margin to the text edit to make enough room for line
