@@ -17,13 +17,14 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Test)
 add_subdirectory(tests)
 
 set(PROJECT_SOURCES
-        main.cpp
+        src/main.cpp
         src/mainwindow.cpp
         src/mainwindow.h
-        src/mainwindow.ui
+        forms/mainwindow.ui
+
         src/widgetspreview.cpp
         src/widgetspreview.h
-        src/widgetspreview.ui
+        forms/widgetspreview.ui
 )
 
 qt_add_resources(PROJECT_SOURCES resources/res.qrc)
