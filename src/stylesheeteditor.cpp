@@ -8,6 +8,7 @@
 StyleSheetEditor::StyleSheetEditor(QWidget* parent)
     : QTextEdit(parent), mLineNumbersAreaWidget(new QWidget(this))
 {
+    mLineNumbersAreaWidget->setFont(QFont("DejaVu Sans Mono", 13));
     mLineNumbersAreaWidget->installEventFilter(this);
 
     updateLineNumbersAreaWidth();
@@ -72,10 +73,16 @@ void StyleSheetEditor::resizeEvent(QResizeEvent* event)
     return QTextEdit::resizeEvent(event);
 }
 
+void StyleSheetEditor::scrollContentsBy(int dx, int dy)
+{
+    mLineNumbersAreaWidget->scroll(dx, dy);
+    return QTextEdit::scrollContentsBy(dx, dy);
+}
+
 void StyleSheetEditor::updateLineNumbersAreaWidth()
 {
     mLineNumbersAreaWidth
-        = fontMetrics()
+        = mLineNumbersAreaWidget->fontMetrics()
               .boundingRect(QString::number(qMax(1, document()->blockCount())))
               .width()
         + 16;

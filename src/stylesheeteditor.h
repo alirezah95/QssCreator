@@ -42,6 +42,13 @@ protected:
      */
     void resizeEvent(QResizeEvent* event) override;
 
+    /*!
+     * \brief Reimplements \a\b QTextEdit::scrollContentsBy(int, int)
+     * \param dx
+     * \param dy
+     */
+    void scrollContentsBy(int dx, int dy) override;
+
 private slots:
     /*!
      * \brief Sets a margin to the text edit to make enough room for line
