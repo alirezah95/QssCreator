@@ -17,4 +17,5 @@ endfunction()
 
 add_new_test_executable(TestStyleSheetEditor
     tst_stylesheeteditor.cpp
+    ../src/stylesheeteditor.cpp
 )
