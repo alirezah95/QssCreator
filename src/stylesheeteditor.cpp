@@ -1,10 +1,11 @@
 #include "stylesheeteditor.h"
 
-StyleSheetEditor::StyleSheetEditor(QWidget* parent) : QTextEdit(parent)
+StyleSheetEditor::StyleSheetEditor(QWidget* parent)
+    : QTextEdit(parent), mLineNumbersAreaWidget(new QWidget(this))
 {
     connect(document(), &QTextDocument::blockCountChanged, this, [this] {
         updateLineNumbersAreaWidth();
-        mLineNumberAreaWidget->update();
+        mLineNumbersAreaWidget->update();
     });
     return;
 }
