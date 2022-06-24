@@ -4,16 +4,13 @@ StyleSheetEditor::StyleSheetEditor(QWidget* parent) : QTextEdit(parent) { }
 
 StyleSheetEditor::~StyleSheetEditor() { }
 
-int StyleSheetEditor::getLineNumberAreaWidth() const
+void StyleSheetEditor::updateLineNumbersAreaWidth()
 {
-    // Count the digits of the doucument's block count
-    int lineCount = qMax(1, document()->blockCount());
-    int digitCount = 0;
-    while (lineCount > 0) {
-        lineCount /= 10;
-        digitCount++;
-    }
-    return (fontMetrics().boundingRect('0').width() * digitCount + 16);
+    mLineNumbersAreaWidth
+        = fontMetrics()
+              .boundingRect(QString::number(qMax(1, document()->blockCount())))
+              .width()
+        + 16;
+    setViewportMargins(mLineNumbersAreaWidth, 0, 0, 0);
+    return;
 }
-
-void StyleSheetEditor::updateLineNumbersAreaWidth() { }

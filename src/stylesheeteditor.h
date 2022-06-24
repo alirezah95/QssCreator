@@ -22,7 +22,10 @@ public:
      * numbers are properly shown on it.
      * \return An integer as the width
      */
-    int getLineNumberAreaWidth() const;
+    inline int getLineNumbersAreaWidth() const
+    {
+        return mLineNumbersAreaWidth;
+    };
 
 private slots:
     /*!
@@ -35,6 +38,7 @@ private:
     QWidget* mLineNumberArea; /*!< A \a\b QWidget used for drawing line numbers
                                * onto
                                */
+    int mLineNumbersAreaWidth = 0;
 };
 
 #endif // STYLESHEETEDITOR_H
