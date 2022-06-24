@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget* parent)
     ui->setupUi(this);
 
     auto splitter = new QSplitter;
+    splitter->setChildrenCollapsible(false);
     splitter->addWidget(mStyleEditor);
     splitter->addWidget(mPreview);
 
