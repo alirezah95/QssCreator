@@ -12,6 +12,13 @@ StyleSheetEditor::StyleSheetEditor(QWidget* parent)
 
 StyleSheetEditor::~StyleSheetEditor() { }
 
+void StyleSheetEditor::resizeEvent(QResizeEvent* event)
+{
+    const QRect& cr = contentsRect();
+    mLineNumbersAreaWidget->setGeometry(
+        cr.left(), cr.right(), viewportMargins().left(), cr.height());
+}
+
 void StyleSheetEditor::updateLineNumbersAreaWidth()
 {
     mLineNumbersAreaWidth
