@@ -6,7 +6,7 @@ function(add_new_test_executable testname)
             ${ARGN}
         )
         add_test(NAME ${testname} COMMAND ${testname})
-        target_link_libraries(${testname} PRIVATE Qt${QT_VERSION_MAJOR}::Gui
+        target_link_libraries(${testname} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
             Qt${QT_VERSION_MAJOR}::Test)
         target_include_directories(${testname} PRIVATE ../src)
     else()
