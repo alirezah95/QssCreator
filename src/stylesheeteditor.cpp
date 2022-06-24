@@ -45,7 +45,7 @@ bool StyleSheetEditor::eventFilter(QObject* obj, QEvent* event)
             while (currBlock.isValid() && currBlTop <= pEv->rect().bottom()) {
                 if (currBlock.isVisible()
                     && currBlBottom >= pEv->rect().top()) {
-                    QString lineNumStr = QString::number(currBlockNumber);
+                    QString lineNumStr = QString::number(currBlockNumber + 1);
 
                     painter.setPen(Qt::black);
                     painter.drawText(8, currBlTop, mLineNumbersAreaWidth,
@@ -68,7 +68,7 @@ void StyleSheetEditor::resizeEvent(QResizeEvent* event)
 {
     const QRect& cr = contentsRect();
     mLineNumbersAreaWidget->setGeometry(
-        cr.left(), cr.right(), viewportMargins().left(), cr.height());
+        cr.left(), cr.top(), viewportMargins().left(), cr.height());
     return QTextEdit::resizeEvent(event);
 }
 
