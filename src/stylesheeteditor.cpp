@@ -10,6 +10,8 @@ StyleSheetEditor::StyleSheetEditor(QWidget* parent)
 {
     mLineNumbersAreaWidget->installEventFilter(this);
 
+    updateLineNumbersAreaWidth();
+
     connect(document(), &QTextDocument::blockCountChanged, this, [this] {
         updateLineNumbersAreaWidth();
         mLineNumbersAreaWidget->update();
