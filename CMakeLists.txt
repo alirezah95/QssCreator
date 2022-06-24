@@ -11,6 +11,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_AUTOUIC_SEARCH_PATHS forms)
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Test)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Test)
 
@@ -18,6 +20,7 @@ add_subdirectory(tests)
 
 set(PROJECT_SOURCES
         src/main.cpp
+
         src/mainwindow.cpp
         src/mainwindow.h
         forms/mainwindow.ui
