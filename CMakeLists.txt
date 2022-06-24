@@ -21,6 +21,7 @@ set(PROJECT_SOURCES
         src/mainwindow.cpp
         src/mainwindow.h
         src/mainwindow.ui
+        src/widgetspreview.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
