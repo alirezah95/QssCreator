@@ -1,4 +1,5 @@
 #include <QCoreApplication>
+#include <QSignalSpy>
 #include <QTest>
 
 #include "stylesheeteditor.h"
@@ -13,6 +14,7 @@ public:
 
 private slots:
     void testBlockCount();
+    void testBlockCountChangedSignal();
     void testGetLineNumberAreaWidth();
 };
 
@@ -28,6 +30,19 @@ void TestStyleSheetEditor::testBlockCount()
         QTest::keyPress(editor.get(), Qt::Key_Enter);
     }
     QCOMPARE(editor->document()->blockCount(), 13);
+}
+
+void TestStyleSheetEditor::testBlockCountChangedSignal()
+{
+    auto editor = QSharedPointer<StyleSheetEditor>(new StyleSheetEditor());
+    QSignalSpy bcChanged(editor->document(), &QTextDocument::blockCountChanged);
+
+    int keyPressTimes = 3;
+    for (int i = 0; i < keyPressTimes; ++i) {
+        QTest::keyPress(editor.get(), Qt::Key_Enter);
+    }
+
+    QCOMPARE(bcChanged.count(), keyPressTimes);
 }
 
 void TestStyleSheetEditor::testGetLineNumberAreaWidth()
