@@ -84,10 +84,10 @@ void StyleSheetEditor::scrollContentsBy(int dx, int dy)
 
 void StyleSheetEditor::updateLineNumbersAreaWidth()
 {
+    auto lnNumbersStr = QString::number(qMax(1, document()->blockCount()));
     mLineNumbersAreaWidth
-        = mLineNumbersAreaWidget->fontMetrics()
-              .boundingRect(QString::number(qMax(1, document()->blockCount())))
-              .width()
+        = mLineNumbersAreaWidget->fontMetrics().boundingRect("0").width()
+            * lnNumbersStr.length()
         + 16;
     setViewportMargins(mLineNumbersAreaWidth, 0, 0, 0);
     return;
