@@ -20,6 +20,8 @@ StyleSheetEditor::StyleSheetEditor(QWidget* parent)
         updateLineNumbersAreaWidth();
         mLineNumbersAreaWidget->update();
     });
+
+    setLineWrapMode(QTextEdit::NoWrap);
     return;
 }
 
