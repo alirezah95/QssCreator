@@ -16,6 +16,7 @@ private slots:
     void testBlockCount();
     void testBlockCountChangedSignal();
     void testGetLineNumberAreaWidth();
+    void testLineNumberAreaWidthJittering();
 };
 
 TestStyleSheetEditor::TestStyleSheetEditor() { }
@@ -53,7 +54,28 @@ void TestStyleSheetEditor::testGetLineNumberAreaWidth()
         QTest::keyPress(editor.get(), Qt::Key_Enter);
     }
     QCOMPARE(editor->getLineNumbersAreaWidth(),
-        editor->fontMetrics().boundingRect("13").width() + 16);
+        editor->getLineNumbersWidget()->fontMetrics().boundingRect("0").width()
+                * 2
+            + 16);
+}
+
+void TestStyleSheetEditor::testLineNumberAreaWidthJittering()
+{
+    auto editor = QSharedPointer<StyleSheetEditor>(new StyleSheetEditor());
+
+    // Getting block count to 21
+    for (int i = 0; i < 20; ++i) {
+        QTest::keyPress(editor.get(), Qt::Key_Enter);
+    }
+    int lnNumsAreaWidth1 = editor->getLineNumbersAreaWidth();
+
+    // Getting block count to 28
+    for (int i = 0; i < 7; ++i) {
+        QTest::keyPress(editor.get(), Qt::Key_Enter);
+    }
+    int lnNumsAreaWidth2 = editor->getLineNumbersAreaWidth();
+
+    QVERIFY(lnNumsAreaWidth1 == lnNumsAreaWidth2);
 }
 
 QTEST_MAIN(TestStyleSheetEditor);

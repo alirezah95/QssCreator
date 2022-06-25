@@ -8,6 +8,10 @@
 StyleSheetEditor::StyleSheetEditor(QWidget* parent)
     : QTextEdit(parent), mLineNumbersAreaWidget(new QWidget(this))
 {
+    QFont editorFont("Mono");
+    editorFont.setStyleHint(QFont::Monospace);
+    editorFont.setPointSize(13);
+    mLineNumbersAreaWidget->setFont(editorFont);
     mLineNumbersAreaWidget->installEventFilter(this);
 
     updateLineNumbersAreaWidth();
@@ -16,6 +20,8 @@ StyleSheetEditor::StyleSheetEditor(QWidget* parent)
         updateLineNumbersAreaWidth();
         mLineNumbersAreaWidget->update();
     });
+
+    setLineWrapMode(QTextEdit::NoWrap);
     return;
 }
 
@@ -45,11 +51,11 @@ bool StyleSheetEditor::eventFilter(QObject* obj, QEvent* event)
             while (currBlock.isValid() && currBlTop <= pEv->rect().bottom()) {
                 if (currBlock.isVisible()
                     && currBlBottom >= pEv->rect().top()) {
-                    QString lineNumStr = QString::number(currBlockNumber);
+                    QString lineNumStr = QString::number(currBlockNumber + 1);
 
                     painter.setPen(Qt::black);
-                    painter.drawText(8, currBlTop, mLineNumbersAreaWidth,
-                        fontMetrics().height(), Qt::AlignLeft, lineNumStr);
+                    painter.drawText(0, currBlTop, mLineNumbersAreaWidth,
+                        fontMetrics().height(), Qt::AlignCenter, lineNumStr);
                 }
 
                 currBlTop = currBlBottom;
@@ -68,16 +74,22 @@ void StyleSheetEditor::resizeEvent(QResizeEvent* event)
 {
     const QRect& cr = contentsRect();
     mLineNumbersAreaWidget->setGeometry(
-        cr.left(), cr.right(), viewportMargins().left(), cr.height());
+        cr.left(), cr.top(), viewportMargins().left(), cr.height());
     return QTextEdit::resizeEvent(event);
+}
+
+void StyleSheetEditor::scrollContentsBy(int dx, int dy)
+{
+    mLineNumbersAreaWidget->scroll(dx, dy);
+    return QTextEdit::scrollContentsBy(dx, dy);
 }
 
 void StyleSheetEditor::updateLineNumbersAreaWidth()
 {
+    auto lnNumbersStr = QString::number(qMax(1, document()->blockCount()));
     mLineNumbersAreaWidth
-        = fontMetrics()
-              .boundingRect(QString::number(qMax(1, document()->blockCount())))
-              .width()
+        = mLineNumbersAreaWidget->fontMetrics().boundingRect("0").width()
+            * lnNumbersStr.length()
         + 16;
     setViewportMargins(mLineNumbersAreaWidth, 0, 0, 0);
     return;

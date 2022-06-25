@@ -27,6 +27,11 @@ public:
         return mLineNumbersAreaWidth;
     };
 
+    /*!
+     * \brief Getter for line number area widget
+     */
+    inline auto getLineNumbersWidget() const { return mLineNumbersAreaWidget; }
+
 protected:
     /*!
      * \brief Reimplements \a\b QWidget::eventFilter(QObject*, QEvent*)
@@ -41,6 +46,13 @@ protected:
      * \param event
      */
     void resizeEvent(QResizeEvent* event) override;
+
+    /*!
+     * \brief Reimplements \a\b QTextEdit::scrollContentsBy(int, int)
+     * \param dx
+     * \param dy
+     */
+    void scrollContentsBy(int dx, int dy) override;
 
 private slots:
     /*!
