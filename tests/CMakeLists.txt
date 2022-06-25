@@ -19,3 +19,8 @@ add_new_test_executable(TestStyleSheetEditor
     tst_stylesheeteditor.cpp
     ../src/stylesheeteditor.cpp
 )
+
+add_new_test_executable(TestDocumentOperations
+    tst_documentoperations.cpp
+    ../src/documentoperations.cpp
+)
