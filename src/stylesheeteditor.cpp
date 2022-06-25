@@ -8,7 +8,10 @@
 StyleSheetEditor::StyleSheetEditor(QWidget* parent)
     : QTextEdit(parent), mLineNumbersAreaWidget(new QWidget(this))
 {
-    mLineNumbersAreaWidget->setFont(QFont("DejaVu Sans Mono", 13));
+    QFont editorFont("Mono");
+    editorFont.setStyleHint(QFont::Monospace);
+    editorFont.setPointSize(13);
+    mLineNumbersAreaWidget->setFont(editorFont);
     mLineNumbersAreaWidget->installEventFilter(this);
 
     updateLineNumbersAreaWidth();
