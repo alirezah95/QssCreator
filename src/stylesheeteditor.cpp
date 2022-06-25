@@ -86,7 +86,7 @@ void StyleSheetEditor::updateLineNumbersAreaWidth()
 {
     auto lnNumbersStr = QString::number(qMax(1, document()->blockCount()));
     mLineNumbersAreaWidth
-        = mLineNumbersAreaWidget->fontMetrics().boundingRect('0').width()
+        = mLineNumbersAreaWidget->fontMetrics().boundingRect("0").width()
             * lnNumbersStr.length()
         + 16;
     setViewportMargins(mLineNumbersAreaWidth, 0, 0, 0);
