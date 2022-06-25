@@ -54,7 +54,7 @@ void TestStyleSheetEditor::testGetLineNumberAreaWidth()
         QTest::keyPress(editor.get(), Qt::Key_Enter);
     }
     QCOMPARE(editor->getLineNumbersAreaWidth(),
-        editor->getLineNumbersWidget()->fontMetrics().boundingRect('0').width()
+        editor->getLineNumbersWidget()->fontMetrics().boundingRect("0").width()
                 * 2
             + 16);
 }
