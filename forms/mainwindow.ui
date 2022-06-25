@@ -14,9 +14,234 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar"/>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionNewFile"/>
+   <addaction name="actionOpenFile"/>
+   <addaction name="actionSave"/>
+   <addaction name="actionSaveAs"/>
+   <addaction name="separator"/>
+   <addaction name="actionUndo"/>
+   <addaction name="actionRedo"/>
+   <addaction name="actionFind"/>
+   <addaction name="actionFindReplace"/>
+   <addaction name="separator"/>
+   <addaction name="actionCopy"/>
+   <addaction name="actionCut"/>
+   <addaction name="actionPaste"/>
+   <addaction name="separator"/>
+   <addaction name="actionIncreaseFont"/>
+   <addaction name="actionDecreaseFont"/>
+  </widget>
+  <action name="actionNewFile">
+   <property name="icon">
+    <iconset resource="../resources/res.qrc">
+     <normaloff>:/icons/new-file.png</normaloff>:/icons/new-file.png</iconset>
+   </property>
+   <property name="text">
+    <string>New File</string>
+   </property>
+   <property name="toolTip">
+    <string>New File</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionOpenFile">
+   <property name="icon">
+    <iconset resource="../resources/res.qrc">
+     <normaloff>:/icons/open-document.png</normaloff>:/icons/open-document.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open File</string>
+   </property>
+   <property name="toolTip">
+    <string>Open File</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset resource="../resources/res.qrc">
+     <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save </string>
+   </property>
+   <property name="toolTip">
+    <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="icon">
+    <iconset resource="../resources/res.qrc">
+     <normaloff>:/icons/save-as.png</normaloff>:/icons/save-as.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save As</string>
+   </property>
+   <property name="toolTip">
+    <string>Save As</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="icon">
+    <iconset resource="../resources/res.qrc">
+     <normaloff>:/icons/undo.png</normaloff>:/icons/undo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Undo</string>
+   </property>
+   <property name="toolTip">
+    <string>Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="icon">
+    <iconset resource="../resources/res.qrc">
+     <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Redo</string>
+   </property>
+   <property name="toolTip">
+    <string>Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionFind">
+   <property name="icon">
+    <iconset resource="../resources/res.qrc">
+     <normaloff>:/icons/search.png</normaloff>:/icons/search.png</iconset>
+   </property>
+   <property name="text">
+    <string>Find</string>
+   </property>
+   <property name="toolTip">
+    <string>Find</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionFindReplace">
+   <property name="icon">
+    <iconset resource="../resources/res.qrc">
+     <normaloff>:/icons/search.png</normaloff>:/icons/search.png</iconset>
+   </property>
+   <property name="text">
+    <string>Find And Replace</string>
+   </property>
+   <property name="toolTip">
+    <string>FInd And Replace</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="icon">
+    <iconset resource="../resources/res.qrc">
+     <normaloff>:/icons/copy-to-clipboard.png</normaloff>:/icons/copy-to-clipboard.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy</string>
+   </property>
+   <property name="toolTip">
+    <string>Copy</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="icon">
+    <iconset resource="../resources/res.qrc">
+     <normaloff>:/icons/cut.png</normaloff>:/icons/cut.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cut</string>
+   </property>
+   <property name="toolTip">
+    <string>Cut</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="icon">
+    <iconset resource="../resources/res.qrc">
+     <normaloff>:/icons/copy-to-clipboard.png</normaloff>:/icons/copy-to-clipboard.png</iconset>
+   </property>
+   <property name="text">
+    <string>Paste</string>
+   </property>
+   <property name="toolTip">
+    <string>Paste</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionIncreaseFont">
+   <property name="icon">
+    <iconset resource="../resources/res.qrc">
+     <normaloff>:/icons/increase-font.png</normaloff>:/icons/increase-font.png</iconset>
+   </property>
+   <property name="text">
+    <string>Increase Font</string>
+   </property>
+   <property name="toolTip">
+    <string>Increase Font</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+=</string>
+   </property>
+  </action>
+  <action name="actionDecreaseFont">
+   <property name="icon">
+    <iconset resource="../resources/res.qrc">
+     <normaloff>:/icons/decrease-font.png</normaloff>:/icons/decrease-font.png</iconset>
+   </property>
+   <property name="text">
+    <string>Decrease Font</string>
+   </property>
+   <property name="toolTip">
+    <string>Decrease Font</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/res.qrc"/>
+ </resources>
  <connections/>
 </ui>
