@@ -5,5 +5,18 @@
         <file>icons/flag-blue.png</file>
         <file>icons/flag-green.png</file>
         <file>icons/qt.png</file>
+        <file>icons/decrease-font.png</file>
+        <file>icons/increase-font.png</file>
+        <file>icons/search.png</file>
+        <file>icons/paste.png</file>
+        <file>icons/copy-to-clipboard.png</file>
+        <file>icons/copy.png</file>
+        <file>icons/cut.png</file>
+        <file>icons/redo.png</file>
+        <file>icons/undo.png</file>
+        <file>icons/save-as.png</file>
+        <file>icons/save.png</file>
+        <file>icons/open-document.png</file>
+        <file>icons/new-file.png</file>
     </qresource>
 </RCC>
