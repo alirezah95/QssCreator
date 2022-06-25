@@ -52,8 +52,8 @@ bool StyleSheetEditor::eventFilter(QObject* obj, QEvent* event)
                     QString lineNumStr = QString::number(currBlockNumber + 1);
 
                     painter.setPen(Qt::black);
-                    painter.drawText(8, currBlTop, mLineNumbersAreaWidth,
-                        fontMetrics().height(), Qt::AlignLeft, lineNumStr);
+                    painter.drawText(0, currBlTop, mLineNumbersAreaWidth,
+                        fontMetrics().height(), Qt::AlignCenter, lineNumStr);
                 }
 
                 currBlTop = currBlBottom;
