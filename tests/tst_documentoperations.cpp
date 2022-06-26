@@ -16,3 +16,7 @@ void TestDocumentOperations::testNewFile() { }
 void TestDocumentOperations::testOpenFile() { }
 
 void TestDocumentOperations::testSaveFile() { }
+
+QTEST_MAIN(TestDocumentOperations);
+
+#include "tst_documentoperations.moc"
