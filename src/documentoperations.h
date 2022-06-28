@@ -23,7 +23,7 @@ public:
      * on
      * \return True if successful and false otherwise
      */
-    bool newFile(QTextEdit* editor);
+    bool newDocument(QTextEdit* editor);
 
     /*!
      * \brief Opens a file and sets it as the text document of the \a editor
@@ -32,7 +32,7 @@ public:
      * \param docFile A pointer to an \ref IDocumentFile
      * \return True if successful and false otherwise
      */
-    bool openFile(QTextEdit* editor, IDocumentFile* docFile);
+    bool openDocument(QTextEdit* editor, IDocumentFile* docFile);
 
     /*!
      * \brief Saves the document from \a doc in \a file name.
@@ -41,7 +41,7 @@ public:
      * \param docFile A pointer to an \ref IDocumentFile
      * \return True if successful and false other wise
      */
-    bool save(const QTextEdit* editor, IDocumentFile* outFile);
+    bool saveDocument(const QTextEdit* editor, IDocumentFile* outFile);
 };
 
 #endif // DOCUMENTOPERATIONS_H

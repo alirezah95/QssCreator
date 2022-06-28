@@ -7,7 +7,7 @@
 
 DocumentOperations::DocumentOperations(QObject* parent) : QObject { parent } { }
 
-bool DocumentOperations::newFile(QTextEdit* editor)
+bool DocumentOperations::newDocument(QTextEdit* editor)
 {
     if (!editor) {
         return false;
@@ -20,7 +20,7 @@ bool DocumentOperations::newFile(QTextEdit* editor)
     return true;
 }
 
-bool DocumentOperations::openFile(QTextEdit* editor, IDocumentFile* docFile)
+bool DocumentOperations::openDocument(QTextEdit* editor, IDocumentFile* docFile)
 {
     if (!editor || !docFile) {
         return false;
@@ -38,7 +38,7 @@ bool DocumentOperations::openFile(QTextEdit* editor, IDocumentFile* docFile)
     return true;
 }
 
-bool DocumentOperations::save(const QTextEdit* editor, IDocumentFile* outFile)
+bool DocumentOperations::saveDocument(const QTextEdit* editor, IDocumentFile* outFile)
 {
     if (!editor || !outFile) {
         return false;
