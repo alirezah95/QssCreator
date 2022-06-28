@@ -23,4 +23,5 @@ add_new_test_executable(TestStyleSheetEditor
 add_new_test_executable(TestDocumentOperations
     tst_documentoperations.cpp
     ../src/documentoperations.cpp
+    ../src/stylesheeteditor.cpp
 )
