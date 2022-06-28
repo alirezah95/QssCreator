@@ -1,5 +1,7 @@
 #include "documentoperations.h"
 
+#include "idocumentfile.h"
+
 #include <QFile>
 #include <QTextEdit>
 
@@ -18,37 +20,35 @@ bool DocumentOperations::newFile(QTextEdit* editor)
     return true;
 }
 
-bool DocumentOperations::openFile(QTextEdit* editor, const QString& filename)
+bool DocumentOperations::openFile(QTextEdit* editor, IDocumentFile* docFile)
 {
-    if (!editor) {
+    if (!editor || !docFile) {
         return false;
     }
 
-    QFile file(filename);
-    if (!file.open(QFile::ReadOnly)) {
+    if (!docFile->open(QFile::ReadOnly)) {
         return false;
     }
 
     auto newFile = new QTextDocument(editor);
-    newFile->setPlainText(file.readAll());
+    newFile->setPlainText(docFile->readAll());
     editor->setDocument(newFile);
-    editor->setDocumentTitle(filename);
+    editor->setDocumentTitle(docFile->fileName());
 
     return true;
 }
 
-bool DocumentOperations::save(const QTextEdit* editor, const QString& filename)
+bool DocumentOperations::save(const QTextEdit* editor, IDocumentFile* outFile)
 {
-    if (!editor) {
+    if (!editor || !outFile) {
         return false;
     }
 
-    QFile out(filename);
-    if (!out.open(QFile::WriteOnly)) {
+    if (!outFile->open(QFile::WriteOnly)) {
         return false;
     }
 
-    if (out.write(editor->document()->toPlainText().toUtf8()) < 0) {
+    if (outFile->write(editor->document()->toPlainText().toUtf8()) < 0) {
         return false;
     }
 

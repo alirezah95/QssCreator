@@ -5,6 +5,7 @@
 
 class QTextDocument;
 class QTextEdit;
+class IDocumentFile;
 
 /*!
  * \brief The DocumentOperations class reponsible for doing file operations
@@ -28,21 +29,19 @@ public:
      * \brief Opens a file and sets it as the text document of the \a editor
      * \param editor Pointer to a \ref StyleSheetEditor to set the opened
      * document on
-     * \param filename Path to the file to open
+     * \param docFile A pointer to an \ref IDocumentFile
      * \return True if successful and false otherwise
      */
-    bool openFile(QTextEdit* editor, const QString& filename);
+    bool openFile(QTextEdit* editor, IDocumentFile* docFile);
 
     /*!
      * \brief Saves the document from \a doc in \a file name.
-     * \details If file name is empty (default) the file name is retrieved from
-     * the \a dco
      * \param editor Pointer to a \ref StyleSheetEditor that its document should
      * be saved
-     * \param filename The file name to save the document in
+     * \param docFile A pointer to an \ref IDocumentFile
      * \return True if successful and false other wise
      */
-    bool save(const QTextEdit* editor, const QString& filename = QString());
+    bool save(const QTextEdit* editor, IDocumentFile* outFile);
 };
 
 #endif // DOCUMENTOPERATIONS_H
