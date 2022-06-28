@@ -38,7 +38,8 @@ bool DocumentOperations::openDocument(QTextEdit* editor, IDocumentFile* docFile)
     return true;
 }
 
-bool DocumentOperations::saveDocument(const QTextEdit* editor, IDocumentFile* outFile)
+bool DocumentOperations::saveDocument(
+    const QTextEdit* editor, IDocumentFile* outFile)
 {
     if (!editor || !outFile) {
         return false;
@@ -48,7 +49,8 @@ bool DocumentOperations::saveDocument(const QTextEdit* editor, IDocumentFile* ou
         return false;
     }
 
-    if (outFile->write(editor->document()->toPlainText().toUtf8()) < 0) {
+    const auto& editorTextBtArr = editor->document()->toPlainText().toUtf8();
+    if (outFile->write(editorTextBtArr) != editorTextBtArr.length()) {
         return false;
     }
 
