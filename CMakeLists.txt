@@ -34,6 +34,10 @@ set(PROJECT_SOURCES
 
         src/documentoperations.cpp
         src/documentoperations.h
+
+        src/idocumentfile.h
+
+        src/documentfile.h
 )
 
 qt_add_resources(PROJECT_SOURCES resources/res.qrc)
