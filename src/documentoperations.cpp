@@ -1,12 +1,11 @@
 #include "documentoperations.h"
 
-#include "stylesheeteditor.h"
-
 #include <QFile>
+#include <QTextEdit>
 
 DocumentOperations::DocumentOperations(QObject* parent) : QObject { parent } { }
 
-bool DocumentOperations::newFile(StyleSheetEditor* editor)
+bool DocumentOperations::newFile(QTextEdit* editor)
 {
     if (!editor) {
         return false;
@@ -19,8 +18,7 @@ bool DocumentOperations::newFile(StyleSheetEditor* editor)
     return true;
 }
 
-bool DocumentOperations::openFile(
-    StyleSheetEditor* editor, const QString& filename)
+bool DocumentOperations::openFile(QTextEdit* editor, const QString& filename)
 {
     if (!editor) {
         return false;
@@ -39,8 +37,7 @@ bool DocumentOperations::openFile(
     return true;
 }
 
-bool DocumentOperations::save(
-    const StyleSheetEditor* editor, const QString& filename)
+bool DocumentOperations::save(const QTextEdit* editor, const QString& filename)
 {
     if (!editor) {
         return false;

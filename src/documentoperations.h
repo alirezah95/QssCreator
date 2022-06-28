@@ -4,7 +4,7 @@
 #include <QObject>
 
 class QTextDocument;
-class StyleSheetEditor;
+class QTextEdit;
 
 /*!
  * \brief The DocumentOperations class reponsible for doing file operations
@@ -22,7 +22,7 @@ public:
      * on
      * \return True if successful and false otherwise
      */
-    bool newFile(StyleSheetEditor* editor);
+    bool newFile(QTextEdit* editor);
 
     /*!
      * \brief Opens a file and sets it as the text document of the \a editor
@@ -31,7 +31,7 @@ public:
      * \param filename Path to the file to open
      * \return True if successful and false otherwise
      */
-    bool openFile(StyleSheetEditor* editor, const QString& filename);
+    bool openFile(QTextEdit* editor, const QString& filename);
 
     /*!
      * \brief Saves the document from \a doc in \a file name.
@@ -42,8 +42,7 @@ public:
      * \param filename The file name to save the document in
      * \return True if successful and false other wise
      */
-    bool save(
-        const StyleSheetEditor* editor, const QString& filename = QString());
+    bool save(const QTextEdit* editor, const QString& filename = QString());
 };
 
 #endif // DOCUMENTOPERATIONS_H
