@@ -24,4 +24,6 @@ add_new_test_executable(TestDocumentOperations
     tst_documentoperations.cpp
     ../src/documentoperations.cpp
     ../src/stylesheeteditor.cpp
+    ../src/idocumentfile.cpp
 )
+target_link_libraries(TestDocumentOperations PRIVATE gmock gtest)

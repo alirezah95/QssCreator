@@ -1,79 +1,91 @@
-#include <QCoreApplication>
-#include <QTest>
+#include <QApplication>
 #include <QTextEdit>
+
+#include <gmock/gmock.h>
 
 #include "documentoperations.h"
 #include "idocumentfile.h"
 
-class TestDocumentFile : public IDocumentFile
+using namespace ::testing;
+
+/*
+ * Defining a mock object for IDocumentFie
+ */
+class MockDocumentFile : public IDocumentFile
 {
 public:
-    TestDocumentFile() { }
+    MockDocumentFile() : IDocumentFile(nullptr) { }
+    virtual ~MockDocumentFile() {};
 
-    virtual bool exists() const override { return true; };
-
-    virtual bool open(QIODeviceBase::OpenMode mode) override { return true; };
-
-    virtual QString fileName() const override { return ":temporary/test"; };
-
-    virtual QByteArray readAll() override
-    {
-        return "This is a stub class for DocumentFile class";
-    };
-
-    virtual QByteArray read(qint64 maxSize) override
-    {
-        QByteArray ret("This is a stub class for DocumentFile class");
-        if (ret.size() > maxSize) {
-            ret.chop(maxSize);
-        }
-        return ret;
-    };
-
-    virtual qint64 read(char* data, qint64 maxSize) override
-    {
-        data = (char*)"This is a stub class for DocumentFile class";
-        return sizeof("This is a stub class for DocumentFile class");
-    }
-
-    virtual qint64 write(const char* data, qint64 maxSize) override
-    {
-        return qMax(maxSize, 200);
-    }
-
-    virtual qint64 write(const char* data) override { return 200; }
-
-    virtual qint64 write(const QByteArray& byteArray) override
-    {
-        return byteArray.size();
-    }
+    MOCK_METHOD(bool, exists, (), (const));
+    MOCK_METHOD(bool, open, (QIODeviceBase::OpenMode mode));
+    MOCK_METHOD(QString, fileName, (), (const));
+    MOCK_METHOD(QByteArray, readAll, ());
+    MOCK_METHOD(qint64, write, (const QByteArray& byteArray));
 };
 
-class TestDocumentOperations : public QObject
+/*
+ * Defining a test fixture
+ */
+class TextEdit : public testing::Test
 {
-    Q_OBJECT
+public:
+    virtual void SetUp() override
+    {
+        editor.insertPlainText("Testing DocumentOperations");
+        return;
+    }
 
-private slots:
-    void testNewDocument();
-    void testOpenDocument();
-    void testSaveDoucment();
-};
+    virtual void TearDown() override
+    {
+        editor.insertPlainText("");
+        return;
+    }
 
-void TestDocumentOperations::testNewDocument()
-{
     QTextEdit editor;
-    editor.insertPlainText("An arbitrary plain text to test newFile method");
+};
 
+TEST_F(TextEdit, testNewDocument)
+{
     DocumentOperations doc;
 
     doc.newDocument(&editor);
-    QCOMPARE(editor.document()->toPlainText(), "");
+
+    EXPECT_EQ(editor.document()->toPlainText(), "");
 }
 
-void TestDocumentOperations::testOpenDocument() { }
+TEST_F(TextEdit, testOpenDocument)
+{
+    char readAllRes[] = "Mocking IDocumentFile";
+    MockDocumentFile docFile;
+    EXPECT_CALL(docFile, open(QIODeviceBase::OpenMode(QIODeviceBase::ReadOnly)))
+        .WillOnce(Return(true));
+    EXPECT_CALL(docFile, readAll()).WillOnce(Return(readAllRes));
+    EXPECT_CALL(docFile, fileName()).WillOnce(Return(":temporary/file.txt"));
 
-void TestDocumentOperations::testSaveDoucment() { }
+    DocumentOperations dOper;
+    dOper.openDocument(&editor, &docFile);
 
-QTEST_MAIN(TestDocumentOperations);
+    EXPECT_EQ(editor.document()->toPlainText(), readAllRes);
+};
 
-#include "tst_documentoperations.moc"
+TEST_F(TextEdit, testSaveDoucment)
+{
+    auto writeParam = QByteArray("Testing DocumentOperations");
+    MockDocumentFile docFile;
+    EXPECT_CALL(
+        docFile, open(QIODeviceBase::OpenMode(QIODeviceBase::WriteOnly)))
+        .WillOnce(Return(true));
+    EXPECT_CALL(docFile, write(writeParam)).WillOnce(Return(writeParam.size()));
+
+    DocumentOperations dOper;
+    dOper.saveDocument(&editor, &docFile);
+}
+
+int main(int argc, char** argv)
+{
+    QApplication app(argc, argv);
+    testing::InitGoogleMock(&argc, argv);
+
+    return RUN_ALL_TESTS();
+}
