@@ -17,7 +17,9 @@ public:
 
     virtual bool exists() const = 0;
     virtual bool open(QIODevice::OpenMode mode) = 0;
+
     virtual QString fileName() const = 0;
+    virtual void setFileName(const QString& fileName) = 0;
 
     virtual QByteArray readAll() = 0;
 
