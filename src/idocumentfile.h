@@ -12,8 +12,8 @@ class IDocumentFile : public QObject
 {
     Q_OBJECT
 public:
-    IDocumentFile() = default;
-    virtual ~IDocumentFile();
+    IDocumentFile(QObject* parent = nullptr) : QObject(parent) {};
+    virtual ~IDocumentFile() {};
 
     virtual bool exists() const = 0;
     virtual bool open(QIODevice::OpenMode mode) = 0;
