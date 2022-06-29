@@ -15,7 +15,7 @@ bool DocumentOperations::newDocument(QTextEdit* editor)
 
     auto newFile = new QTextDocument(editor);
     editor->setDocument(newFile);
-    editor->setDocumentTitle("Untitled.qssd");
+    editor->setDocumentTitle(DOC_UNTITLED);
 
     return true;
 }
