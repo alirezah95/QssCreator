@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(QssCreator VERSION 0.1 LANGUAGES CXX)
+project(QssCreator VERSION 0.1.0.0 LANGUAGES CXX)
+
+configure_file(version.h.in versino.h)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -58,7 +60,10 @@ else()
     endif()
 endif()
 
-target_include_directories(${PROJECT_NAME} PRIVATE src/)
+target_include_directories(${PROJECT_NAME} PRIVATE
+    src/
+    ${PROJECT_BINARY_DIR}
+)
 target_link_libraries(QssCreator PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 set_target_properties(QssCreator PROPERTIES
