@@ -56,3 +56,9 @@ bool DocumentOperations::saveDocument(
 
     return true;
 }
+
+bool DocumentOperations::exportDocument(
+    const QTextEdit* editor, IDocumentFile* outFile)
+{
+    return true;
+}

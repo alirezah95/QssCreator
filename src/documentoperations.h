@@ -38,10 +38,22 @@ public:
      * \brief Saves the document from \a doc in \a file name.
      * \param editor Pointer to a \ref StyleSheetEditor that its document should
      * be saved
-     * \param docFile A pointer to an \ref IDocumentFile
+     * \param outFile A pointer to an \ref IDocumentFile which is used as the
+     * output file (path)
      * \return True if successful and false other wise
      */
     bool saveDocument(const QTextEdit* editor, IDocumentFile* outFile);
+
+    /*!
+     * \brief Export the current document as a <em>Qt style sheet</em> docuemnt
+     * to the file specified in \ref IDocumentFile
+     * \param editor Pointer to a \a\b QTextEdit of which the document is going
+     * to be exported to \a outFile
+     * \param outFile An \ref IDocumentFile used to export the document to file
+     * storage
+     * \return True if successfull and false otherwise
+     */
+    bool exportDocument(const QTextEdit* editor, IDocumentFile* outFile);
 };
 
 #endif // DOCUMENTOPERATIONS_H
