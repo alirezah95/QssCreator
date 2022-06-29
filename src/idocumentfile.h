@@ -4,6 +4,9 @@
 #include <QFile>
 #include <QObject>
 
+#define DOC_POSTFIX ".qssd"
+#define DOC_UNTITLED "untitled.qssd"
+
 /*!
  * \brief The IDocumentFile class is an interface and an adapter for \a\b QFile
  * to be used in \ref DocumentOperations class and also to ease unit testing.
