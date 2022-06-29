@@ -20,6 +20,7 @@ public:
     MOCK_METHOD(bool, exists, (), (const));
     MOCK_METHOD(bool, open, (QIODeviceBase::OpenMode mode));
     MOCK_METHOD(QString, fileName, (), (const));
+    MOCK_METHOD(void, setFileName, (const QString& fileName));
     MOCK_METHOD(QByteArray, readAll, ());
     MOCK_METHOD(qint64, write, (const QByteArray& byteArray));
 };
