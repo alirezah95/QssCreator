@@ -19,11 +19,7 @@ public:
     virtual QString fileName() const override;
 
     virtual QByteArray readAll() override;
-    virtual QByteArray read(qint64 maxSize) override;
-    virtual qint64 read(char* data, qint64 maxSize) override;
 
-    virtual qint64 write(const char* data, qint64 maxSize) override;
-    virtual qint64 write(const char* data) override;
     virtual qint64 write(const QByteArray& byteArray) override;
 };
 
@@ -56,26 +52,6 @@ inline QString DocumentFile::fileName() const
 inline QByteArray DocumentFile::readAll()
 {
     return file.readAll();
-}
-
-inline QByteArray DocumentFile::read(qint64 maxSize)
-{
-    return file.read(maxSize);
-}
-
-inline qint64 DocumentFile::read(char* data, qint64 maxSize)
-{
-    return file.read(data, maxSize);
-}
-
-inline qint64 DocumentFile::write(const char* data, qint64 maxSize)
-{
-    return file.write(data, maxSize);
-}
-
-inline qint64 DocumentFile::write(const char* data)
-{
-    return file.write(data);
 }
 
 inline qint64 DocumentFile::write(const QByteArray& byteArray)

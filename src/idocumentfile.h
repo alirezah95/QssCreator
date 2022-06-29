@@ -19,11 +19,7 @@ public:
     virtual QString fileName() const = 0;
 
     virtual QByteArray readAll() = 0;
-    virtual QByteArray read(qint64 maxSize) = 0;
-    virtual qint64 read(char* data, qint64 maxSize) = 0;
 
-    virtual qint64 write(const char* data, qint64 maxSize) = 0;
-    virtual qint64 write(const char* data) = 0;
     virtual qint64 write(const QByteArray& byteArray) = 0;
 };
 
