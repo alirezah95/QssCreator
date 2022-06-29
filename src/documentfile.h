@@ -13,6 +13,7 @@ public:
     explicit DocumentFile(const QString& name);
     DocumentFile(const QString& name, QObject* parent = nullptr);
     DocumentFile();
+    virtual ~DocumentFile();
 
     virtual bool exists() const override;
     virtual bool open(QIODeviceBase::OpenMode mode) override;
@@ -33,6 +34,8 @@ inline DocumentFile::DocumentFile(const QString& name, QObject* parent)
 }
 
 inline DocumentFile::DocumentFile() { }
+
+inline DocumentFile::~DocumentFile() { }
 
 inline bool DocumentFile::exists() const
 {
