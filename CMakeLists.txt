@@ -36,6 +36,7 @@ set(PROJECT_SOURCES
         src/documentoperations.h
 
         src/idocumentfile.h
+        src/idocumentfile.cpp
 
         src/documentfile.h
 )
