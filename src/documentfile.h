@@ -11,25 +11,30 @@ public:
 public:
     explicit DocumentFile(QObject* parent = nullptr);
     explicit DocumentFile(const QString& name);
-    DocumentFile(const QString& name, QObject* parent = nullptr);
+    DocumentFile(const QString& name, QObject* parent);
     DocumentFile();
     virtual ~DocumentFile();
 
     virtual bool exists() const override;
     virtual bool open(QIODeviceBase::OpenMode mode) override;
+
     virtual QString fileName() const override;
+    virtual void setFileName(const QString& fileName) override;
 
     virtual QByteArray readAll() override;
 
     virtual qint64 write(const QByteArray& byteArray) override;
 };
 
-inline DocumentFile::DocumentFile(QObject* parent) : file(parent) { }
+inline DocumentFile::DocumentFile(QObject* parent)
+    : IDocumentFile(parent), file(parent)
+{
+}
 
 inline DocumentFile::DocumentFile(const QString& name) : file(name) { }
 
 inline DocumentFile::DocumentFile(const QString& name, QObject* parent)
-    : file(name, parent)
+    : IDocumentFile(parent), file(name, parent)
 {
 }
 
@@ -50,6 +55,11 @@ inline bool DocumentFile::open(QIODeviceBase::OpenMode mode)
 inline QString DocumentFile::fileName() const
 {
     return file.fileName();
+}
+
+inline void DocumentFile::setFileName(const QString& fileName)
+{
+    return file.setFileName(fileName);
 }
 
 inline QByteArray DocumentFile::readAll()
