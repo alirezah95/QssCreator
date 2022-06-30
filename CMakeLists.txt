@@ -33,6 +33,14 @@ set(PROJECT_SOURCES
 
         src/stylesheeteditor.h
         src/stylesheeteditor.cpp
+
+        src/documentoperations.cpp
+        src/documentoperations.h
+
+        src/idocumentfile.h
+        src/idocumentfile.cpp
+
+        src/documentfile.h
 )
 
 qt_add_resources(PROJECT_SOURCES resources/res.qrc)
