@@ -4,7 +4,7 @@
 #include <QFile>
 #include <QObject>
 
-#define DOC_POSTFIX ".qssd"
+#define DOC_POSTFIX  ".qssd"
 #define DOC_UNTITLED "untitled.qssd"
 
 /*!
