@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QTextEdit>
 
-#include "documentoperations.h"
+#include "qssdfileoperations.h"
 #include "tst_mockdocumentfile.h"
 
 using namespace ::testing;
@@ -13,7 +13,7 @@ class TextEdit : public testing::Test
 public:
     virtual void SetUp() override
     {
-        editor.insertPlainText("Testing DocumentOperations");
+        editor.insertPlainText("Testing QssdFileOperations");
         return;
     }
 
@@ -28,9 +28,9 @@ public:
 
 TEST_F(TextEdit, testNewDocument)
 {
-    DocumentOperations doc;
+    QssdFileOperations opers;
 
-    doc.newDocument(&editor);
+    opers.newDocument(&editor);
 
     EXPECT_EQ(editor.document()->toPlainText(), "");
 }
@@ -44,7 +44,7 @@ TEST_F(TextEdit, testOpenDocument)
     EXPECT_CALL(docFile, readAll()).WillOnce(Return(readAllRes));
     EXPECT_CALL(docFile, fileName()).WillOnce(Return(":temporary/file.txt"));
 
-    DocumentOperations dOper;
+    QssdFileOperations dOper;
     dOper.openDocument(&editor, &docFile);
 
     EXPECT_EQ(editor.document()->toPlainText(), readAllRes);
@@ -52,14 +52,14 @@ TEST_F(TextEdit, testOpenDocument)
 
 TEST_F(TextEdit, testSaveDoucment)
 {
-    auto writeParam = QByteArray("Testing DocumentOperations");
+    auto writeParam = QByteArray("Testing QssdFileOperations");
     MockDocumentFile docFile;
     EXPECT_CALL(
         docFile, open(QIODeviceBase::OpenMode(QIODeviceBase::WriteOnly)))
         .WillOnce(Return(true));
     EXPECT_CALL(docFile, write(writeParam)).WillOnce(Return(writeParam.size()));
 
-    DocumentOperations dOper;
+    QssdFileOperations dOper;
     dOper.saveDocument(&editor, &docFile);
 }
 
