@@ -18,7 +18,11 @@ private slots:
         editor = QSharedPointer<QssdEditor>(new QssdEditor());
         return;
     }
-    void cleanup() { qDebug() << "cleanup"; }
+    void cleanup()
+    {
+        editor.clear();
+        return;
+    }
 
     void testBlockCount();
     void testBlockCountChangedSignal();
