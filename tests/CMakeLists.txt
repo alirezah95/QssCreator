@@ -25,6 +25,7 @@ add_new_test_executable(TestQssdFileOperations
     tst_qssdfileoperations.cpp
     tst_mockdocumentfile.h
     ../src/qssdfileoperations.cpp
+    ../src/iqssdfileoperations.cpp
     ../src/idocumentfile.cpp
 )
 target_link_libraries(TestQssdFileOperations PRIVATE gmock gtest)
