@@ -10,6 +10,8 @@ QssdFileOperations::QssdFileOperations(QObject* parent)
 {
 }
 
+QssdFileOperations::~QssdFileOperations() { }
+
 bool QssdFileOperations::newDocument(QTextEdit* editor)
 {
     if (!editor) {

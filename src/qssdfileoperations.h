@@ -18,6 +18,7 @@ class QssdFileOperations : public IQssdFileOperations
     Q_OBJECT
 public:
     explicit QssdFileOperations(QObject* parent = nullptr);
+    virtual ~QssdFileOperations();
 
     /*!
      * \brief Implements \ref IQssdFileOperatios::newDocument
