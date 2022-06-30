@@ -3,7 +3,7 @@
 
 #include <QTextEdit>
 
-#include <iqssdeditor.h>
+#include "iqssdeditor.h"
 
 class QWidget;
 
