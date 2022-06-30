@@ -16,7 +16,7 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow),
-      mStyleEditor(new StyleSheetEditor), mPreview(new WidgetsPreview),
+      mStyleEditor(new QssdEditor), mPreview(new WidgetsPreview),
       mDocOpers(new DocumentOperations(this))
 {
     ui->setupUi(this);

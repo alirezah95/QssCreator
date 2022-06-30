@@ -4,7 +4,7 @@
 #include <QMainWindow>
 
 class WidgetsPreview;
-class StyleSheetEditor;
+class QssdEditor;
 class DocumentOperations;
 
 QT_BEGIN_NAMESPACE
@@ -61,7 +61,7 @@ private slots:
 private:
     Ui::MainWindow* ui;
 
-    StyleSheetEditor* mStyleEditor; /*!< A \ref StyleSheetEditor providing user
+    QssdEditor* mStyleEditor; /*!< A \ref StyleSheetEditor providing user
                                      * the ability to edit Qt style sheets.
                                      */
 
