@@ -13,10 +13,20 @@ public:
     ~TestQssdEditor();
 
 private slots:
+    void init()
+    {
+        editor = QSharedPointer<QssdEditor>(new QssdEditor());
+        return;
+    }
+    void cleanup() { qDebug() << "cleanup"; }
+
     void testBlockCount();
     void testBlockCountChangedSignal();
     void testGetLineNumberAreaWidth();
     void testLineNumberAreaWidthJittering();
+
+private:
+    QSharedPointer<QssdEditor> editor;
 };
 
 TestQssdEditor::TestQssdEditor() { }
@@ -25,8 +35,6 @@ TestQssdEditor::~TestQssdEditor() { }
 
 void TestQssdEditor::testBlockCount()
 {
-    auto editor = QSharedPointer<IQssdEditor>(new QssdEditor());
-
     for (int i = 0; i < 12; ++i) {
         QTest::keyPress(editor.get(), Qt::Key_Enter);
     }
@@ -35,7 +43,6 @@ void TestQssdEditor::testBlockCount()
 
 void TestQssdEditor::testBlockCountChangedSignal()
 {
-    auto editor = QSharedPointer<QssdEditor>(new QssdEditor());
     QSignalSpy bcChanged(editor->document(), &QTextDocument::blockCountChanged);
 
     int keyPressTimes = 3;
@@ -48,8 +55,6 @@ void TestQssdEditor::testBlockCountChangedSignal()
 
 void TestQssdEditor::testGetLineNumberAreaWidth()
 {
-    auto editor = QSharedPointer<QssdEditor>(new QssdEditor());
-
     for (int i = 0; i < 12; ++i) {
         QTest::keyPress(editor.get(), Qt::Key_Enter);
     }
@@ -60,8 +65,6 @@ void TestQssdEditor::testGetLineNumberAreaWidth()
 
 void TestQssdEditor::testLineNumberAreaWidthJittering()
 {
-    auto editor = QSharedPointer<QssdEditor>(new QssdEditor());
-
     // Getting block count to 21
     for (int i = 0; i < 20; ++i) {
         QTest::keyPress(editor.get(), Qt::Key_Enter);
