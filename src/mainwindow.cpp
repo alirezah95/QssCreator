@@ -3,7 +3,7 @@
 
 #include "documentfile.h"
 #include "documentoperations.h"
-#include "stylesheeteditor.h"
+#include "qssdeditor.h"
 #include "widgetspreview.h"
 
 #include <QFileDialog>
@@ -15,9 +15,8 @@
     connect(object, &QAction::triggered, this, slot)
 
 MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow),
-      mStyleEditor(new QssdEditor), mPreview(new WidgetsPreview),
-      mDocOpers(new DocumentOperations(this))
+    : QMainWindow(parent), ui(new Ui::MainWindow), mStyleEditor(new QssdEditor),
+      mPreview(new WidgetsPreview), mDocOpers(new DocumentOperations(this))
 {
     ui->setupUi(this);
 
@@ -102,4 +101,9 @@ void MainWindow::saveAs()
         }
     }
     return;
+}
+
+void MainWindow::exportDocument()
+{
+
 }
