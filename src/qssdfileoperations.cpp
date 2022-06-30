@@ -1,13 +1,16 @@
-#include "documentoperations.h"
+#include "qssdfileoperations.h"
 
 #include "idocumentfile.h"
 
 #include <QFile>
 #include <QTextEdit>
 
-DocumentOperations::DocumentOperations(QObject* parent) : QObject { parent } { }
+QssdFileOperations::QssdFileOperations(QObject* parent)
+    : IQssdFileOperations { parent }
+{
+}
 
-bool DocumentOperations::newDocument(QTextEdit* editor)
+bool QssdFileOperations::newDocument(QTextEdit* editor)
 {
     if (!editor) {
         return false;
@@ -20,7 +23,7 @@ bool DocumentOperations::newDocument(QTextEdit* editor)
     return true;
 }
 
-bool DocumentOperations::openDocument(QTextEdit* editor, IDocumentFile* docFile)
+bool QssdFileOperations::openDocument(QTextEdit* editor, IDocumentFile* docFile)
 {
     if (!editor || !docFile) {
         return false;
@@ -38,7 +41,7 @@ bool DocumentOperations::openDocument(QTextEdit* editor, IDocumentFile* docFile)
     return true;
 }
 
-bool DocumentOperations::saveDocument(
+bool QssdFileOperations::saveDocument(
     const QTextEdit* editor, IDocumentFile* outFile)
 {
     if (!editor || !outFile) {
@@ -57,7 +60,7 @@ bool DocumentOperations::saveDocument(
     return true;
 }
 
-bool DocumentOperations::exportDocument(
+bool QssdFileOperations::exportDocument(
     const QTextEdit* editor, IDocumentFile* outFile)
 {
     return true;
