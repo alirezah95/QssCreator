@@ -31,11 +31,17 @@ set(PROJECT_SOURCES
         src/widgetspreview.h
         forms/widgetspreview.ui
 
-        src/stylesheeteditor.h
-        src/stylesheeteditor.cpp
+        src/iqssdeditor.h
+        src/iqssdeditor.cpp
 
-        src/documentoperations.cpp
-        src/documentoperations.h
+        src/qssdeditor.h
+        src/qssdeditor.cpp
+
+        src/iqssdfileoperations.h
+        src/iqssdfileoperations.cpp
+
+        src/qssdfileoperations.cpp
+        src/qssdfileoperations.h
 
         src/idocumentfile.h
         src/idocumentfile.cpp

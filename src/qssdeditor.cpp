@@ -1,17 +1,18 @@
-#include "stylesheeteditor.h"
+#include "qssdeditor.h"
 
 #include <QEvent>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QTextBlock>
 
-StyleSheetEditor::StyleSheetEditor(QWidget* parent)
-    : QTextEdit(parent), mLineNumbersAreaWidget(new QWidget(this))
+QssdEditor::QssdEditor(QWidget* parent)
+    : IQssdEditor(parent), mLineNumbersAreaWidget(new QWidget(this))
 {
     QFont editorFont("Mono");
     editorFont.setStyleHint(QFont::Monospace);
     editorFont.setPointSize(13);
-    mLineNumbersAreaWidget->setFont(editorFont);
+    setLineNumbersFont(editorFont);
+
     mLineNumbersAreaWidget->installEventFilter(this);
 
     updateLineNumbersAreaWidth();
@@ -25,9 +26,15 @@ StyleSheetEditor::StyleSheetEditor(QWidget* parent)
     return;
 }
 
-StyleSheetEditor::~StyleSheetEditor() { }
+QssdEditor::~QssdEditor() { }
 
-bool StyleSheetEditor::eventFilter(QObject* obj, QEvent* event)
+void QssdEditor::setLineNumbersFont(QFont font)
+{
+    mLineNumbersAreaWidget->setFont(font);
+    return;
+}
+
+bool QssdEditor::eventFilter(QObject* obj, QEvent* event)
 {
     if (obj == mLineNumbersAreaWidget && event->type() == QEvent::Paint) {
         if (auto pEv = dynamic_cast<QPaintEvent*>(event)) {
@@ -70,7 +77,7 @@ bool StyleSheetEditor::eventFilter(QObject* obj, QEvent* event)
     return false;
 }
 
-void StyleSheetEditor::resizeEvent(QResizeEvent* event)
+void QssdEditor::resizeEvent(QResizeEvent* event)
 {
     const QRect& cr = contentsRect();
     mLineNumbersAreaWidget->setGeometry(
@@ -78,13 +85,13 @@ void StyleSheetEditor::resizeEvent(QResizeEvent* event)
     return QTextEdit::resizeEvent(event);
 }
 
-void StyleSheetEditor::scrollContentsBy(int dx, int dy)
+void QssdEditor::scrollContentsBy(int dx, int dy)
 {
     mLineNumbersAreaWidget->scroll(dx, dy);
     return QTextEdit::scrollContentsBy(dx, dy);
 }
 
-void StyleSheetEditor::updateLineNumbersAreaWidth()
+void QssdEditor::updateLineNumbersAreaWidth()
 {
     auto lnNumbersStr = QString::number(qMax(1, document()->blockCount()));
     mLineNumbersAreaWidth

@@ -1,21 +1,17 @@
-#ifndef DOCUMENTOPERATIONS_H
-#define DOCUMENTOPERATIONS_H
+#ifndef IQSSDOPERATIONS_H
+#define IQSSDOPERATIONS_H
 
 #include <QObject>
 
-class QTextDocument;
 class QTextEdit;
 class IDocumentFile;
 
-/*!
- * \brief The DocumentOperations class reponsible for doing file operations
- * related to the style sheet document
- */
-class DocumentOperations : public QObject
+class IQssdFileOperations : public QObject
 {
     Q_OBJECT
 public:
-    explicit DocumentOperations(QObject* parent = nullptr);
+    explicit IQssdFileOperations(QObject* parent = nullptr);
+    virtual ~IQssdFileOperations();
 
     /*!
      * \brief Sets a new empty, untitled document to the \a editor
@@ -23,7 +19,7 @@ public:
      * on
      * \return True if successful and false otherwise
      */
-    bool newDocument(QTextEdit* editor);
+    virtual bool newDocument(QTextEdit* editor) = 0;
 
     /*!
      * \brief Opens a file and sets it as the text document of the \a editor
@@ -32,7 +28,7 @@ public:
      * \param docFile A pointer to an \ref IDocumentFile
      * \return True if successful and false otherwise
      */
-    bool openDocument(QTextEdit* editor, IDocumentFile* docFile);
+    virtual bool openDocument(QTextEdit* editor, IDocumentFile* docFile) = 0;
 
     /*!
      * \brief Saves the document from \a doc in \a file name.
@@ -42,7 +38,8 @@ public:
      * output file (path)
      * \return True if successful and false other wise
      */
-    bool saveDocument(const QTextEdit* editor, IDocumentFile* outFile);
+    virtual bool saveDocument(const QTextEdit* editor, IDocumentFile* outFile)
+        = 0;
 
     /*!
      * \brief Export the current document as a <em>Qt style sheet</em> docuemnt
@@ -53,7 +50,8 @@ public:
      * storage
      * \return True if successfull and false otherwise
      */
-    bool exportDocument(const QTextEdit* editor, IDocumentFile* outFile);
+    virtual bool exportDocument(const QTextEdit* editor, IDocumentFile* outFile)
+        = 0;
 };
 
-#endif // DOCUMENTOPERATIONS_H
+#endif

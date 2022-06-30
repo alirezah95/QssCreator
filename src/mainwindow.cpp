@@ -2,8 +2,8 @@
 #include "./ui_mainwindow.h"
 
 #include "documentfile.h"
-#include "documentoperations.h"
-#include "stylesheeteditor.h"
+#include "iqssdfileoperations.h"
+#include "qssdeditor.h"
 #include "widgetspreview.h"
 
 #include <QFileDialog>
@@ -14,12 +14,15 @@
 #define ACTION_CONNECT(object, slot)                                           \
     connect(object, &QAction::triggered, this, slot)
 
-MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow),
-      mStyleEditor(new StyleSheetEditor), mPreview(new WidgetsPreview),
-      mDocOpers(new DocumentOperations(this))
+MainWindow::MainWindow(
+    IQssdEditor* editor, IQssdFileOperations* docOper, QWidget* parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow), mStyleEditor(editor),
+      mPreview(new WidgetsPreview), mDocOpers(docOper)
 {
     ui->setupUi(this);
+
+    mStyleEditor->setParent(this);
+    mDocOpers->setParent(this);
 
     auto splitter = new QSplitter;
     splitter->setChildrenCollapsible(false);
@@ -103,3 +106,5 @@ void MainWindow::saveAs()
     }
     return;
 }
+
+void MainWindow::exportDocument() { }
