@@ -37,8 +37,11 @@ set(PROJECT_SOURCES
         src/qssdeditor.h
         src/qssdeditor.cpp
 
-        src/documentoperations.cpp
-        src/documentoperations.h
+        src/iqssdfileoperations.h
+        src/iqssdfileoperations.cpp
+
+        src/qssdfileoperations.cpp
+        src/qssdfileoperations.h
 
         src/idocumentfile.h
         src/idocumentfile.cpp
