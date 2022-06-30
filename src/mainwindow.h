@@ -5,7 +5,7 @@
 
 class WidgetsPreview;
 class IQssdEditor;
-class DocumentOperations;
+class IQssdFileOperations;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,7 +18,17 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget* parent = nullptr);
+    /*!
+     * \brief Construct an object with the given \a editor and \a docOper. The
+     * MainWindow takes the ownership of the \a editor and \a docOper
+     * \note Neither \a editor nor docOper should be nullptr.
+     * \param editor A pointer to a subclass of \ref IQssdEditor which is used
+     * as the application's document editor
+     * \param docOper A pointer to a
+     * \param parent
+     */
+    MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
+        QWidget* parent = nullptr);
     ~MainWindow();
 
 private slots:
@@ -69,9 +79,9 @@ private:
                                * of the code in style editor.
                                */
 
-    DocumentOperations* mDocOpers; /*!< A \ref DocumentOperations instance
-                                    * responsible for handling file operations
-                                    * related to the app text editor.
-                                    */
+    IQssdFileOperations* mDocOpers; /*!< A \ref DocumentOperations instance
+                                     * responsible for handling file operations
+                                     * related to the app text editor.
+                                     */
 };
 #endif // MAINWINDOW_H
