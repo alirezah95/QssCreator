@@ -2,15 +2,15 @@
 #include <QSignalSpy>
 #include <QTest>
 
-#include "stylesheeteditor.h"
+#include "qssdeditor.h"
 
-class TestStyleSheetEditor : public QObject
+class TestQssdEditor : public QObject
 {
     Q_OBJECT
 
 public:
-    TestStyleSheetEditor();
-    ~TestStyleSheetEditor();
+    TestQssdEditor();
+    ~TestQssdEditor();
 
 private slots:
     void testBlockCount();
@@ -19,13 +19,13 @@ private slots:
     void testLineNumberAreaWidthJittering();
 };
 
-TestStyleSheetEditor::TestStyleSheetEditor() { }
+TestQssdEditor::TestQssdEditor() { }
 
-TestStyleSheetEditor::~TestStyleSheetEditor() { }
+TestQssdEditor::~TestQssdEditor() { }
 
-void TestStyleSheetEditor::testBlockCount()
+void TestQssdEditor::testBlockCount()
 {
-    auto editor = QSharedPointer<StyleSheetEditor>(new StyleSheetEditor());
+    auto editor = QSharedPointer<IQssdEditor>(new QssdEditor());
 
     for (int i = 0; i < 12; ++i) {
         QTest::keyPress(editor.get(), Qt::Key_Enter);
@@ -33,9 +33,9 @@ void TestStyleSheetEditor::testBlockCount()
     QCOMPARE(editor->document()->blockCount(), 13);
 }
 
-void TestStyleSheetEditor::testBlockCountChangedSignal()
+void TestQssdEditor::testBlockCountChangedSignal()
 {
-    auto editor = QSharedPointer<StyleSheetEditor>(new StyleSheetEditor());
+    auto editor = QSharedPointer<QssdEditor>(new QssdEditor());
     QSignalSpy bcChanged(editor->document(), &QTextDocument::blockCountChanged);
 
     int keyPressTimes = 3;
@@ -46,22 +46,21 @@ void TestStyleSheetEditor::testBlockCountChangedSignal()
     QCOMPARE(bcChanged.count(), keyPressTimes);
 }
 
-void TestStyleSheetEditor::testGetLineNumberAreaWidth()
+void TestQssdEditor::testGetLineNumberAreaWidth()
 {
-    auto editor = QSharedPointer<StyleSheetEditor>(new StyleSheetEditor());
+    auto editor = QSharedPointer<QssdEditor>(new QssdEditor());
 
     for (int i = 0; i < 12; ++i) {
         QTest::keyPress(editor.get(), Qt::Key_Enter);
     }
     QCOMPARE(editor->getLineNumbersAreaWidth(),
-        editor->getLineNumbersWidget()->fontMetrics().boundingRect("0").width()
-                * 2
+        QFontMetrics(editor->getLineNumbersFont()).boundingRect("0").width() * 2
             + 16);
 }
 
-void TestStyleSheetEditor::testLineNumberAreaWidthJittering()
+void TestQssdEditor::testLineNumberAreaWidthJittering()
 {
-    auto editor = QSharedPointer<StyleSheetEditor>(new StyleSheetEditor());
+    auto editor = QSharedPointer<QssdEditor>(new QssdEditor());
 
     // Getting block count to 21
     for (int i = 0; i < 20; ++i) {
@@ -78,6 +77,6 @@ void TestStyleSheetEditor::testLineNumberAreaWidthJittering()
     QVERIFY(lnNumsAreaWidth1 == lnNumsAreaWidth2);
 }
 
-QTEST_MAIN(TestStyleSheetEditor);
+QTEST_MAIN(TestQssdEditor);
 
-#include "tst_stylesheeteditor.moc"
+#include "tst_qssdeditor.moc"
