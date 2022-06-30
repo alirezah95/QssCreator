@@ -3,34 +3,46 @@
 
 #include <QTextEdit>
 
+#include <iqssdeditor.h>
+
 class QWidget;
 
-namespace Ui {
-class StyleSheetEditor;
-}
-
-class StyleSheetEditor : public QTextEdit
+/*!
+ * \brief The QssdEditor class which is the <em>Qt style sheet document</em>
+ * editor
+ */
+class QssdEditor : public IQssdEditor
 {
     Q_OBJECT
 
 public:
-    explicit StyleSheetEditor(QWidget* parent = nullptr);
-    ~StyleSheetEditor();
+    explicit QssdEditor(QWidget* parent = nullptr);
+    ~QssdEditor();
 
     /*!
      * \brief Returns the width required for the line numbers area so that the
      * numbers are properly shown on it.
      * \return An integer as the width
      */
-    inline int getLineNumbersAreaWidth() const
+    virtual int getLineNumbersAreaWidth() const override
     {
         return mLineNumbersAreaWidth;
     };
 
     /*!
-     * \brief Getter for line number area widget
+     * \brief Implements \ref IQssdEditor::setLineNumbersFont(QFont)
+     * \param font
      */
-    inline auto getLineNumbersWidget() const { return mLineNumbersAreaWidget; }
+    virtual void setLineNumbersFont(QFont font) override;
+
+    /*!
+     * \brief Implements \ref IQssdEditor::getLineNumbersFont()
+     * \return
+     */
+    virtual QFont getLineNumbersFont() const override
+    {
+        return mLineNumbersAreaWidget->font();
+    }
 
 protected:
     /*!
