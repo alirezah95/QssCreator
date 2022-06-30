@@ -15,16 +15,16 @@ function(add_new_test_executable testname)
     endif()
 endfunction()
 
-add_new_test_executable(TestStyleSheetEditor
+add_new_test_executable(TestQssdEditor
     tst_qssdeditor.cpp
     ../src/qssdeditor.cpp
     ../src/iqssdeditor.cpp
 )
 
-add_new_test_executable(TestDocumentOperations
+add_new_test_executable(TestQssdFileOperations
     tst_qssdfileoperations.cpp
     tst_mockdocumentfile.h
     ../src/qssdfileoperations.cpp
     ../src/idocumentfile.cpp
 )
-target_link_libraries(TestDocumentOperations PRIVATE gmock gtest)
+target_link_libraries(TestQssdFileOperations PRIVATE gmock gtest)
