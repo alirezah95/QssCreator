@@ -69,6 +69,13 @@ private slots:
     void exportDocument();
 
 private:
+    /*!
+     * \brief A private method to create all signal/slot connection and is used
+     * to tidy ctor up
+     */
+    void setupConnections();
+
+private:
     Ui::MainWindow* ui;
 
     IQssdEditor* mStyleEditor; /*!< A \ref StyleSheetEditor providing user

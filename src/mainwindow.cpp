@@ -37,17 +37,7 @@ MainWindow::MainWindow(
 
     ui->centralwidget->setLayout(hbox);
 
-    /* Set up actions connections */
-    ACT_CONNECT_THIS(ui->actionNewFile, newDocument);
-    ACT_CONNECT_THIS(ui->actionOpenFile, openDocument);
-    ACT_CONNECT_THIS(ui->actionSave, save);
-    ACT_CONNECT_THIS(ui->actionSaveAs, saveAs);
-
-    ACT_CONNECT_EDITOR(ui->actionUndo, undo);
-    ACT_CONNECT_EDITOR(ui->actionRedo, redo);
-    ACT_CONNECT_EDITOR(ui->actionCopy, copy);
-    ACT_CONNECT_EDITOR(ui->actionCut, cut);
-    ACT_CONNECT_EDITOR(ui->actionPaste, paste);
+    setupConnections();
 
     return;
 }
@@ -125,3 +115,20 @@ void MainWindow::saveAs()
 }
 
 void MainWindow::exportDocument() { }
+
+void MainWindow::setupConnections()
+{
+    /* Set up actions connections */
+    ACT_CONNECT_THIS(ui->actionNewFile, newDocument);
+    ACT_CONNECT_THIS(ui->actionOpenFile, openDocument);
+    ACT_CONNECT_THIS(ui->actionSave, save);
+    ACT_CONNECT_THIS(ui->actionSaveAs, saveAs);
+
+    ACT_CONNECT_EDITOR(ui->actionUndo, undo);
+    ACT_CONNECT_EDITOR(ui->actionRedo, redo);
+    ACT_CONNECT_EDITOR(ui->actionCopy, copy);
+    ACT_CONNECT_EDITOR(ui->actionCut, cut);
+    ACT_CONNECT_EDITOR(ui->actionPaste, paste);
+
+    return;
+}
