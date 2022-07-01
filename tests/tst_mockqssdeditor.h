@@ -1,8 +1,19 @@
+#ifndef TST_MOCKQSSDEDITOR_H
+#define TST_MOCKQSSDEDITOR_H
+
 #include "iqssdeditor.h"
+
+#include <gmock/gmock.h>
 
 class MockQssdEditor : public IQssdEditor
 {
-    virtual int getLineNumbersAreaWidth() const override;
-    virtual void setLineNumbersFont(QFont font) override;
-    virtual QFont getLineNumbersFont() const override;
+public:
+    explicit MockQssdEditor(QWidget* parent = nullptr) : IQssdEditor(parent) { }
+    virtual ~MockQssdEditor() { }
+
+    MOCK_METHOD(int, getLineNumbersAreaWidth, (), (const override));
+    MOCK_METHOD(void, setLineNumbersFont, (QFont font), (override));
+    MOCK_METHOD(QFont, getLineNumbersFont, (), (const override));
 };
+
+#endif
