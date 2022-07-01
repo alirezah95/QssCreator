@@ -11,8 +11,10 @@
 #include <QSplitter>
 #include <QStandardPaths>
 
-#define ACTION_CONNECT(object, slot)                                           \
-    connect(object, &QAction::triggered, this, slot)
+#define ACT_CONNECT_THIS(act, slot)                                            \
+    connect(act, &QAction::triggered, this, &MainWindow::slot)
+#define ACT_CONNECT_EDITOR(act, slot)                                          \
+    connect(act, &QAction::triggered, mStyleEditor, &IQssdEditor::slot)
 
 MainWindow::MainWindow(
     IQssdEditor* editor, IQssdFileOperations* docOper, QWidget* parent)
@@ -36,10 +38,10 @@ MainWindow::MainWindow(
     ui->centralwidget->setLayout(hbox);
 
     /* Set up actions connections */
-    ACTION_CONNECT(ui->actionNewFile, &MainWindow::newDocument);
-    ACTION_CONNECT(ui->actionOpenFile, &MainWindow::openDocument);
-    ACTION_CONNECT(ui->actionSave, &MainWindow::save);
-    ACTION_CONNECT(ui->actionSaveAs, &MainWindow::saveAs);
+    ACT_CONNECT_THIS(ui->actionNewFile, newDocument);
+    ACT_CONNECT_THIS(ui->actionOpenFile, openDocument);
+    ACT_CONNECT_THIS(ui->actionSave, save);
+    ACT_CONNECT_THIS(ui->actionSaveAs, saveAs);
 
     return;
 }
