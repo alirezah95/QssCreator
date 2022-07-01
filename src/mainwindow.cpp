@@ -11,8 +11,11 @@
 #include <QSplitter>
 #include <QStandardPaths>
 
+/* To create connections between toolbar actions and this class */
 #define ACT_CONNECT_THIS(act, slot)                                            \
     connect(act, &QAction::triggered, this, &MainWindow::slot)
+
+/* To create connections between toolbar actions and editor object */
 #define ACT_CONNECT_EDITOR(act, slot)                                          \
     connect(act, &QAction::triggered, mStyleEditor, &IQssdEditor::slot)
 
@@ -129,6 +132,16 @@ void MainWindow::setupConnections()
     ACT_CONNECT_EDITOR(ui->actionCopy, copy);
     ACT_CONNECT_EDITOR(ui->actionCut, cut);
     ACT_CONNECT_EDITOR(ui->actionPaste, paste);
+
+    connect(mStyleEditor, &IQssdEditor::undoAvailable, ui->actionUndo,
+        &QAction::setEnabled);
+    connect(mStyleEditor, &IQssdEditor::redoAvailable, ui->actionRedo,
+        &QAction::setEnabled);
+
+    connect(mStyleEditor, &IQssdEditor::copyAvailable, this, [this](bool yes) {
+        ui->actionCopy->setEnabled(yes);
+        ui->actionCut->setEnabled(yes);
+    });
 
     return;
 }
