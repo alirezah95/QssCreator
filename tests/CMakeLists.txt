@@ -37,6 +37,7 @@ add_new_gtest(TestQssdFileOperations
 add_new_gtest(TestMainWindow
     tst_mainwindow.cpp
     tst_mockqssdeditor.h
+    tst_mockqssdfileoperations.h
     ../src/mainwindow.cpp
     ../src/widgetspreview.cpp
     ../src/idocumentfile.cpp
