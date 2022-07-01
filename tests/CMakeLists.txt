@@ -41,4 +41,6 @@ add_new_gtest(TestMainWindow
     ../src/mainwindow.cpp
     ../src/widgetspreview.cpp
     ../src/idocumentfile.cpp
+    ../src/iqssdeditor.cpp
+    ../src/iqssdfileoperations.cpp
 )
