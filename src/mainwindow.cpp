@@ -62,7 +62,7 @@ void MainWindow::openDocument()
     if (mDocOpers) {
         auto openFileName = QFileDialog::getOpenFileName(this, tr("Open File"),
             QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
-            "Text files (*.qssd)");
+            DOC_FILTER);
         DocumentFile docFile(openFileName);
 
         if (!mDocOpers->openDocument(mStyleEditor, &docFile)) {
@@ -80,7 +80,7 @@ void MainWindow::save()
                 = QFileDialog::getSaveFileName(this, tr("Save File"),
                     QStandardPaths::writableLocation(
                         QStandardPaths::DocumentsLocation),
-                    "Text files (*.qssd)");
+                    DOC_FILTER);
             DocumentFile docFile(saveFileName);
 
             if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
@@ -97,7 +97,7 @@ void MainWindow::saveAs()
         auto saveFileName = QFileDialog::getSaveFileName(this,
             tr("Save File As"),
             QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
-            "Text files (*.qssd)");
+            DOC_FILTER);
         DocumentFile docFile(saveFileName);
 
         if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
