@@ -1,6 +1,6 @@
 enable_testing()
 
-function(add_new_test_executable testname)
+function(add_new_test testname)
     if (${ARGC} GREATER 1)
         add_executable(${testname}
             ${ARGN}
@@ -15,17 +15,29 @@ function(add_new_test_executable testname)
     endif()
 endfunction()
 
-add_new_test_executable(TestQssdEditor
+function(add_new_gtest testname)
+    add_new_test(${testname} ${ARGN})
+    target_link_libraries(${testname} PRIVATE gmock gtest)
+endfunction()
+
+add_new_test(TestQssdEditor
     tst_qssdeditor.cpp
     ../src/qssdeditor.cpp
     ../src/iqssdeditor.cpp
 )
 
-add_new_test_executable(TestQssdFileOperations
+add_new_gtest(TestQssdFileOperations
     tst_qssdfileoperations.cpp
     tst_mockdocumentfile.h
     ../src/qssdfileoperations.cpp
     ../src/iqssdfileoperations.cpp
     ../src/idocumentfile.cpp
 )
-target_link_libraries(TestQssdFileOperations PRIVATE gmock gtest)
+
+add_new_gtest(TestMainWindow
+    tst_mainwindow.cpp
+    tst_mockqssdeditor.cpp
+    ../src/mainwindow.cpp
+    ../src/widgetspreview.cpp
+    ../src/idocumentfile.cpp
+)
