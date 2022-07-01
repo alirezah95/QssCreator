@@ -63,6 +63,9 @@ void MainWindow::openDocument()
         auto openFileName = QFileDialog::getOpenFileName(this, tr("Open File"),
             QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
             DOC_FILTER);
+        if (openFileName.isEmpty()) {
+            return;
+        }
         DocumentFile docFile(openFileName);
 
         if (!mDocOpers->openDocument(mStyleEditor, &docFile)) {
@@ -81,6 +84,9 @@ void MainWindow::save()
                     QStandardPaths::writableLocation(
                         QStandardPaths::DocumentsLocation),
                     DOC_FILTER);
+            if (saveFileName.isEmpty()) {
+                return;
+            }
             DocumentFile docFile(saveFileName);
 
             if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
@@ -94,11 +100,14 @@ void MainWindow::save()
 void MainWindow::saveAs()
 {
     if (mDocOpers) {
-        auto saveFileName = QFileDialog::getSaveFileName(this,
+        auto saveAsFileName = QFileDialog::getSaveFileName(this,
             tr("Save File As"),
             QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
             DOC_FILTER);
-        DocumentFile docFile(saveFileName);
+        if (saveAsFileName.isEmpty()) {
+            return;
+        }
+        DocumentFile docFile(saveAsFileName);
 
         if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
             qDebug() << "Error in saving file: " << docFile.fileName();
