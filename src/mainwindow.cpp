@@ -43,6 +43,12 @@ MainWindow::MainWindow(
     ACT_CONNECT_THIS(ui->actionSave, save);
     ACT_CONNECT_THIS(ui->actionSaveAs, saveAs);
 
+    ACT_CONNECT_EDITOR(ui->actionUndo, undo);
+    ACT_CONNECT_EDITOR(ui->actionRedo, redo);
+    ACT_CONNECT_EDITOR(ui->actionCopy, copy);
+    ACT_CONNECT_EDITOR(ui->actionCut, cut);
+    ACT_CONNECT_EDITOR(ui->actionPaste, paste);
+
     return;
 }
 
