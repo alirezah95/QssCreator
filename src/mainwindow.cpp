@@ -40,6 +40,8 @@ MainWindow::MainWindow(
 
     ui->centralwidget->setLayout(hbox);
 
+    reset();
+
     setupConnections();
 
     return;
@@ -118,6 +120,17 @@ void MainWindow::saveAs()
 }
 
 void MainWindow::exportDocument() { }
+
+void MainWindow::reset()
+{
+    ui->actionUndo->setEnabled(false);
+    ui->actionRedo->setEnabled(false);
+    ui->actionCopy->setEnabled(false);
+    ui->actionCut->setEnabled(false);
+    ui->actionSave->setEnabled(false);
+
+    return;
+}
 
 void MainWindow::setupConnections()
 {

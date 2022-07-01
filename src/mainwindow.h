@@ -70,6 +70,10 @@ private slots:
 
 private:
     /*!
+     * \brief reset
+     */
+    void reset();
+    /*!
      * \brief A private method to create all signal/slot connection and is used
      * to tidy ctor up
      */
