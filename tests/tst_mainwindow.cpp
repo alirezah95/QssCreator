@@ -1,5 +1,6 @@
 #include <QAction>
 #include <QApplication>
+#include <QClipboard>
 #include <QTest>
 #include <QToolBar>
 
@@ -57,6 +58,66 @@ TEST_F(TestMainWindow, testUndoRedo)
 
     EXPECT_EQ((*undoAct)->isEnabled(), false);
     EXPECT_EQ((*redoAct)->isEnabled(), true);
+}
+
+TEST_F(TestMainWindow, TestCopyPaste)
+{
+    const auto& actions
+        = mainWin->findChild<QToolBar*>("mainToolBar")->actions();
+
+    auto copyAct = std::find_if(actions.begin(), actions.end(),
+        [](QAction* curr) { return curr->objectName() == "actionCopy"; });
+
+    auto pasteAct = std::find_if(actions.begin(), actions.end(),
+        [](QAction* curr) { return curr->objectName() == "actionPaste"; });
+
+    ASSERT_NE(copyAct, actions.end()) << "No \"copy\" action.";
+    ASSERT_NE(pasteAct, actions.end()) << "No \"paste\" action.";
+
+    editorMock->insertPlainText("Test copy/paste");
+    editorMock->selectAll();
+
+    // Test copy action functionality
+    EXPECT_EQ((*copyAct)->isEnabled(), true);
+    (*copyAct)->trigger();
+    EXPECT_EQ(qApp->clipboard()->text(), "Test copy/paste");
+
+    QTest::keyPress(editorMock, Qt::Key_End, Qt::NoModifier);
+
+    // Test paste action functionality
+    (*pasteAct)->trigger();
+    EXPECT_STREQ(editorMock->document()->toPlainText().toStdString().c_str(),
+        "Test copy/pasteTest copy/paste");
+}
+
+TEST_F(TestMainWindow, TestCutPaste)
+{
+    const auto& actions
+        = mainWin->findChild<QToolBar*>("mainToolBar")->actions();
+
+    auto cutAct = std::find_if(actions.begin(), actions.end(),
+        [](QAction* curr) { return curr->objectName() == "actionCut"; });
+
+    auto pasteAct = std::find_if(actions.begin(), actions.end(),
+        [](QAction* curr) { return curr->objectName() == "actionPaste"; });
+
+    ASSERT_NE(cutAct, actions.end()) << "No \"cut\" action.";
+    ASSERT_NE(pasteAct, actions.end()) << "No \"paste\" action.";
+
+    editorMock->insertPlainText("Test cut/paste");
+    editorMock->selectAll();
+
+    // Test copy action functionality
+    EXPECT_EQ((*cutAct)->isEnabled(), true);
+    (*cutAct)->trigger();
+    EXPECT_EQ(qApp->clipboard()->text(), "Test cut/paste");
+
+    QTest::keyPress(editorMock, Qt::Key_End, Qt::NoModifier);
+
+    // Test paste action functionality
+    (*pasteAct)->trigger();
+    EXPECT_STREQ(editorMock->document()->toPlainText().toStdString().c_str(),
+        "Test cut/paste");
 }
 
 int main(int argc, char* argv[])
