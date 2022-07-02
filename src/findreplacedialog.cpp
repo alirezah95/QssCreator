@@ -8,8 +8,10 @@ FindReplaceDialog::FindReplaceDialog(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->findBtn, &QPushButton::clicked, this,
-        &FindReplaceDialog::onFindButtonPressed);
+    connect(ui->findNxtBtn, &QPushButton::clicked, this,
+        &FindReplaceDialog::onFindNextButtonPressed);
+    connect(ui->findPrevBtn, &QPushButton::clicked, this,
+        &FindReplaceDialog::onFindPrevButtonPressed);
     connect(ui->replaceBtn, &QPushButton::clicked, this,
         &FindReplaceDialog::onReplaceButtonPressed);
     connect(ui->findReplaceBtn, &QPushButton::clicked, this,
@@ -41,7 +43,9 @@ void FindReplaceDialog::setReplaceEnabled(bool repEnabled)
     return;
 }
 
-void FindReplaceDialog::onFindButtonPressed() { }
+void FindReplaceDialog::onFindNextButtonPressed() { }
+
+void FindReplaceDialog::onFindPrevButtonPressed() { }
 
 void FindReplaceDialog::onReplaceButtonPressed() { }
 

@@ -31,7 +31,9 @@ public:
     void setReplaceEnabled(bool repEnabled);
 
 private slots:
-    void onFindButtonPressed();
+    void onFindNextButtonPressed();
+
+    void onFindPrevButtonPressed();
 
     void onReplaceButtonPressed();
 
