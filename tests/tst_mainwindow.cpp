@@ -18,11 +18,6 @@ public:
     void SetUp()
     {
         editorMock = new MockQssdEditor;
-        QFont editorFont("Mono");
-        editorFont.setStyleHint(QFont::Monospace);
-        editorFont.setPointSizeF(13);
-        editorMock->setCurrentFont(editorFont);
-
         opersMock = new MockQssdFileOperations;
 
         mainWin = new MainWindow(editorMock, opersMock);
@@ -132,7 +127,7 @@ TEST_F(TestMainWindow, TestCutPaste)
         "Test cut/paste");
 }
 
-TEST_F(TestMainWindow, testIncreaseDecreaseFont)
+TEST_F(TestMainWindow, TestIncreaseDecreaseFont)
 {
     const auto& actions
         = mainWin->findChild<QToolBar*>("mainToolBar")->actions();
@@ -150,13 +145,12 @@ TEST_F(TestMainWindow, testIncreaseDecreaseFont)
     ASSERT_NE(incFontAct, actions.end()) << "No \"increase font\" action.";
     ASSERT_NE(decFontAct, actions.end()) << "No \"decrease font\" action.";
 
-    qreal currFontPS = editorMock->fontPointSize();
-
+    qreal currFontPS = editorMock->font().pointSize();
     (*incFontAct)->trigger();
-    EXPECT_EQ(editorMock->fontPointSize(), ++currFontPS);
+    EXPECT_EQ(editorMock->font().pointSize(), ++currFontPS);
 
     (*decFontAct)->trigger();
-    EXPECT_EQ(editorMock->fontPointSize(), --currFontPS);
+    EXPECT_EQ(editorMock->font().pointSize(), --currFontPS);
 }
 
 int main(int argc, char* argv[])
