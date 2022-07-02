@@ -54,10 +54,17 @@ TEST_F(TestMainWindow, testUndoRedo)
     EXPECT_EQ((*undoAct)->isEnabled(), true);
     EXPECT_EQ((*redoAct)->isEnabled(), false);
 
-    QTest::keyPress(editorMock, Qt::Key_Z, Qt::ControlModifier);
-
+    (*undoAct)->trigger();
+    EXPECT_STREQ(
+        editorMock->document()->toPlainText().toStdString().c_str(), "");
     EXPECT_EQ((*undoAct)->isEnabled(), false);
     EXPECT_EQ((*redoAct)->isEnabled(), true);
+
+    (*redoAct)->trigger();
+    EXPECT_STREQ(
+        editorMock->document()->toPlainText().toStdString().c_str(), "Text");
+    EXPECT_EQ((*undoAct)->isEnabled(), true);
+    EXPECT_EQ((*redoAct)->isEnabled(), false);
 }
 
 TEST_F(TestMainWindow, TestCopyPaste)
