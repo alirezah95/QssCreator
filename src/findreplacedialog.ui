@@ -45,7 +45,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="findLbl">
          <property name="text">
-          <string>Fin&amp;d</string>
+          <string>&amp;Find</string>
          </property>
          <property name="buddy">
           <cstring>findLEdit</cstring>
@@ -73,9 +73,16 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QPushButton" name="findBtn">
+        <widget class="QPushButton" name="findNxtBtn">
          <property name="text">
-          <string>&amp;Find</string>
+          <string>Find &amp;Next</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="findPrevBtn">
+         <property name="text">
+          <string>Find &amp;Previous</string>
          </property>
         </widget>
        </item>
