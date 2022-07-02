@@ -18,6 +18,11 @@ public:
     void SetUp()
     {
         editorMock = new MockQssdEditor;
+        QFont editorFont("Mono");
+        editorFont.setStyleHint(QFont::Monospace);
+        editorFont.setPointSizeF(13);
+        editorMock->setCurrentFont(editorFont);
+
         opersMock = new MockQssdFileOperations;
 
         mainWin = new MainWindow(editorMock, opersMock);
@@ -125,6 +130,33 @@ TEST_F(TestMainWindow, TestCutPaste)
     (*pasteAct)->trigger();
     EXPECT_STREQ(editorMock->document()->toPlainText().toStdString().c_str(),
         "Test cut/paste");
+}
+
+TEST_F(TestMainWindow, testIncreaseDecreaseFont)
+{
+    const auto& actions
+        = mainWin->findChild<QToolBar*>("mainToolBar")->actions();
+
+    auto incFontAct
+        = std::find_if(actions.begin(), actions.end(), [](QAction* curr) {
+              return curr->objectName() == "actionIncreaseFont";
+          });
+
+    auto decFontAct
+        = std::find_if(actions.begin(), actions.end(), [](QAction* curr) {
+              return curr->objectName() == "actionDecreaseFont";
+          });
+
+    ASSERT_NE(incFontAct, actions.end()) << "No \"increase font\" action.";
+    ASSERT_NE(decFontAct, actions.end()) << "No \"decrease font\" action.";
+
+    qreal currFontPS = editorMock->fontPointSize();
+
+    (*incFontAct)->trigger();
+    EXPECT_EQ(editorMock->fontPointSize(), ++currFontPS);
+
+    (*decFontAct)->trigger();
+    EXPECT_EQ(editorMock->fontPointSize(), --currFontPS);
 }
 
 int main(int argc, char* argv[])
