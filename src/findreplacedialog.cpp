@@ -1,10 +1,19 @@
 #include "findreplacedialog.h"
 #include "ui_findreplacedialog.h"
 
+#include <QTextEdit>
+
 FindReplaceDialog::FindReplaceDialog(QWidget* parent)
     : QDialog(parent), ui(new Ui::FindReplaceDialog)
 {
     ui->setupUi(this);
+
+    connect(ui->findBtn, &QPushButton::clicked, this,
+        &FindReplaceDialog::onFindButtonPressed);
+    connect(ui->replaceBtn, &QPushButton::clicked, this,
+        &FindReplaceDialog::onReplaceButtonPressed);
+    connect(ui->findReplaceBtn, &QPushButton::clicked, this,
+        &FindReplaceDialog::onFindReplaceButtonPressed);
 }
 
 FindReplaceDialog::FindReplaceDialog(QTextEdit* txtEdit, QWidget* parent)
@@ -31,3 +40,9 @@ void FindReplaceDialog::setReplaceEnabled(bool repEnabled)
     ui->replaceLEdit->setVisible(repEnabled);
     return;
 }
+
+void FindReplaceDialog::onFindButtonPressed() { }
+
+void FindReplaceDialog::onReplaceButtonPressed() { }
+
+void FindReplaceDialog::onFindReplaceButtonPressed() { }

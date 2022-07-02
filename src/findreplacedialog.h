@@ -30,6 +30,13 @@ public:
      */
     void setReplaceEnabled(bool repEnabled);
 
+private slots:
+    void onFindButtonPressed();
+
+    void onReplaceButtonPressed();
+
+    void onFindReplaceButtonPressed();
+
 private:
     Ui::FindReplaceDialog* ui;
 
