@@ -158,12 +158,14 @@ void MainWindow::setupConnections()
 
     // Connection for increase/decrease font actions
     connect(ui->actionIncreaseFont, &QAction::triggered, this, [this] {
-        mStyleEditor->setFontPointSize(
-            qMin(FONT_MAX_POINT_SIZE, mStyleEditor->fontPointSize() + 1));
+        auto font = mStyleEditor->font();
+        font.setPointSize(qMin(FONT_MAX_POINT_SIZE, font.pointSize() + 1));
+        mStyleEditor->setFont(font);
     });
     connect(ui->actionDecreaseFont, &QAction::triggered, this, [this] {
-        mStyleEditor->setFontPointSize(
-            qMax(FONT_MIN_POINT_SIZE, mStyleEditor->fontPointSize() - 1));
+        auto font = mStyleEditor->font();
+        font.setPointSize(qMax(FONT_MIN_POINT_SIZE, font.pointSize() - 1));
+        mStyleEditor->setFont(font);
     });
 
     return;
