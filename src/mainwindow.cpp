@@ -156,5 +156,15 @@ void MainWindow::setupConnections()
         ui->actionCut->setEnabled(yes);
     });
 
+    // Connection for increase/decrease font actions
+    connect(ui->actionIncreaseFont, &QAction::triggered, this, [this] {
+        mStyleEditor->setFontPointSize(
+            qMin(FONT_MAX_POINT_SIZE, mStyleEditor->fontPointSize() + 1));
+    });
+    connect(ui->actionDecreaseFont, &QAction::triggered, this, [this] {
+        mStyleEditor->setFontPointSize(
+            qMax(FONT_MIN_POINT_SIZE, mStyleEditor->fontPointSize() - 1));
+    });
+
     return;
 }
