@@ -49,6 +49,40 @@ TEST_F(TestFindReplaceDialog, TestFindAllOccurencesNoFlags)
         "cross-plat***m *** creating gui *** Linux, etc");
 }
 
+TEST_F(TestFindReplaceDialog, TestFindAllOccurencesWholeWord)
+{
+    editor->insertPlainText("cross-platform for creating gui for Linux, etc");
+
+    auto wholeWordChBox = frDialog->findChild<QCheckBox*>("wholeWordChBox");
+    ASSERT_NE(wholeWordChBox, nullptr) << "No whole word checkbox";
+    wholeWordChBox->setChecked(true);
+
+    auto findLEdit = frDialog->findChild<QLineEdit*>("findLEdit");
+    ASSERT_NE(findLEdit, nullptr) << "No find line edit";
+    findLEdit->setText("for");
+
+    auto extraSelects = editor->extraSelections();
+
+    EXPECT_EQ(extraSelects.size(), 2);
+}
+
+TEST_F(TestFindReplaceDialog, TestFindAllOccurencesMatchCase)
+{
+    editor->insertPlainText("cross-platform for creating gui for Linux, etc");
+
+    auto matchCase = frDialog->findChild<QCheckBox*>("matchCaseChBox");
+    ASSERT_NE(matchCase, nullptr) << "No match case checkbox";
+    matchCase->setChecked(true);
+
+    auto findLEdit = frDialog->findChild<QLineEdit*>("findLEdit");
+    ASSERT_NE(findLEdit, nullptr) << "No find line edit";
+    findLEdit->setText("For");
+
+    auto extraSelects = editor->extraSelections();
+
+    EXPECT_EQ(extraSelects.size(), 0);
+}
+
 TEST_F(TestFindReplaceDialog, TestFindNext)
 {
     editor->insertPlainText(
