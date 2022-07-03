@@ -1,6 +1,7 @@
 #include "findreplacedialog.h"
 #include "ui_findreplacedialog.h"
 
+#include <QApplication>
 #include <QTextBlock>
 #include <QTextEdit>
 
@@ -60,6 +61,12 @@ void FindReplaceDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
     resize(minimumSizeHint());
+
+    if (auto par = parentWidget()) {
+        move(QPoint(par->geometry().x() + par->width() - width(),
+                 par->geometry().y())
+            + QPoint(0, par->frameGeometry().height() - par->height()));
+    }
     return;
 }
 
