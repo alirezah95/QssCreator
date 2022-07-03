@@ -103,6 +103,32 @@ TEST_F(TestFindReplaceDialog, TestFindNext)
     EXPECT_STREQ(findCursor.selectedText().toStdString().c_str(), "graphical");
 }
 
+TEST_F(TestFindReplaceDialog, TestFindNextWholeMatchCase)
+{
+    editor->insertPlainText(
+        "Qt is cross-platform software for graphical user interfaces.");
+    editor->moveCursor(QTextCursor::Start);
+
+    auto findLEdit = frDialog->findChild<QLineEdit*>("findLEdit");
+    auto findNxtBtn = frDialog->findChild<QPushButton*>("findNxtBtn");
+
+    auto matchCase = frDialog->findChild<QCheckBox*>("matchCaseChBox");
+    auto wholeWordChBox = frDialog->findChild<QCheckBox*>("wholeWordChBox");
+
+    ASSERT_NE(wholeWordChBox, nullptr) << "No whole word checkbox";
+    ASSERT_NE(matchCase, nullptr) << "No match case checkbox";
+    ASSERT_NE(findLEdit, nullptr) << "No find line edit";
+    ASSERT_NE(findNxtBtn, nullptr) << "No find next button";
+
+    matchCase->setChecked(true);
+    wholeWordChBox->setChecked(true);
+    findLEdit->setText("graph");
+    findNxtBtn->click();
+
+    auto findCursor = editor->textCursor();
+    EXPECT_EQ(findCursor.atStart(), true);
+}
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
