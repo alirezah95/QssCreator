@@ -30,8 +30,9 @@ FindReplaceDialog::FindReplaceDialog(QWidget* parent)
 }
 
 FindReplaceDialog::FindReplaceDialog(QTextEdit* txtEdit, QWidget* parent)
-    : QDialog(parent), mTextEdit(txtEdit)
+    : FindReplaceDialog(parent)
 {
+    mTextEdit = txtEdit;
 }
 
 FindReplaceDialog::~FindReplaceDialog()
