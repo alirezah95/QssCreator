@@ -9,6 +9,14 @@ FindReplaceDialog::FindReplaceDialog(QWidget* parent)
 {
     ui->setupUi(this);
 
+    mFindFormat.setBackground(QPalette().highlight());
+    mFindFormat.setForeground(QPalette().highlightedText());
+
+    auto hColor = QPalette().highlight().color();
+    hColor = (hColor.lightnessF() > 0.5 ? hColor.darker() : hColor.lighter());
+    mHighlightFormat.setBackground(QBrush(hColor));
+    mHighlightFormat.setForeground(QPalette().highlightedText());
+
     connect(ui->findNxtBtn, &QPushButton::clicked, this,
         &FindReplaceDialog::onFindNextButtonPressed);
     connect(ui->findPrevBtn, &QPushButton::clicked, this,
@@ -68,13 +76,9 @@ void FindReplaceDialog::findAllOccurences(const QString& text)
     // Get the cursor to the begining of the document
     QTextCursor currCursor(editorDoc->begin());
 
-    // Character format
-    QTextCharFormat format;
-    format.setBackground(QBrush(Qt::lightGray));
-
     currCursor = editorDoc->find(text, currCursor, findFlags);
     while (!currCursor.isNull()) {
-        QTextEdit::ExtraSelection selection = { currCursor, format };
+        QTextEdit::ExtraSelection selection = { currCursor, mFindFormat };
         extraSelcts.push_back(selection);
 
         currCursor = editorDoc->find(text, currCursor, findFlags);
