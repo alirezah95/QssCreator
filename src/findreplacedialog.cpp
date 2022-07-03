@@ -79,6 +79,15 @@ void FindReplaceDialog::showEvent(QShowEvent* event)
     return;
 }
 
+void FindReplaceDialog::hideEvent(QHideEvent* event)
+{
+    QDialog::hideEvent(event);
+    // Clear any extra selection
+    if (mTextEdit) {
+        mTextEdit->setExtraSelections(QList<QTextEdit::ExtraSelection>());
+    }
+}
+
 void FindReplaceDialog::findAllOccurences(const QString& text)
 {
     if (!mTextEdit || text.isEmpty()) {

@@ -38,6 +38,13 @@ protected:
      */
     void showEvent(QShowEvent* event) override;
 
+    /*!
+     * \brief Reimplement \a\b QDialog::hideEvent(QShowEvent*) to clear find
+     *
+     * \param event
+     */
+    void hideEvent(QHideEvent* event) override;
+
 private slots:
     /*!
      * \brief Slot to find all the occurences.
