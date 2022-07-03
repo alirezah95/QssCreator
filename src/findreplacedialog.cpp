@@ -26,7 +26,12 @@ FindReplaceDialog::FindReplaceDialog(QWidget* parent)
         &FindReplaceDialog::onReplaceButtonPressed);
     connect(ui->findReplaceBtn, &QPushButton::clicked, this,
         &FindReplaceDialog::onFindReplaceButtonPressed);
+
     connect(ui->findLEdit, &QLineEdit::textChanged, this,
+        &FindReplaceDialog::findAllOccurences);
+    connect(ui->wholeWordChBox, &QCheckBox::toggled, this,
+        &FindReplaceDialog::findAllOccurences);
+    connect(ui->matchCaseChBox, &QCheckBox::toggled, this,
         &FindReplaceDialog::findAllOccurences);
 }
 
