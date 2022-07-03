@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QCheckBox>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QTextCursor>
@@ -29,11 +30,12 @@ public:
     FindReplaceDialog* frDialog;
 };
 
-TEST_F(TestFindReplaceDialog, TestFindAllOccurences)
+TEST_F(TestFindReplaceDialog, TestFindAllOccurencesNoFlags)
 {
     editor->insertPlainText("cross-platform for creating gui for Linux, etc");
 
     auto findLEdit = frDialog->findChild<QLineEdit*>("findLEdit");
+    ASSERT_NE(findLEdit, nullptr) << "No find line edit";
     findLEdit->setText("for");
 
     auto extraSelects = editor->extraSelections();
@@ -55,6 +57,9 @@ TEST_F(TestFindReplaceDialog, TestFindNext)
 
     auto findLEdit = frDialog->findChild<QLineEdit*>("findLEdit");
     auto findNxtBtn = frDialog->findChild<QPushButton*>("findNxtBtn");
+
+    ASSERT_NE(findLEdit, nullptr) << "No find line edit";
+    ASSERT_NE(findNxtBtn, nullptr) << "No find next button";
 
     findLEdit->setText("graph");
     findNxtBtn->click();
