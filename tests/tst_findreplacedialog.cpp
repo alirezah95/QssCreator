@@ -129,6 +129,52 @@ TEST_F(TestFindReplaceDialog, TestFindNextWholeMatchCase)
     EXPECT_EQ(findCursor.atStart(), true);
 }
 
+TEST_F(TestFindReplaceDialog, TestFindPrev)
+{
+    editor->insertPlainText(
+        "Qt is cross-platform software for graphical user interfaces.");
+    editor->moveCursor(QTextCursor::End);
+
+    auto findLEdit = frDialog->findChild<QLineEdit*>("findLEdit");
+    auto findPrevBtn = frDialog->findChild<QPushButton*>("findPrevBtn");
+
+    ASSERT_NE(findLEdit, nullptr) << "No find line edit";
+    ASSERT_NE(findPrevBtn, nullptr) << "No find previous button";
+
+    findLEdit->setText("graph");
+    findPrevBtn->click();
+
+    auto findCursor = editor->textCursor();
+    findCursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
+    EXPECT_STREQ(findCursor.selectedText().toStdString().c_str(), "graphical");
+}
+
+TEST_F(TestFindReplaceDialog, TestFindPrevWholeMatchCase)
+{
+    editor->insertPlainText(
+        "Qt is cross-platform software for graphical user interfaces.");
+    editor->moveCursor(QTextCursor::End);
+
+    auto findLEdit = frDialog->findChild<QLineEdit*>("findLEdit");
+    auto findPrevBtn = frDialog->findChild<QPushButton*>("findPrevBtn");
+
+    auto matchCase = frDialog->findChild<QCheckBox*>("matchCaseChBox");
+    auto wholeWordChBox = frDialog->findChild<QCheckBox*>("wholeWordChBox");
+
+    ASSERT_NE(wholeWordChBox, nullptr) << "No whole word checkbox";
+    ASSERT_NE(matchCase, nullptr) << "No match case checkbox";
+    ASSERT_NE(findLEdit, nullptr) << "No find line edit";
+    ASSERT_NE(findPrevBtn, nullptr) << "No find previous button";
+
+    matchCase->setChecked(true);
+    wholeWordChBox->setChecked(true);
+    findLEdit->setText("graph");
+    findPrevBtn->click();
+
+    auto findCursor = editor->textCursor();
+    EXPECT_EQ(findCursor.atEnd(), true);
+}
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
