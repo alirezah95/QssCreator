@@ -52,6 +52,14 @@ void FindReplaceDialog::setReplaceEnabled(bool repEnabled)
     ui->findReplaceBtn->setVisible(repEnabled);
     ui->replaceLbl->setVisible(repEnabled);
     ui->replaceLEdit->setVisible(repEnabled);
+
+    return;
+}
+
+void FindReplaceDialog::showEvent(QShowEvent* event)
+{
+    QDialog::showEvent(event);
+    resize(minimumSizeHint());
     return;
 }
 

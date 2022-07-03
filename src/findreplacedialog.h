@@ -31,6 +31,13 @@ public:
      */
     void setReplaceEnabled(bool repEnabled);
 
+protected:
+    /*!
+     * \brief Reimplement \a\b QDialog::showEvent(QShowEvent*) to resize dialog
+     * \param event
+     */
+    void showEvent(QShowEvent* event) override;
+
 private slots:
     /*!
      * \brief Slot to find all the occurences.
