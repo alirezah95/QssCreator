@@ -43,6 +43,7 @@ add_new_gtest(TestMainWindow
     ../src/idocumentfile.cpp
     ../src/iqssdeditor.cpp
     ../src/iqssdfileoperations.cpp
+    ../src/findreplacedialog.cpp
 )
 
 add_new_gtest(TestFindReplaceDialog
