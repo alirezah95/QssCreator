@@ -31,6 +31,8 @@ public:
     void setReplaceEnabled(bool repEnabled);
 
 private slots:
+    void findAllOccurences(const QString& text);
+
     void onFindNextButtonPressed();
 
     void onFindPrevButtonPressed();
