@@ -29,10 +29,14 @@ FindReplaceDialog::FindReplaceDialog(QWidget* parent)
 
     connect(ui->findLEdit, &QLineEdit::textChanged, this,
         &FindReplaceDialog::findAllOccurences);
-    connect(ui->wholeWordChBox, &QCheckBox::toggled, this,
-        &FindReplaceDialog::findAllOccurences);
-    connect(ui->matchCaseChBox, &QCheckBox::toggled, this,
-        &FindReplaceDialog::findAllOccurences);
+    connect(ui->wholeWordChBox, &QCheckBox::clicked, this, [this] {
+        findAllOccurences(ui->findLEdit->text());
+        return;
+    });
+    connect(ui->matchCaseChBox, &QCheckBox::clicked, this, [this] {
+        findAllOccurences(ui->findLEdit->text());
+        return;
+    });
 }
 
 FindReplaceDialog::FindReplaceDialog(QTextEdit* txtEdit, QWidget* parent)
