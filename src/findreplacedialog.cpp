@@ -114,7 +114,32 @@ void FindReplaceDialog::onFindNextButtonPressed()
     }
 }
 
-void FindReplaceDialog::onFindPrevButtonPressed() { }
+void FindReplaceDialog::onFindPrevButtonPressed()
+{
+    if (!mTextEdit || ui->findLEdit->text().isEmpty()) {
+        return;
+    }
+
+    QFlags<QTextDocument::FindFlag> findFlags(QTextDocument::FindBackward);
+    if (ui->matchCaseChBox->isChecked()) {
+        findFlags |= QTextDocument::FindCaseSensitively;
+    }
+    if (ui->wholeWordChBox->isChecked()) {
+        findFlags |= QTextDocument::FindWholeWords;
+    }
+
+    QTextCursor current = mTextEdit->textCursor();
+    if (current.isNull()) {
+        return;
+    }
+
+    QTextCursor next = mTextEdit->document()->find(
+        ui->findLEdit->text(), current, findFlags);
+
+    if (!next.isNull()) {
+        mTextEdit->setTextCursor(next);
+    }
+}
 
 void FindReplaceDialog::onReplaceButtonPressed() { }
 
