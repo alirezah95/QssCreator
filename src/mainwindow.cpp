@@ -2,6 +2,7 @@
 #include "./ui_mainwindow.h"
 
 #include "documentfile.h"
+#include "findreplacedialog.h"
 #include "iqssdfileoperations.h"
 #include "qssdeditor.h"
 #include "widgetspreview.h"
@@ -22,7 +23,7 @@
 MainWindow::MainWindow(
     IQssdEditor* editor, IQssdFileOperations* docOper, QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), mStyleEditor(editor),
-      mPreview(new WidgetsPreview), mDocOpers(docOper)
+      mPreview(new WidgetsPreview), mDocOpers(docOper), mFindReplaceDlg(nullptr)
 {
     ui->setupUi(this);
 
@@ -166,6 +167,26 @@ void MainWindow::setupConnections()
         auto font = mStyleEditor->font();
         font.setPointSize(qMax(FONT_MIN_POINT_SIZE, font.pointSize() - 1));
         mStyleEditor->setFont(font);
+    });
+
+    // Connection for find and find/replace action
+    connect(ui->actionFind, &QAction::triggered, this, [this] {
+        if (!mFindReplaceDlg) {
+            mFindReplaceDlg = new FindReplaceDialog(this);
+            mFindReplaceDlg->setModal(false);
+            mFindReplaceDlg->setWindowModality(Qt::NonModal);
+        }
+        mFindReplaceDlg->setReplaceEnabled(false);
+        mFindReplaceDlg->show();
+    });
+    connect(ui->actionFindReplace, &QAction::triggered, this, [this] {
+        if (!mFindReplaceDlg) {
+            mFindReplaceDlg = new FindReplaceDialog(this);
+            mFindReplaceDlg->setModal(false);
+            mFindReplaceDlg->setWindowModality(Qt::NonModal);
+        }
+        mFindReplaceDlg->setReplaceEnabled(true);
+        mFindReplaceDlg->show();
     });
 
     return;

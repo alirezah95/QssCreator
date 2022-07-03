@@ -6,6 +6,7 @@
 class WidgetsPreview;
 class IQssdEditor;
 class IQssdFileOperations;
+class FindReplaceDialog;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -94,5 +95,9 @@ private:
                                      * responsible for handling file operations
                                      * related to the app text editor.
                                      */
+
+    FindReplaceDialog* mFindReplaceDlg; /*!< A \ref FindReplaceDialog to perform
+                                         * find and replace
+                                         */
 };
 #endif // MAINWINDOW_H
