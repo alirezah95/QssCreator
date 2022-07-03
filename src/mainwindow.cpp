@@ -176,6 +176,7 @@ void MainWindow::setupConnections()
             mFindReplaceDlg->setModal(false);
             mFindReplaceDlg->setWindowModality(Qt::NonModal);
         }
+        mFindReplaceDlg->setTextEdit(mStyleEditor);
         mFindReplaceDlg->setReplaceEnabled(false);
         mFindReplaceDlg->show();
     });
@@ -185,6 +186,7 @@ void MainWindow::setupConnections()
             mFindReplaceDlg->setModal(false);
             mFindReplaceDlg->setWindowModality(Qt::NonModal);
         }
+        mFindReplaceDlg->setTextEdit(mStyleEditor);
         mFindReplaceDlg->setReplaceEnabled(true);
         mFindReplaceDlg->show();
     });
