@@ -58,7 +58,9 @@ MainWindow::~MainWindow()
 void MainWindow::newDocument()
 {
     if (mDocOpers) {
-        mDocOpers->newDocument(mStyleEditor);
+        if (mDocOpers->newDocument(mStyleEditor)) {
+            updateWindowTitle();
+        }
     }
     return;
 }
@@ -76,7 +78,9 @@ void MainWindow::openDocument()
 
         if (!mDocOpers->openDocument(mStyleEditor, &docFile)) {
             qDebug() << "Error in opening file: " << docFile.fileName();
+            return;
         }
+        updateWindowTitle();
     }
     return;
 }
@@ -117,7 +121,9 @@ void MainWindow::saveAs()
 
         if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
             qDebug() << "Error in saving file: " << docFile.fileName();
+            return;
         }
+        updateWindowTitle();
     }
     return;
 }
