@@ -20,10 +20,11 @@
 #define ACT_CONNECT_EDITOR(act, slot)                                          \
     connect(act, &QAction::triggered, mStyleEditor, &IQssdEditor::slot)
 
-MainWindow::MainWindow(
-    IQssdEditor* editor, IQssdFileOperations* docOper, QWidget* parent)
+MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
+    IUserDialogs* userDlgs, QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), mStyleEditor(editor),
-      mPreview(new WidgetsPreview), mDocOpers(docOper), mFindReplaceDlg(nullptr)
+      mPreview(new WidgetsPreview), mDocOpers(docOper), mUserDlgs(userDlgs),
+      mFindReplaceDlg(nullptr)
 {
     ui->setupUi(this);
 
