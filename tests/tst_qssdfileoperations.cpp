@@ -30,9 +30,12 @@ TEST_F(TextEdit, testNewDocument)
 {
     QssdFileOperations opers;
 
+    editor.insertPlainText("Mock text");
     opers.newDocument(&editor);
 
     EXPECT_EQ(editor.document()->toPlainText(), "");
+    EXPECT_FALSE(editor.document()->isUndoAvailable());
+    EXPECT_FALSE(editor.document()->isRedoAvailable());
 }
 
 TEST_F(TextEdit, testOpenDocument)
@@ -44,10 +47,14 @@ TEST_F(TextEdit, testOpenDocument)
     EXPECT_CALL(docFile, readAll()).WillOnce(Return(readAllRes));
     EXPECT_CALL(docFile, fileName()).WillOnce(Return(":temporary/file.txt"));
 
+    editor.insertPlainText("Mock text");
+
     QssdFileOperations dOper;
     dOper.openDocument(&editor, &docFile);
 
     EXPECT_EQ(editor.document()->toPlainText(), readAllRes);
+    EXPECT_FALSE(editor.document()->isUndoAvailable());
+    EXPECT_FALSE(editor.document()->isRedoAvailable());
 };
 
 TEST_F(TextEdit, testSaveDoucment)
