@@ -10,13 +10,10 @@ FindReplaceDialog::FindReplaceDialog(QWidget* parent)
 {
     ui->setupUi(this);
 
-    mFindFormat.setBackground(QPalette().highlight());
-    mFindFormat.setForeground(QPalette().highlightedText());
-
     auto hColor = QPalette().highlight().color();
     hColor = (hColor.lightnessF() > 0.5 ? hColor.darker() : hColor.lighter());
-    mHighlightFormat.setBackground(QBrush(hColor));
-    mHighlightFormat.setForeground(QPalette().highlightedText());
+    mFindFormat.setBackground(QBrush(hColor));
+    mFindFormat.setForeground(QPalette().highlightedText());
 
     connect(ui->findNxtBtn, &QPushButton::clicked, this,
         &FindReplaceDialog::onFindNextButtonPressed);

@@ -107,11 +107,6 @@ private:
     QTextCharFormat mFindFormat; /*!< The format that is used for highlighting
                                   * text occurences.
                                   */
-
-    QTextCharFormat mHighlightFormat; /*!< The format that is used for text
-                                       * occurence that the cursor is currently
-                                       * on.
-                                       */
 };
 
 #endif // FINDREPLACEDIALOG_H
