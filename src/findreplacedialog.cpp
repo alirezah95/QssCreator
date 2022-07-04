@@ -53,6 +53,16 @@ FindReplaceDialog::~FindReplaceDialog()
 void FindReplaceDialog::setTextEdit(QTextEdit* txtEdit)
 {
     mTextEdit = txtEdit;
+
+    if (mTextEdit) {
+        connect(mTextEdit->document(), &QTextDocument::contentsChange, this,
+            [this](int from, int charsRemoved, int charsAdded) {
+                if (charsRemoved || charsAdded) {
+                    // It's not just a format change, need to find occurences
+                    findAllOccurences(ui->findLEdit->text());
+                }
+            });
+    }
     return;
 }
 
