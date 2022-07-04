@@ -98,6 +98,12 @@ void FindReplaceDialog::findAllOccurences(const QString& text)
         return;
     }
 
+    // Clear text edit selection if any
+    if (auto cursor = mTextEdit->textCursor(); cursor.hasSelection()) {
+        cursor.clearSelection();
+        mTextEdit->setTextCursor(cursor);
+    }
+
     // To hold the occurences as extra selections
     QList<QTextEdit::ExtraSelection> extraSelcts;
 
