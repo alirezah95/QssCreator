@@ -186,8 +186,11 @@ void FindReplaceDialog::onFindReplaceButtonPressed() { }
 void FindReplaceDialog::resetTextEdit()
 {
     if (mTextEdit) {
+        if (auto cursor = mTextEdit->textCursor(); cursor.hasSelection()) {
+            cursor.clearSelection();
+            mTextEdit->setTextCursor(cursor);
+        }
         mTextEdit->setExtraSelections(QList<QTextEdit::ExtraSelection>());
-        mTextEdit->textCursor().clearSelection();
     }
     return;
 }
