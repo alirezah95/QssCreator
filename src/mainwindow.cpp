@@ -176,9 +176,16 @@ void MainWindow::setupConnections()
             mFindReplaceDlg->setModal(false);
             mFindReplaceDlg->setWindowModality(Qt::NonModal);
         }
-        mFindReplaceDlg->setTextEdit(mStyleEditor);
-        mFindReplaceDlg->setReplaceEnabled(false);
-        mFindReplaceDlg->show();
+        if (!mFindReplaceDlg->isVisible()) {
+            mFindReplaceDlg->setTextEdit(mStyleEditor);
+            mFindReplaceDlg->setReplaceEnabled(false);
+            mFindReplaceDlg->show();
+        }
+
+        if (auto selTxt = mStyleEditor->textCursor().selectedText();
+            !selTxt.isEmpty()) {
+            mFindReplaceDlg->setFindText(selTxt);
+        }
     });
     connect(ui->actionFindReplace, &QAction::triggered, this, [this] {
         if (!mFindReplaceDlg) {
@@ -186,9 +193,16 @@ void MainWindow::setupConnections()
             mFindReplaceDlg->setModal(false);
             mFindReplaceDlg->setWindowModality(Qt::NonModal);
         }
-        mFindReplaceDlg->setTextEdit(mStyleEditor);
-        mFindReplaceDlg->setReplaceEnabled(true);
-        mFindReplaceDlg->show();
+        if (!mFindReplaceDlg->isVisible()) {
+            mFindReplaceDlg->setTextEdit(mStyleEditor);
+            mFindReplaceDlg->setReplaceEnabled(true);
+            mFindReplaceDlg->show();
+        }
+
+        if (auto selTxt = mStyleEditor->textCursor().selectedText();
+            !selTxt.isEmpty()) {
+            mFindReplaceDlg->setFindText(selTxt);
+        }
     });
 
     return;
