@@ -225,6 +225,28 @@ TEST_F(TestFindReplaceDialog, TestSetFindText)
     EXPECT_FALSE(editor->textCursor().hasSelection());
 }
 
+TEST_F(TestFindReplaceDialog, TestTextOccurencesEdited)
+{
+    editor->insertPlainText("cross-platform for creating gui for Linux, etc");
+
+    auto findLEdit = frDialog->findChild<QLineEdit*>("findLEdit");
+
+    ASSERT_NE(findLEdit, nullptr) << "No find line edit";
+    findLEdit->setText("for");
+
+    EXPECT_EQ(editor->extraSelections().size(), 3);
+
+    // Move editor cursor at start
+    editor->moveCursor(QTextCursor::Start);
+    // Insert a "for" at start
+    editor->insertPlainText("for");
+    EXPECT_EQ(editor->extraSelections().size(), 4);
+
+    // delete all the text
+    editor->setPlainText("for Linux, etc");
+    EXPECT_EQ(editor->extraSelections().size(), 1);
+}
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
