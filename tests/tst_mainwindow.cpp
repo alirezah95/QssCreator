@@ -7,6 +7,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include "idocumentfile.h"
 #include "mainwindow.h"
 
 #include "tst_mockqssdeditor.h"
@@ -151,6 +152,16 @@ TEST_F(TestMainWindow, TestIncreaseDecreaseFont)
 
     (*decFontAct)->trigger();
     EXPECT_EQ(editorMock->font().pointSize(), --currFontPS);
+}
+
+TEST_F(TestMainWindow, TestUpdateWindowTitleDocModified)
+{
+    EXPECT_STREQ(mainWin->windowTitle().toStdString().c_str(),
+        DOC_UNTITLED " - Qss Creator");
+
+    editorMock->insertPlainText("Mock text");
+    EXPECT_STREQ(mainWin->windowTitle().toStdString().c_str(),
+        DOC_UNTITLED "* - Qss Creator");
 }
 
 int main(int argc, char* argv[])
