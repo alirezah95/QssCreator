@@ -152,7 +152,7 @@
   <action name="actionFindReplace">
    <property name="icon">
     <iconset resource="../resources/res.qrc">
-     <normaloff>:/icons/search.png</normaloff>:/icons/search.png</iconset>
+     <normaloff>:/icons/find-replace.png</normaloff>:/icons/find-replace.png</iconset>
    </property>
    <property name="text">
     <string>Find And Replace</string>
