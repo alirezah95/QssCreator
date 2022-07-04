@@ -66,6 +66,13 @@ void FindReplaceDialog::setReplaceEnabled(bool repEnabled)
     return;
 }
 
+void FindReplaceDialog::setFindText(const QString& text)
+{
+    resetTextEdit();
+    ui->findLEdit->setText(text);
+    return;
+}
+
 void FindReplaceDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
@@ -82,10 +89,7 @@ void FindReplaceDialog::showEvent(QShowEvent* event)
 void FindReplaceDialog::hideEvent(QHideEvent* event)
 {
     QDialog::hideEvent(event);
-    // Clear any extra selection
-    if (mTextEdit) {
-        mTextEdit->setExtraSelections(QList<QTextEdit::ExtraSelection>());
-    }
+    resetTextEdit();
 }
 
 void FindReplaceDialog::findAllOccurences(const QString& text)
@@ -178,3 +182,12 @@ void FindReplaceDialog::onFindPrevButtonPressed()
 void FindReplaceDialog::onReplaceButtonPressed() { }
 
 void FindReplaceDialog::onFindReplaceButtonPressed() { }
+
+void FindReplaceDialog::resetTextEdit()
+{
+    if (mTextEdit) {
+        mTextEdit->setExtraSelections(QList<QTextEdit::ExtraSelection>());
+        mTextEdit->textCursor().clearSelection();
+    }
+    return;
+}

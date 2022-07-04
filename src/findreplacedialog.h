@@ -31,6 +31,13 @@ public:
      */
     void setReplaceEnabled(bool repEnabled);
 
+    /*!
+     * \brief Set the find line edit text which in turn finds all the occurences
+     * of the texe
+     * \param text
+     */
+    void setFindText(const QString& text);
+
 protected:
     /*!
      * \brief Reimplement \a\b QDialog::showEvent(QShowEvent*) to resize dialog
@@ -74,6 +81,13 @@ private slots:
      * edit and calls the \ref onFindNextButtonPressed()
      */
     void onFindReplaceButtonPressed();
+
+private:
+    /*!
+     * \brief Resets all selections and extra selections (as a result of find
+     * procedures) on the mTextEdit
+     */
+    void resetTextEdit();
 
 private:
     Ui::FindReplaceDialog* ui;
