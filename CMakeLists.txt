@@ -13,7 +13,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_AUTOUIC_SEARCH_PATHS forms)
+set(CMAKE_AUTOUIC_SEARCH_PATHS ${PROJECT_SOURCE_DIR}/forms)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Test)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Test)
@@ -47,6 +47,10 @@ set(PROJECT_SOURCES
         src/idocumentfile.cpp
 
         src/documentfile.h
+
+        src/findreplacedialog.h
+        src/findreplacedialog.cpp
+        forms/findreplacedialog.ui
 )
 
 qt_add_resources(PROJECT_SOURCES resources/res.qrc)

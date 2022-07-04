@@ -6,6 +6,7 @@
 class WidgetsPreview;
 class IQssdEditor;
 class IQssdFileOperations;
+class FindReplaceDialog;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -68,6 +69,23 @@ private slots:
      */
     void exportDocument();
 
+    /*!
+     * \brief Updates the title of the windows based on the documents title and
+     * status
+     */
+    void updateWindowTitle();
+
+private:
+    /*!
+     * \brief reset
+     */
+    void reset();
+    /*!
+     * \brief A private method to create all signal/slot connection and is used
+     * to tidy ctor up
+     */
+    void setupConnections();
+
 private:
     Ui::MainWindow* ui;
 
@@ -83,5 +101,9 @@ private:
                                      * responsible for handling file operations
                                      * related to the app text editor.
                                      */
+
+    FindReplaceDialog* mFindReplaceDlg; /*!< A \ref FindReplaceDialog to perform
+                                         * find and replace
+                                         */
 };
 #endif // MAINWINDOW_H

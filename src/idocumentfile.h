@@ -6,6 +6,7 @@
 
 #define DOC_POSTFIX  ".qssd"
 #define DOC_UNTITLED "untitled.qssd"
+#define DOC_FILTER   "Qssd files (*.qssd)"
 
 /*!
  * \brief The IDocumentFile class is an interface and an adapter for \a\b QFile

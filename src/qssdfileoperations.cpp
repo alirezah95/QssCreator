@@ -18,8 +18,8 @@ bool QssdFileOperations::newDocument(QTextEdit* editor)
         return false;
     }
 
-    auto newFile = new QTextDocument(editor);
-    editor->setDocument(newFile);
+    editor->document()->clear();
+    editor->document()->clearUndoRedoStacks();
     editor->setDocumentTitle(DOC_UNTITLED);
 
     return true;
@@ -35,9 +35,9 @@ bool QssdFileOperations::openDocument(QTextEdit* editor, IDocumentFile* docFile)
         return false;
     }
 
-    auto newFile = new QTextDocument(editor);
-    newFile->setPlainText(docFile->readAll());
-    editor->setDocument(newFile);
+    editor->document()->setPlainText(docFile->readAll());
+    // Must set modified to false
+    editor->document()->setModified(false);
     editor->setDocumentTitle(docFile->fileName());
 
     return true;

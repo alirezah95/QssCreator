@@ -3,6 +3,9 @@
 
 #include <QTextEdit>
 
+#define FONT_MAX_POINT_SIZE 32
+#define FONT_MIN_POINT_SIZE 8
+
 /*!
  * \brief The IQssdEditor class which is an interface for the Qt style sheet
  * document editors responsible for handling a Qssd document editing
