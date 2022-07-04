@@ -144,12 +144,8 @@ void FindReplaceDialog::onFindNextButtonPressed()
         return;
     }
 
-    QTextCursor next = mTextEdit->document()->find(
-        ui->findLEdit->text(), current, findFlags);
-
-    if (!next.isNull()) {
-        mTextEdit->setTextCursor(next);
-    }
+    findTextAndSetCursor(current, findFlags);
+    return;
 }
 
 void FindReplaceDialog::onFindPrevButtonPressed()
@@ -171,17 +167,31 @@ void FindReplaceDialog::onFindPrevButtonPressed()
         return;
     }
 
-    QTextCursor next = mTextEdit->document()->find(
-        ui->findLEdit->text(), current, findFlags);
-
-    if (!next.isNull()) {
-        mTextEdit->setTextCursor(next);
-    }
+    findTextAndSetCursor(current, findFlags);
+    return;
 }
 
 void FindReplaceDialog::onReplaceButtonPressed() { }
 
 void FindReplaceDialog::onFindReplaceButtonPressed() { }
+
+void FindReplaceDialog::findTextAndSetCursor(
+    const QTextCursor& from, QFlags<QTextDocument::FindFlag> flags)
+{
+    // Clear selection in text edit
+    if (auto cursor = mTextEdit->textCursor(); cursor.hasSelection()) {
+        cursor.clearSelection();
+        mTextEdit->setTextCursor(cursor);
+    }
+
+    QTextCursor found
+        = mTextEdit->document()->find(ui->findLEdit->text(), from, flags);
+
+    if (!found.isNull()) {
+        mTextEdit->setTextCursor(found);
+    }
+    return;
+}
 
 void FindReplaceDialog::resetTextEdit()
 {

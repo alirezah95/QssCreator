@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QTextCharFormat>
+#include <QTextDocument>
 
 namespace Ui {
 class FindReplaceDialog;
@@ -83,6 +84,15 @@ private slots:
     void onFindReplaceButtonPressed();
 
 private:
+    /*!
+     * \brief Performs the find and move the \ref mTextEdit current cursor to
+     * the match position (if any)
+     * \param flags The find flags
+     * \see \a\b QTextDocument::FindFlag
+     */
+    void findTextAndSetCursor(
+        const QTextCursor& from, QFlags<QTextDocument::FindFlag> flags);
+
     /*!
      * \brief Resets all selections and extra selections (as a result of find
      * procedures) on the mTextEdit
