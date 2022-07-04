@@ -95,7 +95,10 @@ TEST_F(TestFindReplaceDialog, TestFindNext)
     ASSERT_NE(findLEdit, nullptr) << "No find line edit";
     ASSERT_NE(findNxtBtn, nullptr) << "No find next button";
 
+    frDialog->setTextEdit(nullptr); // To prevent findAllOccurences() running
     findLEdit->setText("graph");
+    frDialog->setTextEdit(editor);
+
     findNxtBtn->click();
 
     auto findCursor = editor->textCursor();
@@ -122,7 +125,11 @@ TEST_F(TestFindReplaceDialog, TestFindNextWholeMatchCase)
 
     matchCase->setChecked(true);
     wholeWordChBox->setChecked(true);
+
+    frDialog->setTextEdit(nullptr); // To prevent findAllOccurences() running
     findLEdit->setText("graph");
+    frDialog->setTextEdit(editor);
+
     findNxtBtn->click();
 
     auto findCursor = editor->textCursor();
@@ -141,7 +148,10 @@ TEST_F(TestFindReplaceDialog, TestFindPrev)
     ASSERT_NE(findLEdit, nullptr) << "No find line edit";
     ASSERT_NE(findPrevBtn, nullptr) << "No find previous button";
 
+    frDialog->setTextEdit(nullptr); // To prevent findAllOccurences() running
     findLEdit->setText("graph");
+    frDialog->setTextEdit(editor);
+
     findPrevBtn->click();
 
     auto findCursor = editor->textCursor();
@@ -168,11 +178,51 @@ TEST_F(TestFindReplaceDialog, TestFindPrevWholeMatchCase)
 
     matchCase->setChecked(true);
     wholeWordChBox->setChecked(true);
+
+    frDialog->setTextEdit(nullptr); // To prevent findAllOccurences() running
     findLEdit->setText("graph");
+    frDialog->setTextEdit(editor);
+
     findPrevBtn->click();
 
     auto findCursor = editor->textCursor();
     EXPECT_EQ(findCursor.atEnd(), true);
+}
+
+TEST_F(TestFindReplaceDialog, FindNextWithSelection)
+{
+    editor->insertPlainText(
+        "Qt is cross-platform software for graphical user interfaces.");
+    // Selecting all the text in the document
+    editor->moveCursor(QTextCursor::Start, QTextCursor::KeepAnchor);
+
+    auto findLEdit = frDialog->findChild<QLineEdit*>("findLEdit");
+    auto findNxtBtn = frDialog->findChild<QPushButton*>("findNxtBtn");
+
+    ASSERT_NE(findLEdit, nullptr) << "No find line edit";
+    ASSERT_NE(findNxtBtn, nullptr) << "No find next button";
+
+    frDialog->setTextEdit(nullptr); // To prevent findAllOccurences() running
+    findLEdit->setText("for");
+    frDialog->setTextEdit(editor);
+
+    findNxtBtn->click();
+    EXPECT_FALSE(editor->textCursor().hasSelection());
+}
+
+TEST_F(TestFindReplaceDialog, TestSetFindText)
+{
+    editor->insertPlainText(
+        "Qt is cross-platform software for graphical user interfaces.");
+    editor->moveCursor(QTextCursor::Start);
+    editor->moveCursor(QTextCursor::NextWord, QTextCursor::KeepAnchor);
+
+    EXPECT_STREQ(
+        editor->textCursor().selectedText().toStdString().c_str(), "Qt ");
+
+    frDialog->setFindText("Qt");
+
+    EXPECT_FALSE(editor->textCursor().hasSelection());
 }
 
 int main(int argc, char* argv[])
