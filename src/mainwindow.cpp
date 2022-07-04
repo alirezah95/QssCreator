@@ -41,6 +41,8 @@ MainWindow::MainWindow(
 
     ui->centralwidget->setLayout(hbox);
 
+    updateWindowTitle();
+
     reset();
 
     setupConnections();
@@ -122,6 +124,27 @@ void MainWindow::saveAs()
 
 void MainWindow::exportDocument() { }
 
+void MainWindow::updateWindowTitle()
+{
+    if (mStyleEditor->documentTitle().isEmpty()) {
+        mStyleEditor->setDocumentTitle(DOC_UNTITLED);
+    }
+
+    auto docTitle = mStyleEditor->documentTitle();
+    int slashIndx = docTitle.lastIndexOf("/");
+    if (slashIndx > -1 && slashIndx < docTitle.size() - 1) {
+        docTitle = docTitle.sliced(slashIndx + 1);
+    }
+    if (docTitle.isEmpty()) {
+        docTitle = DOC_UNTITLED;
+        mStyleEditor->setDocumentTitle(docTitle);
+    }
+
+    setWindowTitle(docTitle
+        + (mStyleEditor->document()->isModified() ? "* - " : " - ")
+        + "Qss Creator");
+}
+
 void MainWindow::reset()
 {
     ui->actionUndo->setEnabled(false);
@@ -156,6 +179,9 @@ void MainWindow::setupConnections()
         ui->actionCopy->setEnabled(yes);
         ui->actionCut->setEnabled(yes);
     });
+
+    connect(mStyleEditor->document(), &QTextDocument::modificationChanged, this,
+        [this](bool) { updateWindowTitle(); });
 
     // Connection for increase/decrease font actions
     connect(ui->actionIncreaseFont, &QAction::triggered, this, [this] {

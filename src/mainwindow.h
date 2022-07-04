@@ -69,6 +69,12 @@ private slots:
      */
     void exportDocument();
 
+    /*!
+     * \brief Updates the title of the windows based on the documents title and
+     * status
+     */
+    void updateWindowTitle();
+
 private:
     /*!
      * \brief reset
