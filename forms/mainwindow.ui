@@ -150,6 +150,9 @@
    </property>
   </action>
   <action name="actionFindReplace">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../resources/res.qrc">
      <normaloff>:/icons/find-replace.png</normaloff>:/icons/find-replace.png</iconset>
@@ -162,6 +165,9 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+F</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionCopy">
