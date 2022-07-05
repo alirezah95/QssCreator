@@ -185,6 +185,30 @@ TEST_F(TestMainWindow, TestNewDocumentWhenNoModified)
     (*newBtnAct)->trigger();
 }
 
+TEST_F(TestMainWindow, TestNewDocumentWhenModifiedAndNoFileIsSelected)
+{
+    const auto& actions
+        = mainWin->findChild<QToolBar*>("mainToolBar")->actions();
+    auto newBtnAct = std::find_if(
+        actions.constBegin(), actions.constEnd(), [](QAction* curr) -> bool {
+            return curr->objectName() == "actionNewFile";
+        });
+    ASSERT_NE(newBtnAct, actions.end()) << "No \"new\" action";
+
+    // User choose yes to save modified doc
+    EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _))
+        .WillOnce(Return(QMessageBox::Yes));
+    // User doesn't choose nay save file path, for example by pressing escape
+    EXPECT_CALL(*userDlgsMock, getSaveFileName(_, _, _, _, _, _))
+        .WillOnce(Return(""));
+    // So newDocument() should not be called
+    EXPECT_CALL(*opersMock, newDocument(editorMock)).Times(0);
+
+    editorMock->insertPlainText(
+        "TestNewDocumentWhenModifiedAndNoFileIsSelected test case");
+    (*newBtnAct)->trigger();
+}
+
 TEST_F(TestMainWindow, TestNewDocumentWhenModified)
 {
     const auto& actions
@@ -219,7 +243,14 @@ TEST_F(TestMainWindow, TestNewDocumentWhenModified)
     EXPECT_CALL(*userDlgsMock, getSaveFileName(_, _, _, _, _, _))
         .WillOnce(Return("/newdoc.qssd"));
     Expectation saveExp
-        = EXPECT_CALL(*opersMock, saveDocument(_, _)).WillOnce(Return(true));
+        = EXPECT_CALL(*opersMock, saveDocument(_, _))
+              .WillOnce(
+                  Invoke([](const QTextEdit* editor, IDocumentFile* outFile) {
+                      // Following line is needed otherwise successive tests
+                      // won't go right
+                      editor->document()->setModified(false);
+                      return true;
+                  }));
     EXPECT_CALL(*opersMock, newDocument(editorMock))
         .After(saveExp)
         .WillOnce(Return(true));

@@ -62,17 +62,34 @@ void MainWindow::newDocument()
 {
     if (mDocOpers) {
         if (mStyleEditor->document()->isModified()) {
-            // Show a save dialog
+            /* If the document is modified and user presses No button on save
+             * dialog, new document should be created. On the other hand if the
+             * user press cancel the whole operation is canceled.
+             *
+             * If the use press Yes button there is two situations, one if the
+             * user choose a file name (path) that the file can be saved at, in
+             * this case the new document is created either. And if user cancel
+             * choosing save file path (for example by pressing escape) and so
+             * the file is not saved, new document should not be created and it
+             * should be like a Cancel button press.
+             */
             if (auto button = mUserDlgs->question(this, tr("Save document"),
                     tr("Save current document?"),
                     QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
                     QMessageBox::Yes);
-                button == QMessageBox::Yes) {
-                save();
-            } else if (button == QMessageBox::Cancel) {
+                button == QMessageBox::Cancel) {
                 return;
+            } else if (button == QMessageBox::Yes) {
+                save();
+                if (mStyleEditor->document()->isModified()) {
+                    // The doc is not saved
+                    return;
+                }
             }
         }
+        /* If document is not modified, newDocument() will be called without
+         * condition.
+         */
         if (mDocOpers->newDocument(mStyleEditor)) {
             updateWindowTitle();
         }
