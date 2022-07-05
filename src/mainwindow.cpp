@@ -31,6 +31,7 @@ MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
 
     mStyleEditor->setParent(this);
     mDocOpers->setParent(this);
+    mUserDlgs->setParent(this);
 
     auto splitter = new QSplitter;
     splitter->setChildrenCollapsible(false);
