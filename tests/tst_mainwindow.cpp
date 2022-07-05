@@ -169,7 +169,62 @@ TEST_F(TestMainWindow, TestUpdateWindowTitleDocModified)
         DOC_UNTITLED "* - Qss Creator");
 }
 
-TEST_F(TestMainWindow, TestNewDocument) { }
+TEST_F(TestMainWindow, TestNewDocumentWhenNoModified)
+{
+    const auto& actions
+        = mainWin->findChild<QToolBar*>("mainToolBar")->actions();
+    auto newBtnAct = std::find_if(
+        actions.constBegin(), actions.constEnd(), [](QAction* curr) -> bool {
+            return curr->objectName() == "actionNewFile";
+        });
+    ASSERT_NE(newBtnAct, actions.end()) << "No \"new\" action";
+
+    EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _)).Times(0);
+    EXPECT_CALL(*opersMock, newDocument(editorMock)).WillOnce(Return(true));
+
+    (*newBtnAct)->trigger();
+}
+
+TEST_F(TestMainWindow, TestNewDocumentWhenModified)
+{
+    const auto& actions
+        = mainWin->findChild<QToolBar*>("mainToolBar")->actions();
+    auto newBtnAct = std::find_if(
+        actions.constBegin(), actions.constEnd(), [](QAction* curr) -> bool {
+            return curr->objectName() == "actionNewFile";
+        });
+    ASSERT_NE(newBtnAct, actions.end()) << "No \"new\" action";
+
+    editorMock->insertPlainText("TestNewDocumentWhenModified test case");
+
+    // When user clicks Cancel
+    EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _))
+        .Times(1)
+        .WillOnce(Return(QMessageBox::Cancel));
+    EXPECT_CALL(*opersMock, newDocument(editorMock)).Times(0);
+    (*newBtnAct)->trigger();
+
+    // When user clicks No
+    EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _))
+        .Times(1)
+        .WillOnce(Return(QMessageBox::No));
+    EXPECT_CALL(*opersMock, newDocument(editorMock)).Times(1);
+    EXPECT_CALL(*opersMock, saveDocument(_, _)).Times(0);
+    (*newBtnAct)->trigger();
+
+    // When user clicks Yes
+    EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _))
+        .Times(1)
+        .WillOnce(Return(QMessageBox::Yes));
+    EXPECT_CALL(*userDlgsMock, getSaveFileName(_, _, _, _, _, _))
+        .WillOnce(Return("/newdoc.qssd"));
+    Expectation saveExp
+        = EXPECT_CALL(*opersMock, saveDocument(_, _)).WillOnce(Return(true));
+    EXPECT_CALL(*opersMock, newDocument(editorMock))
+        .After(saveExp)
+        .WillOnce(Return(true));
+    (*newBtnAct)->trigger();
+}
 
 TEST_F(TestMainWindow, TestOpenDocument) { }
 
