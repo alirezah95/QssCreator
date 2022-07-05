@@ -4,6 +4,7 @@
 #include "documentfile.h"
 #include "findreplacedialog.h"
 #include "iqssdfileoperations.h"
+#include "iuserdialogs.h"
 #include "qssdeditor.h"
 #include "widgetspreview.h"
 
@@ -68,8 +69,8 @@ void MainWindow::newDocument()
 
 void MainWindow::openDocument()
 {
-    if (mDocOpers) {
-        auto openFileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+    if (mDocOpers && mUserDlgs) {
+        auto openFileName = mUserDlgs->getOpenFileName(this, tr("Open File"),
             QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
             DOC_FILTER);
         if (openFileName.isEmpty()) {
@@ -91,7 +92,7 @@ void MainWindow::save()
     if (mDocOpers) {
         if (mStyleEditor->documentTitle() == DOC_UNTITLED) {
             auto saveFileName
-                = QFileDialog::getSaveFileName(this, tr("Save File"),
+                = mUserDlgs->getSaveFileName(this, tr("Save File"),
                     QStandardPaths::writableLocation(
                         QStandardPaths::DocumentsLocation),
                     DOC_FILTER);
@@ -111,7 +112,7 @@ void MainWindow::save()
 void MainWindow::saveAs()
 {
     if (mDocOpers) {
-        auto saveAsFileName = QFileDialog::getSaveFileName(this,
+        auto saveAsFileName = mUserDlgs->getSaveFileName(this,
             tr("Save File As"),
             QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
             DOC_FILTER);
