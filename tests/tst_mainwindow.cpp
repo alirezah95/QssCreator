@@ -208,8 +208,8 @@ TEST_F(TestMainWindow, TestNewDocumentWhenModified)
     EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _))
         .Times(1)
         .WillOnce(Return(QMessageBox::No));
-    EXPECT_CALL(*opersMock, newDocument(editorMock)).Times(1);
     EXPECT_CALL(*opersMock, saveDocument(_, _)).Times(0);
+    EXPECT_CALL(*opersMock, newDocument(editorMock)).Times(1);
     (*newBtnAct)->trigger();
 
     // When user clicks Yes
@@ -226,7 +226,87 @@ TEST_F(TestMainWindow, TestNewDocumentWhenModified)
     (*newBtnAct)->trigger();
 }
 
-TEST_F(TestMainWindow, TestOpenDocument) { }
+TEST_F(TestMainWindow, TestOpenDocumentWhenNoModified)
+{
+    const auto& actions
+        = mainWin->findChild<QToolBar*>("mainToolBar")->actions();
+    auto openBtnAct = std::find_if(
+        actions.constBegin(), actions.constEnd(), [](QAction* curr) -> bool {
+            return curr->objectName() == "actionOpenFile";
+        });
+    ASSERT_NE(openBtnAct, actions.end()) << "No \"open file\" action";
+
+    EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _)).Times(0);
+    Expectation openFlNmExp
+        = EXPECT_CALL(*userDlgsMock, getOpenFileName(_, _, _, _, _, _))
+              .WillOnce(Return("/openfile.qssd"));
+    EXPECT_CALL(*opersMock, openDocument(editorMock, _))
+        .WillOnce(Invoke([](const QTextEdit* editor, IDocumentFile* docFile) {
+            EXPECT_STREQ(
+                docFile->fileName().toStdString().c_str(), "/openfile.qssd");
+            return true;
+        }));
+
+    (*openBtnAct)->trigger();
+}
+
+TEST_F(TestMainWindow, TestOpenDocumentWhenModified)
+{
+    const auto& actions
+        = mainWin->findChild<QToolBar*>("mainToolBar")->actions();
+    auto openBtnAct = std::find_if(
+        actions.constBegin(), actions.constEnd(), [](QAction* curr) -> bool {
+            return curr->objectName() == "actionOpenFile";
+        });
+    ASSERT_NE(openBtnAct, actions.end()) << "No \"open file\" action";
+
+    editorMock->insertPlainText("TestOpenDocumentWhenModified test case");
+
+    // When user clicks Cancel
+    EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _))
+        .Times(1)
+        .WillOnce(Return(QMessageBox::Cancel));
+    EXPECT_CALL(*userDlgsMock, getOpenFileName(_, _, _, _, _, _)).Times(0);
+    EXPECT_CALL(*opersMock, openDocument(editorMock, _)).Times(0);
+    (*openBtnAct)->trigger();
+
+    // When user clicks No
+    EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _))
+        .Times(1)
+        .WillOnce(Return(QMessageBox::No));
+    EXPECT_CALL(*userDlgsMock, getOpenFileName(_, _, _, _, _, _))
+        .WillOnce(Return("/openfile.qssd"));
+    EXPECT_CALL(*opersMock, saveDocument(_, _)).Times(0);
+    EXPECT_CALL(*opersMock, openDocument(editorMock, _))
+        .WillOnce(Invoke([](const QTextEdit* editor, IDocumentFile* openFile) {
+            EXPECT_STREQ(
+                openFile->fileName().toStdString().c_str(), "/openfile.qssd");
+            return true;
+        }));
+    (*openBtnAct)->trigger();
+
+    // When user clicks Yes
+    EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _))
+        .Times(1)
+        .WillOnce(Return(QMessageBox::Yes));
+    Expectation gsfnExp
+        = EXPECT_CALL(*userDlgsMock, getSaveFileName(_, _, _, _, _, _))
+              .WillOnce(Return("/newdoc.qssd"));
+    EXPECT_CALL(*opersMock, saveDocument(_, _))
+        .After(gsfnExp)
+        .WillOnce(Return(true));
+    Expectation gofnExp
+        = EXPECT_CALL(*userDlgsMock, getOpenFileName(_, _, _, _, _, _))
+              .WillOnce(Return("/anotheropenfile.qssd"));
+    EXPECT_CALL(*opersMock, openDocument(editorMock, _))
+        .After(gofnExp)
+        .WillOnce(Invoke([](const QTextEdit* editor, IDocumentFile* openFile) {
+            EXPECT_STREQ(openFile->fileName().toStdString().c_str(),
+                "/anotheropenfile.qssd");
+            return true;
+        }));
+    (*openBtnAct)->trigger();
+}
 
 TEST_F(TestMainWindow, TestSaveDocument)
 {
