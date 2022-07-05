@@ -61,6 +61,18 @@ MainWindow::~MainWindow()
 void MainWindow::newDocument()
 {
     if (mDocOpers) {
+        if (mStyleEditor->document()->isModified()) {
+            // Show a save dialog
+            if (auto button = mUserDlgs->question(this, tr("Save document"),
+                    tr("Save current document?"),
+                    QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+                    QMessageBox::Yes);
+                button == QMessageBox::Yes) {
+                save();
+            } else if (button == QMessageBox::Cancel) {
+                return;
+            }
+        }
         if (mDocOpers->newDocument(mStyleEditor)) {
             updateWindowTitle();
         }
