@@ -56,6 +56,9 @@ set(PROJECT_SOURCES
         src/iuserdialogs.cpp
 
         src/userdialogs.h
+
+        src/qssdvariable.h
+        src/qssdvariable.cpp
 )
 
 qt_add_resources(PROJECT_SOURCES resources/res.qrc)
