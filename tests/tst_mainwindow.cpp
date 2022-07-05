@@ -7,11 +7,14 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "idocumentfile.h"
+#include "documentfile.h"
 #include "mainwindow.h"
 
 #include "tst_mockqssdeditor.h"
 #include "tst_mockqssdfileoperations.h"
+#include "tst_mockuserdialogs.h"
+
+using namespace ::testing;
 
 class TestMainWindow : public ::testing::Test
 {
@@ -20,8 +23,9 @@ public:
     {
         editorMock = new MockQssdEditor;
         opersMock = new MockQssdFileOperations;
+        userDlgsMock = new MockUserDialogs;
 
-        mainWin = new MainWindow(editorMock, opersMock);
+        mainWin = new MainWindow(editorMock, opersMock, userDlgsMock);
     }
 
     void TearDown()
@@ -32,6 +36,7 @@ public:
 
     MockQssdEditor* editorMock;
     MockQssdFileOperations* opersMock;
+    MockUserDialogs* userDlgsMock;
 
     MainWindow* mainWin;
 };
@@ -162,6 +167,39 @@ TEST_F(TestMainWindow, TestUpdateWindowTitleDocModified)
     editorMock->insertPlainText("Mock text");
     EXPECT_STREQ(mainWin->windowTitle().toStdString().c_str(),
         DOC_UNTITLED "* - Qss Creator");
+}
+
+TEST_F(TestMainWindow, TestNewDocument) { }
+
+TEST_F(TestMainWindow, TestOpenDocument) { }
+
+TEST_F(TestMainWindow, TestSaveDocument)
+{
+    const auto& actions
+        = mainWin->findChild<QToolBar*>("mainToolBar")->actions();
+    auto saveBtnAct = std::find_if(
+        actions.constBegin(), actions.constEnd(), [](QAction* curr) -> bool {
+            return curr->objectName() == "actionSave";
+        });
+    ASSERT_NE(saveBtnAct, actions.end()) << "No \"save\" action";
+
+    editorMock->insertPlainText("TestSaveAsDocument test case");
+
+    Expectation gsfnEpx
+        = EXPECT_CALL(*userDlgsMock, getSaveFileName(_, _, _, _, _, _))
+              .WillOnce(Return("/newdoc.qssd"));
+
+    EXPECT_CALL(*opersMock, saveDocument(editorMock, _))
+        .After(gsfnEpx)
+        .WillOnce(
+            Invoke([](const QTextEdit* editor, IDocumentFile* docFile) -> bool {
+                DocumentFile* file = dynamic_cast<DocumentFile*>(docFile);
+                EXPECT_STREQ(file->file.fileName().toStdString().c_str(),
+                    "/newdoc.qssd");
+                return true;
+            }));
+
+    (*saveBtnAct)->trigger();
 }
 
 int main(int argc, char* argv[])
