@@ -12,7 +12,6 @@ public:
     explicit DocumentFile(QObject* parent = nullptr);
     explicit DocumentFile(const QString& name);
     DocumentFile(const QString& name, QObject* parent);
-    DocumentFile();
     virtual ~DocumentFile();
 
     virtual bool exists() const override;
@@ -37,8 +36,6 @@ inline DocumentFile::DocumentFile(const QString& name, QObject* parent)
     : IDocumentFile(parent), file(name, parent)
 {
 }
-
-inline DocumentFile::DocumentFile() { }
 
 inline DocumentFile::~DocumentFile() { }
 

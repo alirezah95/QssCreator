@@ -4,6 +4,7 @@
 #include "documentfile.h"
 #include "findreplacedialog.h"
 #include "iqssdfileoperations.h"
+#include "iuserdialogs.h"
 #include "qssdeditor.h"
 #include "widgetspreview.h"
 
@@ -20,15 +21,17 @@
 #define ACT_CONNECT_EDITOR(act, slot)                                          \
     connect(act, &QAction::triggered, mStyleEditor, &IQssdEditor::slot)
 
-MainWindow::MainWindow(
-    IQssdEditor* editor, IQssdFileOperations* docOper, QWidget* parent)
+MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
+    IUserDialogs* userDlgs, QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), mStyleEditor(editor),
-      mPreview(new WidgetsPreview), mDocOpers(docOper), mFindReplaceDlg(nullptr)
+      mPreview(new WidgetsPreview), mDocOpers(docOper), mUserDlgs(userDlgs),
+      mFindReplaceDlg(nullptr)
 {
     ui->setupUi(this);
 
     mStyleEditor->setParent(this);
     mDocOpers->setParent(this);
+    mUserDlgs->setParent(this);
 
     auto splitter = new QSplitter;
     splitter->setChildrenCollapsible(false);
@@ -58,6 +61,35 @@ MainWindow::~MainWindow()
 void MainWindow::newDocument()
 {
     if (mDocOpers) {
+        if (mStyleEditor->document()->isModified()) {
+            /* If the document is modified and user presses No button on save
+             * dialog, new document should be created. On the other hand if the
+             * user press cancel the whole operation is canceled.
+             *
+             * If the use press Yes button there is two situations, one if the
+             * user choose a file name (path) that the file can be saved at, in
+             * this case the new document is created either. And if user cancel
+             * choosing save file path (for example by pressing escape) and so
+             * the file is not saved, new document should not be created and it
+             * should be like a Cancel button press.
+             */
+            if (auto button = mUserDlgs->question(this, tr("Save document"),
+                    tr("Save current document?"),
+                    QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+                    QMessageBox::Yes);
+                button == QMessageBox::Yes) {
+                save();
+                if (mStyleEditor->document()->isModified()) {
+                    // The doc is not saved
+                    return;
+                }
+            } else if (button == QMessageBox::Cancel) {
+                return;
+            }
+        }
+        /* If document is not modified, newDocument() will be called without
+         * condition.
+         */
         if (mDocOpers->newDocument(mStyleEditor)) {
             updateWindowTitle();
         }
@@ -67,8 +99,24 @@ void MainWindow::newDocument()
 
 void MainWindow::openDocument()
 {
-    if (mDocOpers) {
-        auto openFileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+    if (mDocOpers && mUserDlgs) {
+        if (mStyleEditor->document()->isModified()) {
+            // Show a save dialog
+            if (auto button = mUserDlgs->question(this, tr("Save document"),
+                    tr("Save current document?"),
+                    QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+                    QMessageBox::Yes);
+                button == QMessageBox::Yes) {
+                save();
+                if (mStyleEditor->document()->isModified()) {
+                    // The doc is not saved
+                    return;
+                }
+            } else if (button == QMessageBox::Cancel) {
+                return;
+            }
+        }
+        auto openFileName = mUserDlgs->getOpenFileName(this, tr("Open File"),
             QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
             DOC_FILTER);
         if (openFileName.isEmpty()) {
@@ -88,20 +136,22 @@ void MainWindow::openDocument()
 void MainWindow::save()
 {
     if (mDocOpers) {
+        QString saveFileName;
         if (mStyleEditor->documentTitle() == DOC_UNTITLED) {
-            auto saveFileName
-                = QFileDialog::getSaveFileName(this, tr("Save File"),
-                    QStandardPaths::writableLocation(
-                        QStandardPaths::DocumentsLocation),
-                    DOC_FILTER);
-            if (saveFileName.isEmpty()) {
-                return;
-            }
-            DocumentFile docFile(saveFileName);
+            saveFileName = mUserDlgs->getSaveFileName(this, tr("Save File"),
+                QStandardPaths::writableLocation(
+                    QStandardPaths::DocumentsLocation),
+                DOC_FILTER);
+        } else {
+            saveFileName = mStyleEditor->documentTitle();
+        }
+        if (saveFileName.isEmpty()) {
+            return;
+        }
+        DocumentFile docFile(saveFileName);
 
-            if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
-                qDebug() << "Error in saving file: " << docFile.fileName();
-            }
+        if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
+            qDebug() << "Error in saving file: " << docFile.fileName();
         }
     }
     return;
@@ -110,7 +160,7 @@ void MainWindow::save()
 void MainWindow::saveAs()
 {
     if (mDocOpers) {
-        auto saveAsFileName = QFileDialog::getSaveFileName(this,
+        auto saveAsFileName = mUserDlgs->getSaveFileName(this,
             tr("Save File As"),
             QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
             DOC_FILTER);
@@ -187,7 +237,10 @@ void MainWindow::setupConnections()
     });
 
     connect(mStyleEditor->document(), &QTextDocument::modificationChanged, this,
-        [this](bool) { updateWindowTitle(); });
+        [this](bool modified) {
+            updateWindowTitle();
+            ui->actionSave->setEnabled(modified);
+        });
 
     // Connection for increase/decrease font actions
     connect(ui->actionIncreaseFont, &QAction::triggered, this, [this] {

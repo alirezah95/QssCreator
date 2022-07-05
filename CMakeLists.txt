@@ -51,6 +51,11 @@ set(PROJECT_SOURCES
         src/findreplacedialog.h
         src/findreplacedialog.cpp
         forms/findreplacedialog.ui
+
+        src/iuserdialogs.h
+        src/iuserdialogs.cpp
+
+        src/userdialogs.h
 )
 
 qt_add_resources(PROJECT_SOURCES resources/res.qrc)

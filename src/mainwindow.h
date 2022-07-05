@@ -6,6 +6,7 @@
 class WidgetsPreview;
 class IQssdEditor;
 class IQssdFileOperations;
+class IUserDialogs;
 class FindReplaceDialog;
 
 QT_BEGIN_NAMESPACE
@@ -29,7 +30,7 @@ public:
      * \param parent
      */
     MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
-        QWidget* parent = nullptr);
+        IUserDialogs* userDlgs, QWidget* parent = nullptr);
     ~MainWindow();
 
 private slots:
@@ -101,6 +102,11 @@ private:
                                      * responsible for handling file operations
                                      * related to the app text editor.
                                      */
+
+    IUserDialogs* mUserDlgs; /*!< A \ref IUserDialogs instance responsible for
+                              * showing user dialogs for different kind of
+                              * operations
+                              */
 
     FindReplaceDialog* mFindReplaceDlg; /*!< A \ref FindReplaceDialog to perform
                                          * find and replace

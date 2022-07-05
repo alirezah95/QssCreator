@@ -19,6 +19,8 @@ bool QssdFileOperations::newDocument(QTextEdit* editor)
     }
 
     editor->document()->clear();
+    // Probably not needed since clear() does that
+    editor->document()->setModified(false);
     editor->document()->clearUndoRedoStacks();
     editor->setDocumentTitle(DOC_UNTITLED);
 
@@ -58,6 +60,7 @@ bool QssdFileOperations::saveDocument(
     if (outFile->write(editorTextBtArr) != editorTextBtArr.length()) {
         return false;
     }
+    editor->document()->setModified(false);
 
     return true;
 }
