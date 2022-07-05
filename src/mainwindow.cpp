@@ -77,14 +77,14 @@ void MainWindow::newDocument()
                     tr("Save current document?"),
                     QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
                     QMessageBox::Yes);
-                button == QMessageBox::Cancel) {
-                return;
-            } else if (button == QMessageBox::Yes) {
+                button == QMessageBox::Yes) {
                 save();
                 if (mStyleEditor->document()->isModified()) {
                     // The doc is not saved
                     return;
                 }
+            } else if (button == QMessageBox::Cancel) {
+                return;
             }
         }
         /* If document is not modified, newDocument() will be called without
@@ -108,6 +108,10 @@ void MainWindow::openDocument()
                     QMessageBox::Yes);
                 button == QMessageBox::Yes) {
                 save();
+                if (mStyleEditor->document()->isModified()) {
+                    // The doc is not saved
+                    return;
+                }
             } else if (button == QMessageBox::Cancel) {
                 return;
             }
