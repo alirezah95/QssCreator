@@ -180,7 +180,11 @@ TEST_F(TestMainWindow, TestNewDocumentWhenNoModified)
     ASSERT_NE(newBtnAct, actions.end()) << "No \"new\" action";
 
     EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _)).Times(0);
-    EXPECT_CALL(*opersMock, newDocument(editorMock)).WillOnce(Return(true));
+    EXPECT_CALL(*opersMock, newDocument(editorMock))
+        .WillOnce(Invoke([](const QTextEdit* editor) {
+            editor->document()->setModified(false);
+            return true;
+        }));
 
     (*newBtnAct)->trigger();
 }
@@ -233,10 +237,16 @@ TEST_F(TestMainWindow, TestNewDocumentWhenModified)
         .Times(1)
         .WillOnce(Return(QMessageBox::No));
     EXPECT_CALL(*opersMock, saveDocument(_, _)).Times(0);
-    EXPECT_CALL(*opersMock, newDocument(editorMock)).Times(1);
+    EXPECT_CALL(*opersMock, newDocument(editorMock))
+        .WillOnce(Invoke([](const QTextEdit* editor) {
+            editor->document()->setModified(false);
+            return true;
+        }));
     (*newBtnAct)->trigger();
 
     // When user clicks Yes
+    // Reset doc to modified so tests are valid
+    editorMock->document()->setModified(true);
     EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _))
         .Times(1)
         .WillOnce(Return(QMessageBox::Yes));
@@ -253,7 +263,10 @@ TEST_F(TestMainWindow, TestNewDocumentWhenModified)
                   }));
     EXPECT_CALL(*opersMock, newDocument(editorMock))
         .After(saveExp)
-        .WillOnce(Return(true));
+        .WillOnce(Invoke([](const QTextEdit* editor) {
+            editor->document()->setModified(false);
+            return true;
+        }));
     (*newBtnAct)->trigger();
 }
 
@@ -275,6 +288,7 @@ TEST_F(TestMainWindow, TestOpenDocumentWhenNoModified)
         .WillOnce(Invoke([](const QTextEdit* editor, IDocumentFile* docFile) {
             EXPECT_STREQ(
                 docFile->fileName().toStdString().c_str(), "/openfile.qssd");
+            editor->document()->setModified(false);
             return true;
         }));
 
@@ -312,11 +326,16 @@ TEST_F(TestMainWindow, TestOpenDocumentWhenModified)
         .WillOnce(Invoke([](const QTextEdit* editor, IDocumentFile* openFile) {
             EXPECT_STREQ(
                 openFile->fileName().toStdString().c_str(), "/openfile.qssd");
+            editor->document()->setModified(false);
             return true;
         }));
     (*openBtnAct)->trigger();
 
     // When user clicks Yes
+    // Must set document modified since call to
+    // openDocument()/newDocument()/saveDocument() all makes the doc not
+    // modified. And for this test it is needed that the doc be modified
+    editorMock->document()->setModified(true);
     EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _))
         .Times(1)
         .WillOnce(Return(QMessageBox::Yes));
@@ -325,7 +344,12 @@ TEST_F(TestMainWindow, TestOpenDocumentWhenModified)
               .WillOnce(Return("/newdoc.qssd"));
     EXPECT_CALL(*opersMock, saveDocument(_, _))
         .After(gsfnExp)
-        .WillOnce(Return(true));
+        .WillOnce(Invoke([](const QTextEdit* editor, IDocumentFile* outFile) {
+            // Following line is needed otherwise successive tests
+            // won't go right
+            editor->document()->setModified(false);
+            return true;
+        }));
     Expectation gofnExp
         = EXPECT_CALL(*userDlgsMock, getOpenFileName(_, _, _, _, _, _))
               .WillOnce(Return("/anotheropenfile.qssd"));
@@ -334,6 +358,7 @@ TEST_F(TestMainWindow, TestOpenDocumentWhenModified)
         .WillOnce(Invoke([](const QTextEdit* editor, IDocumentFile* openFile) {
             EXPECT_STREQ(openFile->fileName().toStdString().c_str(),
                 "/anotheropenfile.qssd");
+            editor->document()->setModified(false);
             return true;
         }));
     (*openBtnAct)->trigger();
@@ -362,6 +387,7 @@ TEST_F(TestMainWindow, TestSaveDocument)
                 DocumentFile* file = dynamic_cast<DocumentFile*>(docFile);
                 EXPECT_STREQ(file->file.fileName().toStdString().c_str(),
                     "/newdoc.qssd");
+                editor->document()->setModified(false);
                 return true;
             }));
 
