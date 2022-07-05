@@ -90,20 +90,22 @@ void MainWindow::openDocument()
 void MainWindow::save()
 {
     if (mDocOpers) {
+        QString saveFileName;
         if (mStyleEditor->documentTitle() == DOC_UNTITLED) {
-            auto saveFileName
-                = mUserDlgs->getSaveFileName(this, tr("Save File"),
-                    QStandardPaths::writableLocation(
-                        QStandardPaths::DocumentsLocation),
-                    DOC_FILTER);
-            if (saveFileName.isEmpty()) {
-                return;
-            }
-            DocumentFile docFile(saveFileName);
+            saveFileName = mUserDlgs->getSaveFileName(this, tr("Save File"),
+                QStandardPaths::writableLocation(
+                    QStandardPaths::DocumentsLocation),
+                DOC_FILTER);
+        } else {
+            saveFileName = mStyleEditor->documentTitle();
+        }
+        if (saveFileName.isEmpty()) {
+            return;
+        }
+        DocumentFile docFile(saveFileName);
 
-            if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
-                qDebug() << "Error in saving file: " << docFile.fileName();
-            }
+        if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
+            qDebug() << "Error in saving file: " << docFile.fileName();
         }
     }
     return;
@@ -189,7 +191,10 @@ void MainWindow::setupConnections()
     });
 
     connect(mStyleEditor->document(), &QTextDocument::modificationChanged, this,
-        [this](bool) { updateWindowTitle(); });
+        [this](bool modified) {
+            updateWindowTitle();
+            ui->actionSave->setEnabled(modified);
+        });
 
     // Connection for increase/decrease font actions
     connect(ui->actionIncreaseFont, &QAction::triggered, this, [this] {
