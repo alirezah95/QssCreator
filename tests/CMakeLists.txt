@@ -52,3 +52,8 @@ add_new_gtest(TestFindReplaceDialog
     tst_findreplacedialog.cpp
     ../src/findreplacedialog.cpp
 )
+
+add_new_gtest(TestQssdVariable
+    tst_qssdvariable.cpp
+    ../src/qssdvariable.cpp
+)
