@@ -23,6 +23,7 @@ QssdPreprocessor::~QssdPreprocessor() { }
 
 void QssdPreprocessor::setQssdEditor(QTextEdit* editor)
 {
+    mEditor = editor;
     if (mEditor) {
         connect(mEditor->document(), &QTextDocument::modificationChanged, this,
             &QssdPreprocessor::preProcessDocument);
