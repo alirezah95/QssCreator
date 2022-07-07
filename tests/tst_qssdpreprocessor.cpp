@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 
 #include "qssdpreprocessor.h"
-#include "tst_mockabstractlistmodel.h"
+#include "tst_mockqssdvariablesmodle.h"
 
 using namespace ::testing;
 
@@ -24,11 +24,11 @@ public:
                        "    color: $VAR_2;"
                        "}"
                        "QFrame {"
-                       "    color: $var3;"
+                       "    color: $Variable;"
                        "    background-color: $VAR_2;"
                        "}");
 
-        modelMock = new MockListModel;
+        modelMock = new MockVariablesModel;
         preProc = new QssdPreprocessor(editor, modelMock);
     }
 
@@ -42,7 +42,7 @@ public:
 
     QssdPreprocessor* preProc;
     QTextEdit* editor;
-    MockListModel* modelMock;
+    MockVariablesModel* modelMock;
 };
 
 TEST_F(TestQssdPreprocessor, TestDifinitionRegex)
@@ -58,6 +58,31 @@ TEST_F(TestQssdPreprocessor, TestDifinitionRegex)
         .Times(1);
 
     editor->document()->setModified(false);
+}
+
+TEST_F(TestQssdPreprocessor, TestProcessedDocumentContent)
+{
+    EXPECT_CALL(*modelMock, getVarValue(QString("Variable")))
+        .WillRepeatedly(Return("12px"));
+    EXPECT_CALL(*modelMock, getVarValue(QString("var_1")))
+        .WillRepeatedly(Return("#ff22ee"));
+    EXPECT_CALL(*modelMock, getVarValue(QString("VAR_2")))
+        .WillRepeatedly(Return("12px"));
+
+    EXPECT_STREQ(preProc->getProcessedDocumentContent().toStdString().c_str(),
+        ""
+        ""
+        ""
+        "*{"
+        "    background-color: #ff22ee;"
+        "}"
+        "*:disabled {"
+        "    color: 12px;"
+        "}"
+        "QFrame {"
+        "    color: 12px;"
+        "    background-color: 12px;"
+        "}");
 }
 
 int main(int argc, char* argv[])
