@@ -63,6 +63,9 @@ set(PROJECT_SOURCES
         src/qssdpreprocessor.h
         src/qssdpreprocessor.cpp
 
+        src/iqssdvariablesmodel.h
+        src/iqssdvariablesmodel.cpp
+
         src/qssdvariablesmodel.h
         src/qssdvariablesmodel.cpp
 )
