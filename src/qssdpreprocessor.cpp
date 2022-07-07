@@ -6,7 +6,7 @@
 QssdPreprocessor::QssdPreprocessor(QObject* parent)
     : QObject { parent }, mEditor(nullptr)
 {
-    mVarDefineRegex = QRegularExpression(R"(\$\w*[\s\n]*=[\s\n]*#?\w*;)");
+    mVarDefineRegex = QRegularExpression(R"(\$\w*[\s\n]*=[\s\n]*#?[\w-]*;)");
     mVarUsageRegex = QRegularExpression(R"(\$\w*)");
     return;
 }
