@@ -60,6 +60,7 @@ add_new_gtest(TestQssdVariable
 
 add_new_gtest(TestQssdPreprocessor
     tst_qssdpreprocessor.cpp
-    tst_mockabstractlistmodel.h
+    tst_mockqssdvariablesmodle.h
+    ../src/iqssdvariablesmodel.cpp
     ../src/qssdpreprocessor.cpp
 )
