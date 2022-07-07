@@ -6,7 +6,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-class MockListModel : public IQssdVariablesModel
+class MockVariablesModel : public IQssdVariablesModel
 {
 public:
     MOCK_METHOD(int, rowCount, (const QModelIndex& parent), (const override));
