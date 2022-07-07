@@ -4,11 +4,11 @@
 #include <QObject>
 #include <QRegularExpression>
 
-class IQssdEditor;
+class QTextEdit;
 
 /*!
  * \brief The QssdPreprocessor class which is responsible for processing a
- * document inside a \ref IQssdEditor and updating the variables in document
+ * document inside a \ref QTextEdit and updating the variables in document
  * with a \ref IQssdVariableModel and vice versa. And also it is responsible for
  * replaced variables occurences in a document with the actual value of the
  * variable
@@ -18,14 +18,14 @@ class QssdPreprocessor : public QObject
     Q_OBJECT
 public:
     explicit QssdPreprocessor(QObject* parent = nullptr);
-    QssdPreprocessor(IQssdEditor* editor, QObject* parent = nullptr);
+    QssdPreprocessor(QTextEdit* editor, QObject* parent = nullptr);
     ~QssdPreprocessor();
 
     /*!
-     * \brief Sets the internal pointer to a \ref IQssdEditor
-     * \param editor A \ref IQssdEditor
+     * \brief Sets the internal pointer to a \ref QTextEdit
+     * \param editor A \ref QTextEdit
      */
-    void setQssdEditor(IQssdEditor* editor);
+    void setQssdEditor(QTextEdit* editor);
 
     /*!
      * \brief Processes the document, replaces all variables with theri values
@@ -38,7 +38,7 @@ private slots:
     void preProcessDocument(bool docIsModified);
 
 private:
-    IQssdEditor* mEditor;
+    QTextEdit* mEditor;
 
     QRegularExpression mVarDefineRegex; /*!< This regex is used to find the
                                          * variable definitions inside the

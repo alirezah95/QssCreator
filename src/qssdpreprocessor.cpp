@@ -1,6 +1,6 @@
 #include "qssdpreprocessor.h"
 
-#include "iqssdeditor.h"
+#include <QTextEdit>
 
 QssdPreprocessor::QssdPreprocessor(QObject* parent)
     : QObject { parent }, mEditor(nullptr)
@@ -10,7 +10,7 @@ QssdPreprocessor::QssdPreprocessor(QObject* parent)
     return;
 }
 
-QssdPreprocessor::QssdPreprocessor(IQssdEditor* editor, QObject* parent)
+QssdPreprocessor::QssdPreprocessor(QTextEdit* editor, QObject* parent)
     : QssdPreprocessor(parent)
 {
     setQssdEditor(editor);
@@ -19,7 +19,7 @@ QssdPreprocessor::QssdPreprocessor(IQssdEditor* editor, QObject* parent)
 
 QssdPreprocessor::~QssdPreprocessor() { }
 
-void QssdPreprocessor::setQssdEditor(IQssdEditor* editor)
+void QssdPreprocessor::setQssdEditor(QTextEdit* editor)
 {
     if (mEditor) {
         connect(mEditor->document(), &QTextDocument::modificationChanged, this,
