@@ -1,5 +1,6 @@
 #include "qssdpreprocessor.h"
 
+#include <QAbstractListModel>
 #include <QTextEdit>
 
 QssdPreprocessor::QssdPreprocessor(QObject* parent)
@@ -10,7 +11,8 @@ QssdPreprocessor::QssdPreprocessor(QObject* parent)
     return;
 }
 
-QssdPreprocessor::QssdPreprocessor(QTextEdit* editor, QObject* parent)
+QssdPreprocessor::QssdPreprocessor(
+    QTextEdit* editor, QAbstractListModel* varsModel, QObject* parent)
     : QssdPreprocessor(parent)
 {
     setQssdEditor(editor);
@@ -25,6 +27,13 @@ void QssdPreprocessor::setQssdEditor(QTextEdit* editor)
         connect(mEditor->document(), &QTextDocument::modificationChanged, this,
             &QssdPreprocessor::preProcessDocument);
     }
+    return;
+}
+
+void QssdPreprocessor::setVariablesModel(QAbstractListModel* varsModel)
+{
+    mVarsModel = varsModel;
+    if (mVarsModel) { }
     return;
 }
 
