@@ -7,7 +7,7 @@ QssdPreprocessor::QssdPreprocessor(QObject* parent)
     : QObject { parent }, mEditor(nullptr)
 {
     mVarDefineRegex = QRegularExpression(R"(\$\w*[\s\n]*=[\s\n]*#?\w*;)");
-    mVarUsageRegex = QRegularExpression(R"()");
+    mVarUsageRegex = QRegularExpression(R"(\$\w*)");
     return;
 }
 
@@ -41,6 +41,30 @@ void QssdPreprocessor::setVariablesModel(IQssdVariablesModel* varsModel)
 
 QString QssdPreprocessor::getProcessedDocumentContent()
 {
+    if (mEditor && mVarsModel) {
+        QString content = mEditor->document()->toPlainText();
+
+        // Deleting variables definitions
+        auto definitionMatch = mVarDefineRegex.match(content);
+        while (definitionMatch.hasMatch()) {
+            content.replace(definitionMatch.capturedStart(),
+                definitionMatch.capturedLength(), "");
+            definitionMatch = mVarDefineRegex.match(content);
+        }
+
+        // Replacing variable usage with actual value
+        auto usageMatch = mVarUsageRegex.match(content);
+        while (usageMatch.hasMatch()) {
+            // Get the variable value from the vars model
+            QString value
+                = mVarsModel->getVarValue(usageMatch.captured().sliced(1));
+            content.replace(
+                usageMatch.capturedStart(), usageMatch.capturedLength(), value);
+            usageMatch = mVarUsageRegex.match(content);
+        }
+
+        return content;
+    }
     return QString();
 }
 
