@@ -5,6 +5,9 @@
 QssdPreprocessor::QssdPreprocessor(QObject* parent)
     : QObject { parent }, mEditor(nullptr)
 {
+    mVarDefineRegex = QRegularExpression(R"(\$\w*[\s\n]*=[\s\n]*#?\w*;)");
+    mVarUsageRegex = QRegularExpression(R"()");
+    return;
 }
 
 QssdPreprocessor::QssdPreprocessor(IQssdEditor* editor, QObject* parent)
@@ -27,7 +30,7 @@ void QssdPreprocessor::setQssdEditor(IQssdEditor* editor)
 
 QString QssdPreprocessor::getProcessedDocumentContent()
 {
-
+    return QString();
 }
 
 void QssdPreprocessor::preProcessDocument(bool docIsModified) { }

@@ -2,6 +2,7 @@
 #define QSSDPREPROCESSOR_H
 
 #include <QObject>
+#include <QRegularExpression>
 
 class IQssdEditor;
 
@@ -38,6 +39,16 @@ private slots:
 
 private:
     IQssdEditor* mEditor;
+
+    QRegularExpression mVarDefineRegex; /*!< This regex is used to find the
+                                         * variable definitions inside the
+                                         * editor document
+                                         */
+
+    QRegularExpression mVarUsageRegex; /*!< This regex is used to find the usage
+                                        * of variable inside the editor docuemnt
+                                        * and replacing them with actual values.
+                                        */
 };
 
 #endif // QSSDPREPROCESSOR_H
