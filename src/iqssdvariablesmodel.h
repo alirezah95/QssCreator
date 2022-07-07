@@ -23,7 +23,7 @@ public:
      * \param varName The name of the variable
      * \return A \a\b QString as the variable value
      */
-    QString getVarValue(const QString& varName) const;
+    virtual QString getVarValue(const QString& varName) const = 0;
 };
 
 #endif // IQSSDVARIABLESMODEL_H
