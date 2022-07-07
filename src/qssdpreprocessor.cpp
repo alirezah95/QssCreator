@@ -16,6 +16,7 @@ QssdPreprocessor::QssdPreprocessor(
     : QssdPreprocessor(parent)
 {
     setQssdEditor(editor);
+    setVariablesModel(varsModel);
     return;
 }
 
@@ -43,4 +44,18 @@ QString QssdPreprocessor::getProcessedDocumentContent()
     return QString();
 }
 
-void QssdPreprocessor::preProcessDocument(bool docIsModified) { }
+void QssdPreprocessor::preProcessDocument(bool docIsModified)
+{
+    if (!docIsModified) {
+        if (mEditor && mVarsModel) {
+            const QString& content = mEditor->document()->toPlainText();
+            auto matchIter = mVarDefineRegex.globalMatch(content);
+            while (matchIter.hasNext()) {
+                auto match = matchIter.next();
+                mVarsModel->setData(mVarsModel->index(mVarsModel->rowCount()),
+                    match.captured());
+            }
+        }
+    }
+    return;
+}
