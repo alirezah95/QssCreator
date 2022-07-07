@@ -59,6 +59,9 @@ set(PROJECT_SOURCES
 
         src/qssdvariable.h
         src/qssdvariable.cpp
+
+        qssdpreprocessor.h
+        qssdpreprocessor.cpp
 )
 
 qt_add_resources(PROJECT_SOURCES resources/res.qrc)
