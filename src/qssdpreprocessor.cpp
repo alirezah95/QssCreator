@@ -1,6 +1,6 @@
 #include "qssdpreprocessor.h"
 
-#include <QAbstractListModel>
+#include "iqssdvariablesmodel.h"
 #include <QTextEdit>
 
 QssdPreprocessor::QssdPreprocessor(QObject* parent)
@@ -12,7 +12,7 @@ QssdPreprocessor::QssdPreprocessor(QObject* parent)
 }
 
 QssdPreprocessor::QssdPreprocessor(
-    QTextEdit* editor, QAbstractListModel* varsModel, QObject* parent)
+    QTextEdit* editor, IQssdVariablesModel* varsModel, QObject* parent)
     : QssdPreprocessor(parent)
 {
     setQssdEditor(editor);
@@ -32,7 +32,7 @@ void QssdPreprocessor::setQssdEditor(QTextEdit* editor)
     return;
 }
 
-void QssdPreprocessor::setVariablesModel(QAbstractListModel* varsModel)
+void QssdPreprocessor::setVariablesModel(IQssdVariablesModel* varsModel)
 {
     mVarsModel = varsModel;
     if (mVarsModel) { }

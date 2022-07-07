@@ -5,7 +5,7 @@
 #include <QRegularExpression>
 
 class QTextEdit;
-class QAbstractListModel;
+class IQssdVariablesModel;
 
 /*!
  * \brief The QssdPreprocessor class which is responsible for processing a
@@ -19,7 +19,7 @@ class QssdPreprocessor : public QObject
     Q_OBJECT
 public:
     explicit QssdPreprocessor(QObject* parent = nullptr);
-    QssdPreprocessor(QTextEdit* editor, QAbstractListModel* varsModel,
+    QssdPreprocessor(QTextEdit* editor, IQssdVariablesModel* varsModel,
         QObject* parent = nullptr);
     ~QssdPreprocessor();
 
@@ -33,7 +33,7 @@ public:
      * \brief Set the list models of the variables
      * \param varsModel
      */
-    void setVariablesModel(QAbstractListModel* varsModel);
+    void setVariablesModel(IQssdVariablesModel* varsModel);
 
     /*!
      * \brief Processes the document, replaces all variables with theri values
@@ -58,9 +58,9 @@ private:
                                         * and replacing them with actual values.
                                         */
 
-    QAbstractListModel* mVarsModel; /*!< A list model used to store the
-                                     * variables of a qssd document.
-                                     */
+    IQssdVariablesModel* mVarsModel; /*!< A list model used to store the
+                                      * variables of a qssd document.
+                                      */
 };
 
 #endif // QSSDPREPROCESSOR_H
