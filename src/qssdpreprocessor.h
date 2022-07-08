@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QRegularExpression>
 
+#include "iqssdpreprocessor.h"
+
 class QTextEdit;
 class IQssdVariablesModel;
 
@@ -14,7 +16,7 @@ class IQssdVariablesModel;
  * replaced variables occurences in a document with the actual value of the
  * variable
  */
-class QssdPreprocessor : public QObject
+class QssdPreprocessor : public IQssdPreprocessor
 {
     Q_OBJECT
 public:
@@ -23,21 +25,23 @@ public:
     ~QssdPreprocessor();
 
     /*!
-     * \brief Set the list models of the variables
+     * \brief Implements \ref IQssdPreprocessor::setVariablesModel to set the
+     * list models of the variables
      * \param varsModel
      */
     void setVariablesModel(IQssdVariablesModel* varsModel);
 
     /*!
-     * \brief Processes the document, replaces all variables with theri values
-     * and returning a \a\b QString as the result
+     * \brief Implements \ref IQssdPreprocessor::getProcessedDocumentContent()
+     * to processes the document, replaces all variables with theri values and
+     * returning a \a\b QString as the result
      * \return \a\b QString as the result of processing
      */
     QString getProcessedDocumentContent(QTextEdit* editor);
 
     /*!
-     * \brief Searches for the variables in the document and updates the vars
-     * model
+     * \brief Implements \ref IQssdPreprocessor::processDocumentVariables() to
+     * searches for the variables in the document and updates the vars model
      */
     void processDocumentVariables(QTextEdit* editor);
 

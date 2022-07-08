@@ -3,7 +3,8 @@
 #include "iqssdvariablesmodel.h"
 #include <QTextEdit>
 
-QssdPreprocessor::QssdPreprocessor(QObject* parent) : QObject { parent }
+QssdPreprocessor::QssdPreprocessor(QObject* parent)
+    : IQssdPreprocessor { parent }
 {
     mVarDefineRegex = QRegularExpression(R"(\$\w*[\s\n]*=[\s\n]*#?[\w-]*;)");
     mVarUsageRegex = QRegularExpression(R"(\$\w*)");
