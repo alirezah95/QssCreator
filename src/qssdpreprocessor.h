@@ -19,15 +19,8 @@ class QssdPreprocessor : public QObject
     Q_OBJECT
 public:
     explicit QssdPreprocessor(QObject* parent = nullptr);
-    QssdPreprocessor(QTextEdit* editor, IQssdVariablesModel* varsModel,
-        QObject* parent = nullptr);
+    QssdPreprocessor(IQssdVariablesModel* varsModel, QObject* parent = nullptr);
     ~QssdPreprocessor();
-
-    /*!
-     * \brief Sets the internal pointer to a \ref QTextEdit
-     * \param editor A \ref QTextEdit
-     */
-    void setQssdEditor(QTextEdit* editor);
 
     /*!
      * \brief Set the list models of the variables
@@ -40,14 +33,15 @@ public:
      * and returning a \a\b QString as the result
      * \return \a\b QString as the result of processing
      */
-    QString getProcessedDocumentContent();
+    QString getProcessedDocumentContent(QTextEdit* editor);
 
-private slots:
-    void preProcessDocument(bool docIsModified);
+    /*!
+     * \brief Searches for the variables in the document and updates the vars
+     * model
+     */
+    void processDocumentVariables(QTextEdit* editor);
 
 private:
-    QTextEdit* mEditor;
-
     QRegularExpression mVarDefineRegex; /*!< This regex is used to find the
                                          * variable definitions inside the
                                          * editor document

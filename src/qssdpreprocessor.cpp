@@ -3,8 +3,7 @@
 #include "iqssdvariablesmodel.h"
 #include <QTextEdit>
 
-QssdPreprocessor::QssdPreprocessor(QObject* parent)
-    : QObject { parent }, mEditor(nullptr)
+QssdPreprocessor::QssdPreprocessor(QObject* parent) : QObject { parent }
 {
     mVarDefineRegex = QRegularExpression(R"(\$\w*[\s\n]*=[\s\n]*#?[\w-]*;)");
     mVarUsageRegex = QRegularExpression(R"(\$\w*)");
@@ -12,25 +11,14 @@ QssdPreprocessor::QssdPreprocessor(QObject* parent)
 }
 
 QssdPreprocessor::QssdPreprocessor(
-    QTextEdit* editor, IQssdVariablesModel* varsModel, QObject* parent)
+    IQssdVariablesModel* varsModel, QObject* parent)
     : QssdPreprocessor(parent)
 {
-    setQssdEditor(editor);
     setVariablesModel(varsModel);
     return;
 }
 
 QssdPreprocessor::~QssdPreprocessor() { }
-
-void QssdPreprocessor::setQssdEditor(QTextEdit* editor)
-{
-    mEditor = editor;
-    if (mEditor) {
-        connect(mEditor->document(), &QTextDocument::modificationChanged, this,
-            &QssdPreprocessor::preProcessDocument);
-    }
-    return;
-}
 
 void QssdPreprocessor::setVariablesModel(IQssdVariablesModel* varsModel)
 {
@@ -39,10 +27,10 @@ void QssdPreprocessor::setVariablesModel(IQssdVariablesModel* varsModel)
     return;
 }
 
-QString QssdPreprocessor::getProcessedDocumentContent()
+QString QssdPreprocessor::getProcessedDocumentContent(QTextEdit* editor)
 {
-    if (mEditor && mVarsModel) {
-        QString content = mEditor->document()->toPlainText();
+    if (editor && mVarsModel) {
+        QString content = editor->document()->toPlainText();
 
         // Deleting variables definitions
         auto definitionMatch = mVarDefineRegex.match(content);
@@ -68,17 +56,15 @@ QString QssdPreprocessor::getProcessedDocumentContent()
     return QString();
 }
 
-void QssdPreprocessor::preProcessDocument(bool docIsModified)
+void QssdPreprocessor::processDocumentVariables(QTextEdit* editor)
 {
-    if (!docIsModified) {
-        if (mEditor && mVarsModel) {
-            const QString& content = mEditor->document()->toPlainText();
-            auto matchIter = mVarDefineRegex.globalMatch(content);
-            while (matchIter.hasNext()) {
-                auto match = matchIter.next();
-                mVarsModel->setData(mVarsModel->index(mVarsModel->rowCount()),
-                    match.captured());
-            }
+    if (editor && mVarsModel) {
+        const QString& content = editor->document()->toPlainText();
+        auto matchIter = mVarDefineRegex.globalMatch(content);
+        while (matchIter.hasNext()) {
+            auto match = matchIter.next();
+            mVarsModel->setData(
+                mVarsModel->index(mVarsModel->rowCount()), match.captured());
         }
     }
     return;
