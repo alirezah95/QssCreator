@@ -29,7 +29,7 @@ public:
                        "}");
 
         modelMock = new MockVariablesModel;
-        preProc = new QssdPreprocessor(editor, modelMock);
+        preProc = new QssdPreprocessor(modelMock);
     }
 
     void TearDown()
@@ -58,6 +58,7 @@ TEST_F(TestQssdPreprocessor, TestDifinitionRegex)
         .Times(1);
 
     editor->document()->setModified(false);
+    preProc->processDocumentVariables(editor);
 }
 
 TEST_F(TestQssdPreprocessor, TestProcessedDocumentContent)
@@ -69,7 +70,8 @@ TEST_F(TestQssdPreprocessor, TestProcessedDocumentContent)
     EXPECT_CALL(*modelMock, getVarValue(QString("VAR_2")))
         .WillRepeatedly(Return("12px"));
 
-    EXPECT_STREQ(preProc->getProcessedDocumentContent().toStdString().c_str(),
+    EXPECT_STREQ(
+        preProc->getProcessedDocumentContent(editor).toStdString().c_str(),
         ""
         ""
         ""
