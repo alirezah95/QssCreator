@@ -12,6 +12,7 @@
 
 #include "tst_mockqssdeditor.h"
 #include "tst_mockqssdfileoperations.h"
+#include "tst_mockqssdpreprocessor.h"
 #include "tst_mockuserdialogs.h"
 
 using namespace ::testing;
@@ -24,8 +25,10 @@ public:
         editorMock = new MockQssdEditor;
         opersMock = new MockQssdFileOperations;
         userDlgsMock = new MockUserDialogs;
+        processorMock = new MockQssdPreprocessor;
 
-        mainWin = new MainWindow(editorMock, opersMock, userDlgsMock);
+        mainWin = new MainWindow(
+            editorMock, opersMock, userDlgsMock, processorMock);
     }
 
     void TearDown()
@@ -37,6 +40,7 @@ public:
     MockQssdEditor* editorMock;
     MockQssdFileOperations* opersMock;
     MockUserDialogs* userDlgsMock;
+    MockQssdPreprocessor* processorMock;
 
     MainWindow* mainWin;
 };
