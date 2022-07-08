@@ -39,11 +39,13 @@ add_new_gtest(TestMainWindow
     tst_mockqssdeditor.h
     tst_mockqssdfileoperations.h
     tst_mockuserdialogs.h
+    tst_mockqssdpreprocessor.h
     ../src/mainwindow.cpp
     ../src/widgetspreview.cpp
     ../src/idocumentfile.cpp
     ../src/iqssdeditor.cpp
     ../src/iqssdfileoperations.cpp
+    ../src/iqssdpreprocessor.cpp
     ../src/iuserdialogs.cpp
     ../src/findreplacedialog.cpp
 )
