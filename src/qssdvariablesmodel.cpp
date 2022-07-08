@@ -36,6 +36,14 @@ QVariant QssdVariablesModel::data(const QModelIndex& index, int role) const
     }
 }
 
+QString QssdVariablesModel::data(const QString& varName) const
+{
+    if (!mVariables.contains(varName)) {
+        return QString();
+    }
+    return mVariables.value(varName);
+}
+
 bool QssdVariablesModel::setData(
     const QModelIndex& index, const QVariant& value, int role)
 {
