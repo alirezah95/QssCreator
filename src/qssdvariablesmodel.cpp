@@ -35,3 +35,22 @@ QVariant QssdVariablesModel::data(const QModelIndex& index, int role) const
         return QVariant();
     }
 }
+
+bool QssdVariablesModel::setData(
+    const QModelIndex& index, const QVariant& value, int role)
+{
+    if (!index.isValid() || index.row() >= rowCount(QModelIndex())) {
+        return false;
+    }
+
+    QMap<QString, QString>::iterator itm = mVariables.begin();
+    for (int i = 0; i < index.row(); ++i) {
+        itm++;
+    }
+    if (role == Roles::VariableValue) {
+        (*itm) = value.toString();
+        return true;
+    }
+
+    return false;
+}

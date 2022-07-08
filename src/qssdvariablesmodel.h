@@ -34,6 +34,14 @@ public:
     virtual QVariant data(const QModelIndex& index, int role) const override;
 
     /*!
+     * \brief Implements \ref IQssdVariablesModel::getVarValue()
+     * \param varName
+     * \return The value of the variable with the given \a varName. If no value
+     * exists returns an empty \a\b QString.
+     */
+    virtual QString data(const QString& varName) const override;
+
+    /*!
      * \brief Reimplements \a\b QAbstractItemModel::setData() to set a variable
      * value only
      * \param index
@@ -43,14 +51,6 @@ public:
      */
     virtual bool setData(
         const QModelIndex& index, const QVariant& value, int role) override;
-
-    /*!
-     * \brief Implements \ref IQssdVariablesModel::getVarValue()
-     * \param varName
-     * \return The value of the variable with the given \a varName. If no value
-     * exists returns an empty \a\b QString.
-     */
-    virtual QString getVarValue(const QString& varName) const override;
 
     /*!
      * \brief insertData
