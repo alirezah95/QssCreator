@@ -24,6 +24,21 @@ public:
     virtual ~IQssdVariablesModel();
 
     /*!
+     * \brief Inserts a variable with the given \a name and \a value to the
+     * internal data
+     * \param name
+     * \param value
+     * \return True if data inserted successfuly and false otherwise
+     */
+    virtual bool insertData(const QString& name, const QString& value) = 0;
+
+    /*!
+     * \brief Removes a variable from internal data
+     * \param name
+     * \return True if data was removed successfully and false otherwise
+     */
+    virtual bool removeData(const QString& name) = 0;
+    /*!
      * \brief Finds the variable with \a varName if any, and returns its value.
      * If there is no variable with the given name an empty string is returned
      * \param varName The name of the variable
