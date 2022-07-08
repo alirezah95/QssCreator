@@ -4,6 +4,7 @@
 #include "documentfile.h"
 #include "findreplacedialog.h"
 #include "iqssdfileoperations.h"
+#include "iqssdpreprocessor.h"
 #include "iuserdialogs.h"
 #include "qssdeditor.h"
 #include "widgetspreview.h"
@@ -22,10 +23,10 @@
     connect(act, &QAction::triggered, mStyleEditor, &IQssdEditor::slot)
 
 MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
-    IUserDialogs* userDlgs, QWidget* parent)
+    IUserDialogs* userDlgs, IQssdPreprocessor* proc, QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), mStyleEditor(editor),
       mPreview(new WidgetsPreview), mDocOpers(docOper), mUserDlgs(userDlgs),
-      mFindReplaceDlg(nullptr)
+      mDocProcessor(proc), mFindReplaceDlg(nullptr)
 {
     ui->setupUi(this);
 
@@ -128,6 +129,9 @@ void MainWindow::openDocument()
             qDebug() << "Error in opening file: " << docFile.fileName();
             return;
         }
+        // Update doc variables through processor
+        mDocProcessor->processDocumentVariables(mStyleEditor);
+
         updateWindowTitle();
     }
     return;
@@ -152,7 +156,10 @@ void MainWindow::save()
 
         if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
             qDebug() << "Error in saving file: " << docFile.fileName();
+            return;
         }
+        // Update doc variables through processor
+        mDocProcessor->processDocumentVariables(mStyleEditor);
     }
     return;
 }
@@ -173,6 +180,8 @@ void MainWindow::saveAs()
             qDebug() << "Error in saving file: " << docFile.fileName();
             return;
         }
+        // Update doc variables through processor
+        mDocProcessor->processDocumentVariables(mStyleEditor);
         updateWindowTitle();
     }
     return;
