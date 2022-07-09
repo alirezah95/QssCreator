@@ -132,9 +132,7 @@ bool QssdVariablesModel::insertVariable(
         return false;
     }
 
-    beginInsertRows(QModelIndex(), mVariables.size(), mVariables.size());
-    mVariables.emplace_back(Variable(name, value));
-    endInsertRows();
+    insertRow(mVariables.size());
     return true;
 }
 
@@ -151,10 +149,7 @@ bool QssdVariablesModel::removeVariable(const QString& varName)
         return false;
     }
 
-    beginRemoveRows(
-        QModelIndex(), var - mVariables.begin(), var - mVariables.begin());
-    mVariables.remove(var - mVariables.begin());
-    endRemoveRows();
+    removeRow(var - mVariables.begin());
 
     return true;
 }
