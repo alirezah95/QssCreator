@@ -46,7 +46,7 @@ QString QssdPreprocessor::getProcessedDocumentContent(QTextEdit* editor)
         while (usageMatch.hasMatch()) {
             // Get the variable value from the vars model
             QString value
-                = mVarsModel->getVarValue(usageMatch.captured().sliced(1));
+                = mVarsModel->getVariableValue(usageMatch.captured().sliced(1));
             content.replace(
                 usageMatch.capturedStart(), usageMatch.capturedLength(), value);
             usageMatch = mVarUsageRegex.match(content);
@@ -64,8 +64,7 @@ void QssdPreprocessor::processDocumentVariables(QTextEdit* editor)
         auto matchIter = mVarDefineRegex.globalMatch(content);
         while (matchIter.hasNext()) {
             auto match = matchIter.next();
-            mVarsModel->setData(
-                mVarsModel->index(mVarsModel->rowCount()), match.captured());
+            mVarsModel->insertVariable(QString(), QString());
         }
     }
     return;
