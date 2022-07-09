@@ -108,6 +108,12 @@ public:
      */
     virtual bool removeVariable(const QString& varName) override;
 
+    /*!
+     * \brief Implements \ref IQssdVariablesModel::size()
+     * \return
+     */
+    virtual size_t size() const override { return rowCount(QModelIndex()); }
+
 private:
     QVector<Variable> mVariables; /*!< A list to store the variables */
 
