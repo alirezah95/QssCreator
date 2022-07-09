@@ -93,6 +93,26 @@ bool QssdVariablesModel::setVariableValue(
     return true;
 }
 
+bool QssdVariablesModel::changeVariableName(
+    const QString& oldName, const QString& newName)
+{
+    if (oldName.isEmpty() || newName.isEmpty()) {
+        return false;
+    }
+
+    QVector<Variable>::iterator var = std::find_if(mVariables.begin(),
+        mVariables.end(),
+        [oldName](Variable& item) -> bool { return item.first == oldName; });
+    if (var == mVariables.end()) {
+        return false;
+    }
+
+    (*var).first = newName;
+    emit dataChanged(index(var - mVariables.begin()),
+        index(var - mVariables.begin()), QList<int>({ Roles::VariableName }));
+    return true;
+}
+
 bool QssdVariablesModel::insertVariable(
     const QString& name, const QString& value)
 {
@@ -100,8 +120,7 @@ bool QssdVariablesModel::insertVariable(
         return false;
     }
 
-    beginInsertRows(
-        QModelIndex(), mVariables.size() - 1, mVariables.size() - 1);
+    beginInsertRows(QModelIndex(), mVariables.size(), mVariables.size());
     mVariables.emplace_back(Variable(name, value));
     endInsertRows();
     return true;

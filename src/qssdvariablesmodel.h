@@ -73,6 +73,15 @@ public:
         const QString& varName, const QVariant& value) override;
 
     /*!
+     * \brief Implements \ref IQssdVariablesModel::changeVariableName
+     * \param oldName
+     * \param newName
+     * \return
+     */
+    virtual bool changeVariableName(
+        const QString& oldName, const QString& newName) override;
+
+    /*!
      * \brief Implements \ref IQssdVariablesModel::insertVariable()
      * \param name
      * \param value
@@ -90,6 +99,9 @@ public:
 
 private:
     QVector<Variable> mVariables; /*!< A list to store the variables */
+
+    // IQssdVariablesModel interface
+public:
 };
 
 #endif // QSSDVARIABLESMODEL_H
