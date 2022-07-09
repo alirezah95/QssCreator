@@ -73,7 +73,7 @@ bool QssdVariablesModel::insertRows(
 }
 
 // IQssdVariablesModel methods definition
-QString QssdVariablesModel::variableValue(const QString& varName) const
+QString QssdVariablesModel::getVariableValue(const QString& varName) const
 {
     if (mVariables.size() == 0) {
         return QString();

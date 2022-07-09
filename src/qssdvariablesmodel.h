@@ -72,7 +72,7 @@ public:
      * \param varName
      * \return
      */
-    virtual QString variableValue(const QString& varName) const override;
+    virtual QString getVariableValue(const QString& varName) const override;
 
     /*!
      * \brief Implements \ref IQssdVariablesModel::setVariableValue()

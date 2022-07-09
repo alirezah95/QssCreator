@@ -20,7 +20,7 @@ public:
      * \param varName The name of the variable
      * \return A \a\b QString as the variable value
      */
-    virtual QString variableValue(const QString& varName) const = 0;
+    virtual QString getVariableValue(const QString& varName) const = 0;
 
     /*!
      * \brief Find the variable with the given \a varName, if any, and sets its
