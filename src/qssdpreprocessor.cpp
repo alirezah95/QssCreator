@@ -6,7 +6,8 @@
 QssdPreprocessor::QssdPreprocessor(QObject* parent)
     : IQssdPreprocessor { parent }
 {
-    mVarDefineRegex = QRegularExpression(R"(\$\w*[\s\n]*=[\s\n]*#?[\w-]*;)");
+    mVarDefineRegex
+        = QRegularExpression(R"(\$(\w*)[\s\n]*=[\s\n]*(#?[\w-]*);)");
     mVarUsageRegex = QRegularExpression(R"(\$\w*)");
     return;
 }
@@ -64,7 +65,7 @@ void QssdPreprocessor::processDocumentVariables(QTextEdit* editor)
         auto matchIter = mVarDefineRegex.globalMatch(content);
         while (matchIter.hasNext()) {
             auto match = matchIter.next();
-            mVarsModel->insertVariable(QString(), QString());
+            mVarsModel->insertVariable(match.captured(1), match.captured(2));
         }
     }
     return;
