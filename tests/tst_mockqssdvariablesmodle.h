@@ -22,6 +22,8 @@ public:
         (const QString& name, const QString& value), (override));
 
     MOCK_METHOD(bool, removeVariable, (const QString& varName), (override));
+
+    MOCK_METHOD(size_t, size, (), (const override));
 };
 
 #endif
