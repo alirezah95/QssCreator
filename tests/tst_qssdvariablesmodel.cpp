@@ -32,6 +32,7 @@ TEST_F(TestQssdVariablesModel, TestInsertRows)
     model->insertRows(0, 4, QModelIndex());
 
     EXPECT_EQ(insertSigSpy.count(), 1);
+    EXPECT_EQ(model->size(), 4);
 }
 
 int main(int argc, char* argv[])
