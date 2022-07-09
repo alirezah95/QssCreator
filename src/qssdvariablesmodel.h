@@ -15,7 +15,7 @@ using Variable = QPair<QString, QString>;
  * This class inherits both \ref IQssdVariablesModel and \a\b
  * QAbstractListModel to provide functionality of the two classes
  */
-class QssdVariablesModel : public IQssdVariablesModel, public QAbstractListModel
+class QssdVariablesModel : public QAbstractListModel, public IQssdVariablesModel
 {
     Q_OBJECT
 
