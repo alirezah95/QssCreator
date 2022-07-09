@@ -80,8 +80,9 @@ QString QssdVariablesModel::getVariableValue(const QString& varName) const
     }
 
     QVector<Variable>::const_iterator var = std::find_if(mVariables.begin(),
-        mVariables.end(),
-        [varName](Variable& item) -> bool { return item.first == varName; });
+        mVariables.end(), [varName](const Variable& item) -> bool {
+            return item.first == varName;
+        });
     if (var == mVariables.end()) {
         return QString();
     }
