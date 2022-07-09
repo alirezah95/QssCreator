@@ -6,14 +6,15 @@
 #include <QAbstractListModel>
 #include <QMap>
 
+using Variable = QPair<QString, QString>;
+
 /*!
- * \brief The QssdVariablesModel class which is the concrete class responsible
- * for holding the variables of a document and notifying the views (or other
- * classes) about the changes in the model data.
- * \details This class inherits both \ref IQssdVariablesModel and \a\b
+ * \brief The QssdVariablesModel class which is the concrete class
+ * responsible for holding the variables of a document and notifying the
+ * views (or other classes) about the changes in the model data. \details
+ * This class inherits both \ref IQssdVariablesModel and \a\b
  * QAbstractListModel to provide functionality of the two classes
  */
-template <class Variable>
 class QssdVariablesModel : public IQssdVariablesModel, public QAbstractListModel
 {
     Q_OBJECT
@@ -88,9 +89,7 @@ public:
     virtual bool removeVariable(const QString& varName) override;
 
 private:
-    QMap<QString, QString> mVariables; /*!< A map to store the variables and
-                                        * their values.
-                                        */
+    QVector<Variable> mVariables; /*!< A list to store the variables */
 };
 
 #endif // QSSDVARIABLESMODEL_H
