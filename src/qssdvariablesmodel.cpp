@@ -103,9 +103,7 @@ bool QssdVariablesModel::setVariableValue(
         return false;
     }
 
-    (*var).second = value.toString();
-    emit dataChanged(index(var - mVariables.begin()),
-        index(var - mVariables.begin()), QList<int>({ Roles::VariableValue }));
+    setData(index(var - mVariables.begin()), value, Roles::VariableValue);
     return true;
 }
 
@@ -123,9 +121,7 @@ bool QssdVariablesModel::changeVariableName(
         return false;
     }
 
-    (*var).first = newName;
-    emit dataChanged(index(var - mVariables.begin()),
-        index(var - mVariables.begin()), QList<int>({ Roles::VariableName }));
+    setData(index(var - mVariables.begin()), newName, Roles::VariableName);
     return true;
 }
 
