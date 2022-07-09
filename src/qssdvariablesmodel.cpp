@@ -1,13 +1,18 @@
 #include "qssdvariablesmodel.h"
 
-QssdVariablesModel::QssdVariablesModel(QObject* parent)
-    : IQssdVariablesModel(parent)
+template <class Variable>
+QssdVariablesModel<Variable>::QssdVariablesModel(QObject* parent)
+    : QAbstractListModel(parent)
 {
 }
 
-QssdVariablesModel::~QssdVariablesModel() { }
+template <class Variable>
+QssdVariablesModel<Variable>::~QssdVariablesModel()
+{
+}
 
-int QssdVariablesModel::rowCount(const QModelIndex& parent) const
+template <class Variable>
+int QssdVariablesModel<Variable>::rowCount(const QModelIndex& parent) const
 {
     if (parent.isValid()) {
         return 0;
@@ -15,7 +20,9 @@ int QssdVariablesModel::rowCount(const QModelIndex& parent) const
     return mVariables.size();
 }
 
-QVariant QssdVariablesModel::data(const QModelIndex& index, int role) const
+template <class Variable>
+QVariant QssdVariablesModel<Variable>::data(
+    const QModelIndex& index, int role) const
 {
     if (!index.isValid() || index.row() >= rowCount(QModelIndex())) {
         return QVariant();
@@ -36,15 +43,8 @@ QVariant QssdVariablesModel::data(const QModelIndex& index, int role) const
     }
 }
 
-QString QssdVariablesModel::data(const QString& varName) const
-{
-    if (!mVariables.contains(varName)) {
-        return QString();
-    }
-    return mVariables.value(varName);
-}
-
-bool QssdVariablesModel::setData(
+template <class Variable>
+bool QssdVariablesModel<Variable>::setData(
     const QModelIndex& index, const QVariant& value, int role)
 {
     if (!index.isValid() || index.row() >= rowCount(QModelIndex())) {
@@ -56,6 +56,9 @@ bool QssdVariablesModel::setData(
         itm++;
     }
     if (role == Roles::VariableValue) {
+        if ((*itm) == value.toString()) {
+            return true;
+        }
         (*itm) = value.toString();
         return true;
     }
