@@ -49,12 +49,14 @@ TEST_F(TestQssdPreprocessor, TestDifinitionRegex)
 {
     editor->document()->setModified(true);
 
-    EXPECT_CALL(*modelMock, rowCount(_)).WillRepeatedly(Return(1));
-    EXPECT_CALL(*modelMock, setData(_, QVariant("$Variable= 12px;"), _))
+    //    EXPECT_CALL(*modelMock, rowCount(_)).WillRepeatedly(Return(1));
+    EXPECT_CALL(
+        *modelMock, insertVariable(QString("Variable"), QString("12px")))
         .Times(1);
-    EXPECT_CALL(*modelMock, setData(_, QVariant("$var_1=#ff22ee;"), _))
+    EXPECT_CALL(
+        *modelMock, insertVariable(QString("var_1"), QString("#ff22ee")))
         .Times(1);
-    EXPECT_CALL(*modelMock, setData(_, QVariant("$VAR_2\n = 12px;"), _))
+    EXPECT_CALL(*modelMock, insertVariable(QString("VAR_2"), QString("12px")))
         .Times(1);
 
     editor->document()->setModified(false);
@@ -63,11 +65,11 @@ TEST_F(TestQssdPreprocessor, TestDifinitionRegex)
 
 TEST_F(TestQssdPreprocessor, TestProcessedDocumentContent)
 {
-    EXPECT_CALL(*modelMock, getVarValue(QString("Variable")))
+    EXPECT_CALL(*modelMock, getVariableValue(QString("Variable")))
         .WillRepeatedly(Return("12px"));
-    EXPECT_CALL(*modelMock, getVarValue(QString("var_1")))
+    EXPECT_CALL(*modelMock, getVariableValue(QString("var_1")))
         .WillRepeatedly(Return("#ff22ee"));
-    EXPECT_CALL(*modelMock, getVarValue(QString("VAR_2")))
+    EXPECT_CALL(*modelMock, getVariableValue(QString("VAR_2")))
         .WillRepeatedly(Return("12px"));
 
     EXPECT_STREQ(
