@@ -88,6 +88,8 @@ bool QssdVariablesModel::setVariableValue(
     }
 
     (*var).second = value.toString();
+    emit dataChanged(index(var - mVariables.begin()),
+        index(var - mVariables.begin()), QList<int>({ Roles::VariableValue }));
     return true;
 }
 
@@ -98,7 +100,10 @@ bool QssdVariablesModel::insertVariable(
         return false;
     }
 
+    beginInsertRows(
+        QModelIndex(), mVariables.size() - 1, mVariables.size() - 1);
     mVariables.emplace_back(Variable(name, value));
+    endInsertRows();
     return true;
 }
 
@@ -108,7 +113,17 @@ bool QssdVariablesModel::removeVariable(const QString& varName)
         return false;
     }
 
-    return mVariables.removeIf([varName](Variable& item) -> bool {
-        return item.first == varName;
-    }) > 0;
+    QVector<Variable>::iterator var = std::find_if(mVariables.begin(),
+        mVariables.end(),
+        [varName](Variable& item) -> bool { return item.first == varName; });
+    if (var == mVariables.end()) {
+        return false;
+    }
+
+    beginRemoveRows(
+        QModelIndex(), var - mVariables.begin(), var - mVariables.begin());
+    mVariables.remove(var - mVariables.begin());
+    endRemoveRows();
+
+    return true;
 }
