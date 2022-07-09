@@ -42,9 +42,18 @@ bool QssdVariablesModel::setData(
     }
 
     auto& var = mVariables[index.row()];
-    var.first = value.toString();
-
-    return true;
+    switch (role) {
+    case Roles::VariableName:
+        var.first = value.toString();
+        emit dataChanged(index, index, QList<int>({ Roles::VariableName }));
+        return true;
+    case Roles::VariableValue:
+        var.first = value.toString();
+        emit dataChanged(index, index, QList<int>({ Roles::VariableValue }));
+        return true;
+    default:
+        return false;
+    }
 }
 
 // IQssdVariablesModel methods definition
