@@ -59,7 +59,7 @@ bool QssdVariablesModel::setData(
 bool QssdVariablesModel::insertRows(
     int row, int count, const QModelIndex& parent)
 {
-    if (parent.isValid() || row < 0 || count <= 0) {
+    if (parent.isValid() || row < 0 || row > mVariables.size() || count <= 0) {
         return false;
     }
 
