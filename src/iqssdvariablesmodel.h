@@ -58,6 +58,12 @@ public:
      * \return True if data was removed successfully and false otherwise
      */
     virtual bool removeVariable(const QString& varName) = 0;
+
+    /*!
+     * \brief Returns the size of the model's internal data
+     * \return
+     */
+    virtual size_t size() const = 0;
 };
 
 #endif // IQSSDVARIABLESMODEL_H
