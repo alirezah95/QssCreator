@@ -56,6 +56,22 @@ bool QssdVariablesModel::setData(
     }
 }
 
+bool QssdVariablesModel::insertRows(
+    int row, int count, const QModelIndex& parent)
+{
+    if (parent.isValid() || row < 0 || count <= 0) {
+        return false;
+    }
+
+    beginInsertRows(QModelIndex(), row, row + count);
+    for (int i = 0; i < count; ++i) {
+        mVariables.insert(row, Variable());
+    }
+    endInsertRows();
+
+    return true;
+}
+
 // IQssdVariablesModel methods definition
 QString QssdVariablesModel::variableValue(const QString& varName) const
 {
