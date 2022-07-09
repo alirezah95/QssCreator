@@ -34,6 +34,16 @@ public:
         = 0;
 
     /*!
+     * \brief Change the name of the variable to the \a newName
+     * \param oldName Current name of the variable
+     * \param newName New name of the variable
+     * \return
+     */
+    virtual bool changeVariableName(
+        const QString& oldName, const QString& newName)
+        = 0;
+
+    /*!
      * \brief Inserts a variable with the given \a name and \a value to the
      * internal data
      * \param name
