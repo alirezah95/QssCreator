@@ -9,16 +9,19 @@
 class MockVariablesModel : public IQssdVariablesModel
 {
 public:
-    MOCK_METHOD(int, rowCount, (const QModelIndex& parent), (const override));
     MOCK_METHOD(
-        QVariant, data, (const QModelIndex& index, int role), (const override));
+        QString, getVariableValue, (const QString& varName), (const override));
 
-    MOCK_METHOD(bool, setData,
-        (const QModelIndex& index, const QVariant& value, int role),
-        (override));
+    MOCK_METHOD(bool, setVariableValue,
+        (const QString& varName, const QVariant& value), (override));
 
-    MOCK_METHOD(
-        QString, getVarValue, (const QString& varName), (const override));
+    MOCK_METHOD(bool, changeVariableName,
+        (const QString& oldName, const QString& newName), (override));
+
+    MOCK_METHOD(bool, insertVariable,
+        (const QString& name, const QString& value), (override));
+
+    MOCK_METHOD(bool, removeVariable, (const QString& varName), (override));
 };
 
 #endif
