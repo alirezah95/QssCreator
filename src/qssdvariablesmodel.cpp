@@ -169,7 +169,11 @@ bool QssdVariablesModel::removeVariable(const QString& varName)
         return false;
     }
 
-    removeRow(var - mVariables.begin());
+    int indx = var - mVariables.begin();
+
+    beginRemoveRows(QModelIndex(), indx, indx);
+    mVariables.remove(indx);
+    endRemoveRows();
 
     return true;
 }
