@@ -116,9 +116,6 @@ public:
 
 private:
     QVector<Variable> mVariables; /*!< A list to store the variables */
-
-    // IQssdVariablesModel interface
-public:
 };
 
 #endif // QSSDVARIABLESMODEL_H
