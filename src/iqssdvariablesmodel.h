@@ -121,6 +121,17 @@ public:
     virtual bool insertVariable(const QString& name, const QString& value) = 0;
 
     /*!
+     * \brief Overrides \a\b QAbstractListModel::removeRows() and make it pure
+     * virtual to make sure subclasses define it
+     * \param row
+     * \param count
+     * \param parent
+     * \return
+     */
+    virtual bool removeRows(
+        int row, int count, const QModelIndex& parent) override = 0;
+
+    /*!
      * \brief Removes a variable from internal data
      * \param name
      * \return True if data was removed successfully and false otherwise
