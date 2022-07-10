@@ -1,26 +1,60 @@
 #ifndef IQSSDVARIABLESMODEL_H
 #define IQSSDVARIABLESMODEL_H
 
-#include <QtCore>
+#include <QAbstractListModel>
+
 /*!
  * \brief The IQssdVariablesModel class which is the abstract base class for
- * a model of the variables inside a \a\b QTextEdit, it makes sure that the
- * subclasses implement methods and functionality required for a class to store
- * and retrieve a variable
+ * a model of the variables inside a \a\b QTextEdit
+ * \details This class provides the interface required for a model of variables.
+ * It will provide index-based and name-based access to the variables letting a
+ * view change the name and also the value of the variables. Although some
+ * invariants are supposed for the subclasses of this model and this interface
+ * will make sure that those invariants will not be broken by the subclasses.
+ * One of this invariants is that for inserting a variable a valid \a name (non
+ * empty) and a valid \a value (non empty) is required. So for this to always be
+ * true the \a\b insertRows() of \a\b QAbstractListModel class must be overriden
+ * by this interface and be made final so subclasses don't override it, and also
+ * \a\b removeRows().
  */
-class IQssdVariablesModel
+class IQssdVariablesModel : public QAbstractListModel
 {
 public:
-    explicit IQssdVariablesModel();
+    explicit IQssdVariablesModel(QObject* parent = nullptr);
     virtual ~IQssdVariablesModel();
 
     /*!
+     * \brief \a\b QAbstractListModel::rowCount()
+     * \param parent
+     * \return
+     */
+    virtual int rowCount(const QModelIndex& parent) const override = 0;
+
+    /*!
+     * \brief \a\b QAbstractListModel::data()
+     * \param index
+     * \param role
+     * \return
+     */
+    virtual QVariant data(
+        const QModelIndex& index, int role) const override = 0;
+
+    /*!
      * \brief Finds the variable with \a varName if any, and returns its value.
-     * If there is no variable with the given name an empty string is returned
+     * If there is no variable with the given name an empty string is returned.
+     * Calls \ref data() internally with proper value
      * \param varName The name of the variable
      * \return A \a\b QString as the variable value
      */
     virtual QString getVariableValue(const QString& varName) const = 0;
+
+    /*!
+     * \brief This is an overloaded method to get the value of a variable at
+     * index \a index. Calls \ref data() internally with proper value
+     * \param index
+     * \return The value of the variable as a \a\b QString
+     */
+    virtual QString getVariableValue(const QModelIndex& index) const = 0;
 
     /*!
      * \brief Find the variable with the given \a varName, if any, and sets its
@@ -30,7 +64,18 @@ public:
      * \param role
      * \return
      */
-    virtual bool setVariableValue(const QString& varName, const QVariant& value)
+    virtual bool setVariableValue(const QString& varName, const QString& value)
+        = 0;
+
+    /*!
+     * \brief This is an overloaded method to set the value of variable at index
+     * \a index
+     * \param index
+     * \param value
+     * \return
+     */
+    virtual bool setVariableValue(
+        const QModelIndex& index, const QString& value)
         = 0;
 
     /*!
@@ -39,8 +84,18 @@ public:
      * \param newName New name of the variable
      * \return
      */
-    virtual bool changeVariableName(
-        const QString& oldName, const QString& newName)
+    virtual bool setVariableName(const QString& oldName, const QString& newName)
+        = 0;
+
+    /*!
+     * \brief This is an overloaded method to set (change) the name of a
+     * variable using its indexx
+     * \param oldName
+     * \param newName
+     * \return
+     */
+    virtual bool setVariableName(
+        const QModelIndex& index, const QString& newName)
         = 0;
 
     /*!
@@ -58,6 +113,13 @@ public:
      * \return True if data was removed successfully and false otherwise
      */
     virtual bool removeVariable(const QString& varName) = 0;
+
+    /*!
+     * \brief This is an overloaded method to remove a variable by its index
+     * \param index
+     * \return
+     */
+    virtual bool removeVariable(const QModelIndex& index) = 0;
 
     /*!
      * \brief Returns the size of the model's internal data

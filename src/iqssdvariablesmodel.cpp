@@ -1,5 +1,8 @@
 #include "iqssdvariablesmodel.h"
 
-IQssdVariablesModel::IQssdVariablesModel() { }
+IQssdVariablesModel::IQssdVariablesModel(QObject* parent)
+    : QAbstractListModel(parent)
+{
+}
 
 IQssdVariablesModel::~IQssdVariablesModel() { }
