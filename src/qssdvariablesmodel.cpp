@@ -34,44 +34,6 @@ QVariant QssdVariablesModel::data(const QModelIndex& index, int role) const
     }
 }
 
-bool QssdVariablesModel::setData(
-    const QModelIndex& index, const QVariant& value, int role)
-{
-    if (!index.isValid() || index.row() >= rowCount(QModelIndex())) {
-        return false;
-    }
-
-    auto& var = mVariables[index.row()];
-    switch (role) {
-    case Roles::VariableName:
-        var.first = value.toString();
-        emit dataChanged(index, index, QList<int>({ Roles::VariableName }));
-        return true;
-    case Roles::VariableValue:
-        var.second = value.toString();
-        emit dataChanged(index, index, QList<int>({ Roles::VariableValue }));
-        return true;
-    default:
-        return false;
-    }
-}
-
-bool QssdVariablesModel::insertRows(
-    int row, int count, const QModelIndex& parent)
-{
-    if (parent.isValid() || row < 0 || row > mVariables.size() || count <= 0) {
-        return false;
-    }
-
-    beginInsertRows(QModelIndex(), row, row + count);
-    for (int i = 0; i < count; ++i) {
-        mVariables.insert(row, Variable());
-    }
-    endInsertRows();
-
-    return true;
-}
-
 bool QssdVariablesModel::removeRows(
     int row, int count, const QModelIndex& parent)
 {
@@ -105,12 +67,15 @@ QString QssdVariablesModel::getVariableValue(const QString& varName) const
     return var->second;
 }
 
-QString QssdVariablesModel::getVariableValue(const QModelIndex& index) const { }
+QString QssdVariablesModel::getVariableValue(const QModelIndex& index) const
+{
+    return data(index, Roles::VariableValue).toString();
+}
 
 bool QssdVariablesModel::setVariableValue(
     const QString& varName, const QString& value)
 {
-    if (mVariables.size() == 0) {
+    if (mVariables.size() == 0 || value.isEmpty()) {
         return false;
     }
 
@@ -121,7 +86,7 @@ bool QssdVariablesModel::setVariableValue(
         return false;
     }
 
-    setData(index(var - mVariables.begin()), value, Roles::VariableValue);
+    (*var).second = value;
     return true;
 }
 

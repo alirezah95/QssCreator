@@ -102,6 +102,17 @@ public:
         const QString& name, const QString& value) override;
 
     /*!
+     * \brief Implement \ref IQssdVariablesModel::removeRows() to remove rows of
+     * variables
+     * \param row
+     * \param count
+     * \param parent
+     * \return
+     */
+    virtual bool removeRows(
+        int row, int count, const QModelIndex& parent) override;
+
+    /*!
      * \brief removeVariable
      * \param varName
      * \return
