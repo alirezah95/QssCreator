@@ -39,6 +39,19 @@ public:
     virtual QVariant data(
         const QModelIndex& index, int role) const override = 0;
 
+    // not allowing insertRows overriding
+
+    /*!
+     * \brief Overrides \a\b QAbstactListModel::insertRows() and make it final
+     * to make sure that this method won't do any insertion
+     * \param row
+     * \param count
+     * \param index
+     * \return
+     */
+    virtual bool insertRows(
+        int row, int count, const QModelIndex& index) override final;
+
     /*!
      * \brief Finds the variable with \a varName if any, and returns its value.
      * If there is no variable with the given name an empty string is returned.

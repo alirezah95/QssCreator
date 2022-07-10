@@ -6,3 +6,10 @@ IQssdVariablesModel::IQssdVariablesModel(QObject* parent)
 }
 
 IQssdVariablesModel::~IQssdVariablesModel() { }
+
+bool IQssdVariablesModel::insertRows(
+    int row, int count, const QModelIndex& index)
+{
+    // does nothing
+    return false;
+}
