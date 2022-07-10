@@ -87,6 +87,7 @@ bool QssdVariablesModel::setVariableValue(
     }
 
     (*var).second = value;
+
     auto indx = index(var - mVariables.begin());
     emit dataChanged(indx, indx, { Roles::VariableValue });
     return true;
@@ -120,13 +121,26 @@ bool QssdVariablesModel::setVariableName(
         return false;
     }
 
-    setData(index(var - mVariables.begin()), newName, Roles::VariableName);
+    (*var).first = newName;
+
+    auto indx = index(var - mVariables.begin());
+    emit dataChanged(indx, indx, { Roles::VariableName });
     return true;
 }
 
 bool QssdVariablesModel::setVariableName(
     const QModelIndex& index, const QString& newName)
 {
+    if (!index.isValid() || index.row() > mVariables.size()
+        || newName.isEmpty()) {
+        return false;
+    }
+
+    Variable& var = mVariables[index.row()];
+    var.first = newName;
+
+    emit dataChanged(index, index, { Roles::VariableName });
+    return true;
 }
 
 bool QssdVariablesModel::insertVariable(
