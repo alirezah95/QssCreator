@@ -146,7 +146,7 @@ bool QssdVariablesModel::setVariableName(
 bool QssdVariablesModel::insertVariable(
     const QString& name, const QString& value)
 {
-    if (name.isEmpty() || value.isEmpty()) {
+    if (name.isEmpty() || value.isEmpty() || contains(name)) {
         return false;
     }
 
