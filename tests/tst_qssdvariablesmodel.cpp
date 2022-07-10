@@ -125,7 +125,13 @@ TEST_F(TestQssdVariablesModel, TestChangeVariableName)
 
 TEST_F(TestQssdVariablesModel, TestInsertVariable)
 {
+    QSignalSpy insertSigSpy(model, &QssdVariablesModel::rowsInserted);
     model->insertVariable("var2", "margin");
+
+    EXPECT_EQ(insertSigSpy.count(), 1);
+    auto fstEmission = insertSigSpy.takeFirst();
+    EXPECT_EQ(fstEmission.at(1).toInt(), 0);
+    EXPECT_EQ(fstEmission.at(2).toInt(), 0);
 
     EXPECT_STREQ(model->data(model->index(0), QssdVariablesModel::VariableName)
                      .toString()
