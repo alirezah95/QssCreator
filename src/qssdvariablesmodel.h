@@ -3,7 +3,6 @@
 
 #include "iqssdvariablesmodel.h"
 
-#include <QAbstractListModel>
 #include <QMap>
 
 using Variable = QPair<QString, QString>;
@@ -15,7 +14,7 @@ using Variable = QPair<QString, QString>;
  * This class inherits both \ref IQssdVariablesModel and \a\b
  * QAbstractListModel to provide functionality of the two classes
  */
-class QssdVariablesModel : public QAbstractListModel, public IQssdVariablesModel
+class QssdVariablesModel : public IQssdVariablesModel
 {
     Q_OBJECT
 
@@ -28,16 +27,15 @@ public:
     explicit QssdVariablesModel(QObject* parent = nullptr);
     virtual ~QssdVariablesModel();
 
-    // QAbstractListModel functionality
     /*!
-     * \brief Reimplement \a\b QAbstractListModel::rowCount()
+     * \brief rowCount
      * \param parent
      * \return
      */
     virtual int rowCount(const QModelIndex& parent) const override;
 
     /*!
-     * \brief Reimplemnt \a\b QAbstractListModel::data()
+     * \brief data
      * \param index
      * \param role
      * \return
@@ -45,66 +43,57 @@ public:
     virtual QVariant data(const QModelIndex& index, int role) const override;
 
     /*!
-     * \brief Reimplements \a\b QAbstractItemModel::setData() to set a variable
-     * value only
-     * \param index
-     * \param value
-     * \param role Only \ref Roles::VariableValue is accepted
-     * \return
-     */
-    virtual bool setData(
-        const QModelIndex& index, const QVariant& value, int role) override;
-
-    /*!
-     * \brief Implements \a\b QAbstractItemModel::insertRows() to insert rows
-     * for variables in the internal data buffer
-     * \param row
-     * \param count
-     * \param parent
-     * \return
-     */
-    virtual bool insertRows(
-        int row, int count, const QModelIndex& parent) override;
-
-    /*!
-     * \brief Implements \a\b QAbstractItemModel::removeRows() to remove rows
-     * of data in the internal data buffer
-     * \param row
-     * \param count
-     * \param parent
-     * \return
-     */
-    virtual bool removeRows(
-        int row, int count, const QModelIndex& parent) override;
-
-    // IQssdVariablesModel functionality
-    /*!
-     * \brief Implements \ref IQssdVariablesModel::variableValue()
+     * \brief getVariableValue
      * \param varName
      * \return
      */
     virtual QString getVariableValue(const QString& varName) const override;
 
     /*!
-     * \brief Implements \ref IQssdVariablesModel::setVariableValue()
+     * \brief getVariableValue
+     * \param index
+     * \return
+     */
+    virtual QString getVariableValue(const QModelIndex& index) const override;
+
+    /*!
+     * \brief setVariableValue
      * \param varName
      * \param value
      * \return
      */
     virtual bool setVariableValue(
-        const QString& varName, const QVariant& value) override;
+        const QString& varName, const QString& value) override;
 
     /*!
-     * \brief Implements \ref IQssdVariablesModel::changeVariableName
+     * \brief setVariableValue
+     * \param index
+     * \param value
+     * \return
+     */
+    virtual bool setVariableValue(
+        const QModelIndex& index, const QString& value) override;
+
+    /*!
+     * \brief setVariableName
      * \param oldName
      * \param newName
      * \return
      */
-    virtual bool changeVariableName(
+    virtual bool setVariableName(
         const QString& oldName, const QString& newName) override;
 
     /*!
-     * \brief Implements \ref IQssdVariablesModel::insertVariable()
+     * \brief setVariableName
+     * \param index
+     * \param newName
+     * \return
+     */
+    virtual bool setVariableName(
+        const QModelIndex& index, const QString& newName) override;
+
+    /*!
+     * \brief insertVariable
      * \param name
      * \param value
      * \return
@@ -113,17 +102,24 @@ public:
         const QString& name, const QString& value) override;
 
     /*!
-     * \brief Implements \ref IQssdVariablesModel::removeVariable()
+     * \brief removeVariable
      * \param varName
      * \return
      */
     virtual bool removeVariable(const QString& varName) override;
 
     /*!
-     * \brief Implements \ref IQssdVariablesModel::size()
+     * \brief removeVariable
+     * \param index
      * \return
      */
-    virtual size_t size() const override { return rowCount(QModelIndex()); }
+    virtual bool removeVariable(const QModelIndex& index) override;
+
+    /*!
+     * \brief size
+     * \return
+     */
+    virtual size_t size() const override { return rowCount(QModelIndex()); };
 
 private:
     QVector<Variable> mVariables; /*!< A list to store the variables */

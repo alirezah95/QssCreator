@@ -1,7 +1,7 @@
 #include "qssdvariablesmodel.h"
 
 QssdVariablesModel::QssdVariablesModel(QObject* parent)
-    : QAbstractListModel(parent)
+    : IQssdVariablesModel(parent)
 {
 }
 
@@ -105,8 +105,10 @@ QString QssdVariablesModel::getVariableValue(const QString& varName) const
     return var->second;
 }
 
+QString QssdVariablesModel::getVariableValue(const QModelIndex& index) const { }
+
 bool QssdVariablesModel::setVariableValue(
-    const QString& varName, const QVariant& value)
+    const QString& varName, const QString& value)
 {
     if (mVariables.size() == 0) {
         return false;
@@ -123,7 +125,12 @@ bool QssdVariablesModel::setVariableValue(
     return true;
 }
 
-bool QssdVariablesModel::changeVariableName(
+bool QssdVariablesModel::setVariableValue(
+    const QModelIndex& index, const QString& value)
+{
+}
+
+bool QssdVariablesModel::setVariableName(
     const QString& oldName, const QString& newName)
 {
     if (oldName.isEmpty() || newName.isEmpty()) {
@@ -139,6 +146,11 @@ bool QssdVariablesModel::changeVariableName(
 
     setData(index(var - mVariables.begin()), newName, Roles::VariableName);
     return true;
+}
+
+bool QssdVariablesModel::setVariableName(
+    const QModelIndex& index, const QString& newName)
+{
 }
 
 bool QssdVariablesModel::insertVariable(
@@ -171,3 +183,5 @@ bool QssdVariablesModel::removeVariable(const QString& varName)
 
     return true;
 }
+
+bool QssdVariablesModel::removeVariable(const QModelIndex& index) { }
