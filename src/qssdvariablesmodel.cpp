@@ -178,7 +178,17 @@ bool QssdVariablesModel::removeVariable(const QString& varName)
     return true;
 }
 
-bool QssdVariablesModel::removeVariable(const QModelIndex& index) { }
+bool QssdVariablesModel::removeVariable(const QModelIndex& index)
+{
+    if (!index.isValid() || index.row() >= mVariables.size()) {
+        return false;
+    }
+
+    beginRemoveRows(QModelIndex(), index.row(), index.row());
+    mVariables.remove(index.row());
+    endRemoveRows();
+    return true;
+}
 
 bool QssdVariablesModel::contains(const QString& varName) const
 {

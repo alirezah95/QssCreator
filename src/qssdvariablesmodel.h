@@ -133,6 +133,11 @@ public:
     virtual size_t size() const override { return rowCount(QModelIndex()); };
 
 private:
+    /*!
+     * \brief Check if variable with the given \a varName exists
+     * \param varName
+     * \return True if it exists and false otherwise
+     */
     bool contains(const QString& varName) const;
 
 private:
