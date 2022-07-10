@@ -123,6 +123,22 @@ TEST_F(TestQssdVariablesModel, TestChangeVariableName)
         "fstVariable");
 }
 
+TEST_F(TestQssdVariablesModel, TestInsertVariable)
+{
+    model->insertVariable("var2", "margin");
+
+    EXPECT_STREQ(model->data(model->index(0), QssdVariablesModel::VariableName)
+                     .toString()
+                     .toStdString()
+                     .c_str(),
+        "var2");
+    EXPECT_STREQ(model->data(model->index(0), QssdVariablesModel::VariableValue)
+                     .toString()
+                     .toStdString()
+                     .c_str(),
+        "margin");
+}
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
