@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QRegularExpression>
 
-#include "iqssdpreprocessor.h"
+#include "iqssdprocessor.h"
 
 class QTextEdit;
 class IQssdVariablesModel;

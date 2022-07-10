@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "qssdeditor.h"
 #include "qssdfileoperations.h"
-#include "qssdpreprocessor.h"
+#include "qssdprocessor.h"
 #include "userdialogs.h"
 
 #include <QApplication>

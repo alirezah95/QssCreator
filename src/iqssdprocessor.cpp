@@ -1,4 +1,4 @@
-#include "iqssdpreprocessor.h"
+#include "iqssdprocessor.h"
 
 IQssdPreprocessor::IQssdPreprocessor(QObject* parent) : QObject { parent } { }
 

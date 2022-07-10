@@ -1,4 +1,4 @@
-#include "qssdpreprocessor.h"
+#include "qssdprocessor.h"
 
 #include "iqssdvariablesmodel.h"
 #include <QTextEdit>

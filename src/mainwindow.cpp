@@ -4,7 +4,7 @@
 #include "documentfile.h"
 #include "findreplacedialog.h"
 #include "iqssdfileoperations.h"
-#include "iqssdpreprocessor.h"
+#include "iqssdprocessor.h"
 #include "iuserdialogs.h"
 #include "qssdeditor.h"
 #include "widgetspreview.h"
