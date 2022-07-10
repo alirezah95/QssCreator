@@ -133,6 +133,9 @@ public:
     virtual size_t size() const override { return rowCount(QModelIndex()); };
 
 private:
+    bool contains(const QString& varName) const;
+
+private:
     QVector<Variable> mVariables; /*!< A list to store the variables */
 };
 

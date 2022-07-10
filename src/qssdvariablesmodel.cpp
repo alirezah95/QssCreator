@@ -175,3 +175,11 @@ bool QssdVariablesModel::removeVariable(const QString& varName)
 }
 
 bool QssdVariablesModel::removeVariable(const QModelIndex& index) { }
+
+bool QssdVariablesModel::contains(const QString& varName) const
+{
+    QVector<Variable>::const_iterator var = std::find_if(mVariables.begin(),
+        mVariables.end(),
+        [varName](Variable& item) -> bool { return item.first == varName; });
+    return (var != mVariables.end());
+}
