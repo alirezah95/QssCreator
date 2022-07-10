@@ -87,12 +87,23 @@ bool QssdVariablesModel::setVariableValue(
     }
 
     (*var).second = value;
+    auto indx = index(var - mVariables.begin());
+    emit dataChanged(indx, indx, { Roles::VariableValue });
     return true;
 }
 
 bool QssdVariablesModel::setVariableValue(
     const QModelIndex& index, const QString& value)
 {
+    if (!index.isValid() || index.row() > mVariables.size()
+        || value.isEmpty()) {
+        return false;
+    }
+
+    Variable& var = mVariables[index.row()];
+    var.second = value;
+    emit dataChanged(index, index, { Roles::VariableValue });
+    return true;
 }
 
 bool QssdVariablesModel::setVariableName(
