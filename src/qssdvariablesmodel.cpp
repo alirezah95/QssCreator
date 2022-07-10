@@ -110,7 +110,7 @@ bool QssdVariablesModel::setVariableValue(
 bool QssdVariablesModel::setVariableName(
     const QString& oldName, const QString& newName)
 {
-    if (oldName.isEmpty() || newName.isEmpty()) {
+    if (oldName.isEmpty() || newName.isEmpty() || contains(newName)) {
         return false;
     }
 
@@ -131,8 +131,8 @@ bool QssdVariablesModel::setVariableName(
 bool QssdVariablesModel::setVariableName(
     const QModelIndex& index, const QString& newName)
 {
-    if (!index.isValid() || index.row() > mVariables.size()
-        || newName.isEmpty()) {
+    if (!index.isValid() || index.row() > mVariables.size() || newName.isEmpty()
+        || contains(newName)) {
         return false;
     }
 
