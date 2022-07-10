@@ -39,13 +39,13 @@ add_new_gtest(TestMainWindow
     tst_mockqssdeditor.h
     tst_mockqssdfileoperations.h
     tst_mockuserdialogs.h
-    tst_mockqssdpreprocessor.h
+    tst_mockqssdprocessor.h
     ../src/mainwindow.cpp
     ../src/widgetspreview.cpp
     ../src/idocumentfile.cpp
     ../src/iqssdeditor.cpp
     ../src/iqssdfileoperations.cpp
-    ../src/iqssdpreprocessor.cpp
+    ../src/iqssdprocessor.cpp
     ../src/iuserdialogs.cpp
     ../src/findreplacedialog.cpp
 )
@@ -61,11 +61,11 @@ add_new_gtest(TestQssdVariable
 )
 
 add_new_gtest(TestQssdPreprocessor
-    tst_qssdpreprocessor.cpp
+    tst_qssdprocessor.cpp
     tst_mockqssdvariablesmodle.h
     ../src/iqssdvariablesmodel.cpp
-    ../src/qssdpreprocessor.cpp
-    ../src/iqssdpreprocessor.cpp
+    ../src/qssdprocessor.cpp
+    ../src/iqssdprocessor.cpp
 )
 
 add_new_gtest(TestQssdVariablesModel

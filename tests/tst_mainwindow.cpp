@@ -12,7 +12,7 @@
 
 #include "tst_mockqssdeditor.h"
 #include "tst_mockqssdfileoperations.h"
-#include "tst_mockqssdpreprocessor.h"
+#include "tst_mockqssdprocessor.h"
 #include "tst_mockuserdialogs.h"
 
 using namespace ::testing;

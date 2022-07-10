@@ -4,7 +4,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "qssdpreprocessor.h"
+#include "qssdprocessor.h"
 #include "tst_mockqssdvariablesmodle.h"
 
 using namespace ::testing;
