@@ -37,7 +37,7 @@ TEST_F(TestQssdVariablesModel, TestInsertRows)
 
 TEST_F(TestQssdVariablesModel, TestSetDataSignals)
 {
-    model->insertRows(0, 4, QModelIndex());
+    model->insertRows(0, 1, QModelIndex());
 
     QSignalSpy dtChangedSpy(model, &QssdVariablesModel::dataChanged);
 
@@ -62,7 +62,7 @@ TEST_F(TestQssdVariablesModel, TestSetDataSignals)
 
 TEST_F(TestQssdVariablesModel, TestData)
 {
-    model->insertRows(0, 4, QModelIndex());
+    model->insertRows(0, 1, QModelIndex());
 
     QSignalSpy dtChangedSpy(model, &QssdVariablesModel::dataChanged);
 
