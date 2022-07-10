@@ -81,6 +81,14 @@ TEST_F(TestQssdVariablesModel, TestData)
         "3em");
 }
 
+TEST_F(TestQssdVariablesModel, TestDataInvalid)
+{
+    EXPECT_FALSE(model->data(model->index(0), QssdVariablesModel::VariableName)
+                     .isValid());
+    EXPECT_FALSE(model->data(model->index(0), QssdVariablesModel::VariableValue)
+                     .isValid());
+}
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
