@@ -66,6 +66,17 @@ public:
     virtual bool insertRows(
         int row, int count, const QModelIndex& parent) override;
 
+    /*!
+     * \brief Implements \a\b QAbstractItemModel::removeRows() to remove rows
+     * of data in the internal data buffer
+     * \param row
+     * \param count
+     * \param parent
+     * \return
+     */
+    virtual bool removeRows(
+        int row, int count, const QModelIndex& parent) override;
+
     // IQssdVariablesModel functionality
     /*!
      * \brief Implements \ref IQssdVariablesModel::variableValue()

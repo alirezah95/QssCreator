@@ -72,6 +72,21 @@ bool QssdVariablesModel::insertRows(
     return true;
 }
 
+bool QssdVariablesModel::removeRows(
+    int row, int count, const QModelIndex& parent)
+{
+    if (parent.isValid() || row < 0 || count <= 0
+        || row + count > mVariables.size()) {
+        return false;
+    }
+
+    beginRemoveRows(QModelIndex(), row, row + count);
+    mVariables.remove(row, count);
+    endRemoveRows();
+
+    return true;
+}
+
 // IQssdVariablesModel methods definition
 QString QssdVariablesModel::getVariableValue(const QString& varName) const
 {
