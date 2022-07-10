@@ -160,6 +160,19 @@ TEST_F(TestQssdVariablesModel, TestRemoveVariable)
     EXPECT_EQ(fstEmission.at(1).toInt(), 1);
 }
 
+TEST_F(TestQssdVariablesModel, TestNotExistingVariable)
+{
+    model->insertRows(0, 1, QModelIndex());
+    model->setData(model->index(0), "var_1", QssdVariablesModel::VariableName);
+    model->setData(model->index(0), "3em", QssdVariablesModel::VariableValue);
+
+    QSignalSpy removeSigSpy(model, &QssdVariablesModel::rowsRemoved);
+    model->removeVariable("wrongVar");
+
+    EXPECT_EQ(model->rowCount(QModelIndex()), 1);
+    ASSERT_EQ(removeSigSpy.count(), 0);
+}
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
