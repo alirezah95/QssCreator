@@ -1,5 +1,5 @@
-#ifndef QSSDPREPROCESSOR_H
-#define QSSDPREPROCESSOR_H
+#ifndef QSSDPROCESSOR_H
+#define QSSDPROCESSOR_H
 
 #include <QObject>
 #include <QRegularExpression>
@@ -10,29 +10,29 @@ class QTextEdit;
 class IQssdVariablesModel;
 
 /*!
- * \brief The QssdPreprocessor class which is responsible for processing a
+ * \brief The QssdProcessor class which is responsible for processing a
  * document inside a \ref QTextEdit and updating the variables in document
  * with a \ref IQssdVariableModel and vice versa. And also it is responsible for
  * replaced variables occurences in a document with the actual value of the
  * variable
  */
-class QssdPreprocessor : public IQssdPreprocessor
+class QssdProcessor : public IQssdProcessor
 {
     Q_OBJECT
 public:
-    explicit QssdPreprocessor(QObject* parent = nullptr);
-    QssdPreprocessor(IQssdVariablesModel* varsModel, QObject* parent = nullptr);
-    ~QssdPreprocessor();
+    explicit QssdProcessor(QObject* parent = nullptr);
+    QssdProcessor(IQssdVariablesModel* varsModel, QObject* parent = nullptr);
+    ~QssdProcessor();
 
     /*!
-     * \brief Implements \ref IQssdPreprocessor::setVariablesModel to set the
+     * \brief Implements \ref IQssdProcessor::setVariablesModel to set the
      * list models of the variables
      * \param varsModel
      */
     void setVariablesModel(IQssdVariablesModel* varsModel);
 
     /*!
-     * \brief Implements \ref IQssdPreprocessor::getProcessedDocumentContent()
+     * \brief Implements \ref IQssdProcessor::getProcessedDocumentContent()
      * to processes the document, replaces all variables with theri values and
      * returning a \a\b QString as the result
      * \return \a\b QString as the result of processing
@@ -40,7 +40,7 @@ public:
     QString getProcessedDocumentContent(QTextEdit* editor);
 
     /*!
-     * \brief Implements \ref IQssdPreprocessor::processDocumentVariables() to
+     * \brief Implements \ref IQssdProcessor::processDocumentVariables() to
      * searches for the variables in the document and updates the vars model
      */
     void processDocumentVariables(QTextEdit* editor);

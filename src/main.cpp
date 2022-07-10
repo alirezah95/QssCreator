@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
     auto editor = new QssdEditor;
     auto docOper = new QssdFileOperations;
     auto userDlgs = new UserDialogs;
-    auto processor = new QssdPreprocessor;
+    auto processor = new QssdProcessor;
 
     MainWindow w(editor, docOper, userDlgs, processor);
     w.show();

@@ -1,17 +1,17 @@
-#ifndef IQSSDPREPROCESSOR_H
-#define IQSSDPREPROCESSOR_H
+#ifndef IQSSDPROCESSOR_H
+#define IQSSDPROCESSOR_H
 
 #include <QObject>
 
 class QTextEdit;
 class IQssdVariablesModel;
 
-class IQssdPreprocessor : public QObject
+class IQssdProcessor : public QObject
 {
     Q_OBJECT
 public:
-    explicit IQssdPreprocessor(QObject* parent = nullptr);
-    virtual ~IQssdPreprocessor();
+    explicit IQssdProcessor(QObject* parent = nullptr);
+    virtual ~IQssdProcessor();
 
     /*!
      * \brief Set the list models of the variables

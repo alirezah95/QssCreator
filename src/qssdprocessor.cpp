@@ -3,8 +3,8 @@
 #include "iqssdvariablesmodel.h"
 #include <QTextEdit>
 
-QssdPreprocessor::QssdPreprocessor(QObject* parent)
-    : IQssdPreprocessor { parent }
+QssdProcessor::QssdProcessor(QObject* parent)
+    : IQssdProcessor { parent }
 {
     mVarDefineRegex
         = QRegularExpression(R"(\$(\w*)[\s\n]*=[\s\n]*(#?[\w-]*);)");
@@ -12,24 +12,24 @@ QssdPreprocessor::QssdPreprocessor(QObject* parent)
     return;
 }
 
-QssdPreprocessor::QssdPreprocessor(
+QssdProcessor::QssdProcessor(
     IQssdVariablesModel* varsModel, QObject* parent)
-    : QssdPreprocessor(parent)
+    : QssdProcessor(parent)
 {
     setVariablesModel(varsModel);
     return;
 }
 
-QssdPreprocessor::~QssdPreprocessor() { }
+QssdProcessor::~QssdProcessor() { }
 
-void QssdPreprocessor::setVariablesModel(IQssdVariablesModel* varsModel)
+void QssdProcessor::setVariablesModel(IQssdVariablesModel* varsModel)
 {
     mVarsModel = varsModel;
     if (mVarsModel) { }
     return;
 }
 
-QString QssdPreprocessor::getProcessedDocumentContent(QTextEdit* editor)
+QString QssdProcessor::getProcessedDocumentContent(QTextEdit* editor)
 {
     if (editor && mVarsModel) {
         QString content = editor->document()->toPlainText();
@@ -58,7 +58,7 @@ QString QssdPreprocessor::getProcessedDocumentContent(QTextEdit* editor)
     return QString();
 }
 
-void QssdPreprocessor::processDocumentVariables(QTextEdit* editor)
+void QssdProcessor::processDocumentVariables(QTextEdit* editor)
 {
     if (editor && mVarsModel) {
         const QString& content = editor->document()->toPlainText();

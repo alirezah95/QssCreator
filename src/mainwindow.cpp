@@ -23,7 +23,7 @@
     connect(act, &QAction::triggered, mStyleEditor, &IQssdEditor::slot)
 
 MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
-    IUserDialogs* userDlgs, IQssdPreprocessor* proc, QWidget* parent)
+    IUserDialogs* userDlgs, IQssdProcessor* proc, QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), mStyleEditor(editor),
       mPreview(new WidgetsPreview), mDocOpers(docOper), mUserDlgs(userDlgs),
       mDocProcessor(proc), mFindReplaceDlg(nullptr)

@@ -1,5 +1,5 @@
 #include "iqssdprocessor.h"
 
-IQssdPreprocessor::IQssdPreprocessor(QObject* parent) : QObject { parent } { }
+IQssdProcessor::IQssdProcessor(QObject* parent) : QObject { parent } { }
 
-IQssdPreprocessor::~IQssdPreprocessor() { }
+IQssdProcessor::~IQssdProcessor() { }

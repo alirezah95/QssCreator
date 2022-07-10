@@ -7,7 +7,7 @@ class WidgetsPreview;
 class IQssdEditor;
 class IQssdFileOperations;
 class IUserDialogs;
-class IQssdPreprocessor;
+class IQssdProcessor;
 class FindReplaceDialog;
 
 QT_BEGIN_NAMESPACE
@@ -31,7 +31,7 @@ public:
      * \param parent
      */
     MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
-        IUserDialogs* userDlgs, IQssdPreprocessor* proc,
+        IUserDialogs* userDlgs, IQssdProcessor* proc,
         QWidget* parent = nullptr);
     ~MainWindow();
 
@@ -110,7 +110,7 @@ private:
                               * operations
                               */
 
-    IQssdPreprocessor* mDocProcessor; /*!< Pointer to a \ref IQssdPreprocessor
+    IQssdProcessor* mDocProcessor; /*!< Pointer to a \ref IQssdProcessor
                                        * used for processing editor's document
                                        */
 
