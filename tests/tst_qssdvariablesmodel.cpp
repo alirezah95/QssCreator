@@ -145,6 +145,21 @@ TEST_F(TestQssdVariablesModel, TestInsertVariable)
         "margin");
 }
 
+TEST_F(TestQssdVariablesModel, TestRemoveVariable)
+{
+    model->insertRows(0, 2, QModelIndex());
+    model->setData(model->index(1), "var_1", QssdVariablesModel::VariableName);
+    model->setData(model->index(1), "3em", QssdVariablesModel::VariableValue);
+
+    QSignalSpy removeSigSpy(model, &QssdVariablesModel::rowsRemoved);
+    model->removeVariable("var_1");
+
+    ASSERT_EQ(removeSigSpy.count(), 1);
+    const QList<QVariant>& fstEmission = removeSigSpy.takeFirst();
+    EXPECT_EQ(fstEmission.at(1).toInt(), 1);
+    EXPECT_EQ(fstEmission.at(1).toInt(), 1);
+}
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
