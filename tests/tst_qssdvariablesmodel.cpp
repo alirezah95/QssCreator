@@ -60,6 +60,27 @@ TEST_F(TestQssdVariablesModel, TestSetDataSignals)
         == QssdVariablesModel::VariableValue);
 }
 
+TEST_F(TestQssdVariablesModel, TestData)
+{
+    model->insertRows(0, 4, QModelIndex());
+
+    QSignalSpy dtChangedSpy(model, &QssdVariablesModel::dataChanged);
+
+    model->setData(model->index(0), "var_1", QssdVariablesModel::VariableName);
+    model->setData(model->index(0), "3em", QssdVariablesModel::VariableValue);
+
+    EXPECT_STREQ(model->data(model->index(0), QssdVariablesModel::VariableName)
+                     .toString()
+                     .toStdString()
+                     .c_str(),
+        "var_1");
+    EXPECT_STREQ(model->data(model->index(0), QssdVariablesModel::VariableValue)
+                     .toString()
+                     .toStdString()
+                     .c_str(),
+        "3em");
+}
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
