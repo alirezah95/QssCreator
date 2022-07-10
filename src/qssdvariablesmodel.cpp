@@ -133,7 +133,9 @@ bool QssdVariablesModel::insertVariable(
         return false;
     }
 
-    insertRow(mVariables.size());
+    beginInsertRows(QModelIndex(), mVariables.size(), mVariables.size());
+    mVariables.emplace_back(Variable(name, value));
+    endInsertRows();
     return true;
 }
 
