@@ -89,6 +89,40 @@ TEST_F(TestQssdVariablesModel, TestDataInvalid)
                      .isValid());
 }
 
+TEST_F(TestQssdVariablesModel, TestGetVariableValue)
+{
+    model->insertRows(0, 1, QModelIndex());
+    model->setData(model->index(0), "var_1", QssdVariablesModel::VariableName);
+    model->setData(model->index(0), "3em", QssdVariablesModel::VariableValue);
+
+    EXPECT_STREQ(model->getVariableValue("var_1").toStdString().c_str(), "3em");
+}
+
+TEST_F(TestQssdVariablesModel, TestSetVariableValue)
+{
+    model->insertRows(0, 1, QModelIndex());
+    model->setData(model->index(0), "var_1", QssdVariablesModel::VariableName);
+    model->setVariableValue("var_1", "#ff00ff");
+
+    EXPECT_STREQ(
+        model->getVariableValue("var_1").toStdString().c_str(), "#ff00ff");
+}
+
+TEST_F(TestQssdVariablesModel, TestChangeVariableName)
+{
+    model->insertRows(0, 1, QModelIndex());
+    model->setData(model->index(0), "var_1", QssdVariablesModel::VariableName);
+    model->setData(model->index(0), "3em", QssdVariablesModel::VariableValue);
+
+    model->changeVariableName("var_1", "fstVariable");
+
+    EXPECT_STREQ(model->data(model->index(0), QssdVariablesModel::VariableName)
+                     .toString()
+                     .toStdString()
+                     .c_str(),
+        "fstVariable");
+}
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
