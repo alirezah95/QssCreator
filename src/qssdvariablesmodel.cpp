@@ -48,7 +48,7 @@ bool QssdVariablesModel::setData(
         emit dataChanged(index, index, QList<int>({ Roles::VariableName }));
         return true;
     case Roles::VariableValue:
-        var.first = value.toString();
+        var.second = value.toString();
         emit dataChanged(index, index, QList<int>({ Roles::VariableValue }));
         return true;
     default:
