@@ -9,7 +9,7 @@
 
 using namespace ::testing;
 
-class TestQssdPreprocessor : public Test
+class TestQssdProcessor : public Test
 {
 public:
     void SetUp()
@@ -29,7 +29,7 @@ public:
                        "}");
 
         modelMock = new MockVariablesModel;
-        preProc = new QssdPreprocessor(modelMock);
+        preProc = new QssdProcessor(modelMock);
     }
 
     void TearDown()
@@ -40,12 +40,12 @@ public:
         return;
     }
 
-    QssdPreprocessor* preProc;
+    QssdProcessor* preProc;
     QTextEdit* editor;
     MockVariablesModel* modelMock;
 };
 
-TEST_F(TestQssdPreprocessor, TestDifinitionRegex)
+TEST_F(TestQssdProcessor, TestDifinitionRegex)
 {
     editor->document()->setModified(true);
 
@@ -63,7 +63,7 @@ TEST_F(TestQssdPreprocessor, TestDifinitionRegex)
     preProc->processDocumentVariables(editor);
 }
 
-TEST_F(TestQssdPreprocessor, TestProcessedDocumentContent)
+TEST_F(TestQssdProcessor, TestProcessedDocumentContent)
 {
     EXPECT_CALL(*modelMock, getVariableValue(QString("Variable")))
         .WillRepeatedly(Return("12px"));

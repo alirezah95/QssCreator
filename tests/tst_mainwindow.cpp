@@ -25,7 +25,7 @@ public:
         editorMock = new MockQssdEditor;
         opersMock = new MockQssdFileOperations;
         userDlgsMock = new MockUserDialogs;
-        processorMock = new MockQssdPreprocessor;
+        processorMock = new MockQssdProcessor;
 
         mainWin = new MainWindow(
             editorMock, opersMock, userDlgsMock, processorMock);
@@ -40,7 +40,7 @@ public:
     MockQssdEditor* editorMock;
     MockQssdFileOperations* opersMock;
     MockUserDialogs* userDlgsMock;
-    MockQssdPreprocessor* processorMock;
+    MockQssdProcessor* processorMock;
 
     MainWindow* mainWin;
 };
