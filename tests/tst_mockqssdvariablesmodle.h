@@ -14,9 +14,6 @@ public:
     MOCK_METHOD(
         QVariant, data, (const QModelIndex& index, int role), (const override));
 
-    MOCK_METHOD(bool, removeRows,
-        (int row, int count, const QModelIndex& parent), (override));
-
     MOCK_METHOD(
         QString, getVariableValue, (const QString& varName), (const override));
 
@@ -36,7 +33,7 @@ public:
         (const QModelIndex& index, const QString& newName), (override));
 
     MOCK_METHOD(bool, insertVariable,
-        (const QString& name, const QString& value), (override));
+        (int row, const QString& name, const QString& value), (override));
 
     MOCK_METHOD(bool, removeVariable, (const QString& varName), (override));
 

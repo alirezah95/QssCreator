@@ -51,12 +51,13 @@ TEST_F(TestQssdProcessor, TestDifinitionRegex)
 
     //    EXPECT_CALL(*modelMock, rowCount(_)).WillRepeatedly(Return(1));
     EXPECT_CALL(
-        *modelMock, insertVariable(QString("Variable"), QString("12px")))
+        *modelMock, insertVariable(0, QString("Variable"), QString("12px")))
         .Times(1);
     EXPECT_CALL(
-        *modelMock, insertVariable(QString("var_1"), QString("#ff22ee")))
+        *modelMock, insertVariable(1, QString("var_1"), QString("#ff22ee")))
         .Times(1);
-    EXPECT_CALL(*modelMock, insertVariable(QString("VAR_2"), QString("12px")))
+    EXPECT_CALL(
+        *modelMock, insertVariable(2, QString("VAR_2"), QString("12px")))
         .Times(1);
 
     editor->document()->setModified(false);

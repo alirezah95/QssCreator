@@ -30,7 +30,7 @@ TEST_F(TestQssdVariablesModel, TestInsertVariable)
 {
     QSignalSpy insertSigSpy(model, &QssdVariablesModel::rowsInserted);
 
-    model->insertVariable("var2", "margin");
+    model->insertVariable(model->size(), "var2", "margin");
 
     EXPECT_EQ(insertSigSpy.count(), 1);
 
@@ -78,7 +78,7 @@ TEST_F(TestQssdVariablesModel, TestSetDataSignals)
 
 TEST_F(TestQssdVariablesModel, TestData)
 {
-    model->insertVariable("var_1", "3em");
+    model->insertVariable(model->size(), "var_1", "3em");
 
     EXPECT_STREQ(model->data(model->index(0), QssdVariablesModel::VariableName)
                      .toString()
@@ -102,7 +102,7 @@ TEST_F(TestQssdVariablesModel, TestDataInvalid)
 
 TEST_F(TestQssdVariablesModel, TestGetVariableValue)
 {
-    model->insertVariable("var_1", "3em");
+    model->insertVariable(model->size(), "var_1", "3em");
 
     EXPECT_STREQ(model->getVariableValue("var_1").toStdString().c_str(), "3em");
     EXPECT_STREQ(
@@ -111,7 +111,7 @@ TEST_F(TestQssdVariablesModel, TestGetVariableValue)
 
 TEST_F(TestQssdVariablesModel, TestSetVariableValue)
 {
-    model->insertVariable("var_1", "3em");
+    model->insertVariable(model->size(), "var_1", "3em");
     model->setVariableValue("var_1", "#ff00ff");
 
     EXPECT_STREQ(
@@ -123,7 +123,7 @@ TEST_F(TestQssdVariablesModel, TestSetVariableValue)
 
 TEST_F(TestQssdVariablesModel, TestSetVariableName)
 {
-    model->insertVariable("var_1", "3em");
+    model->insertVariable(model->size(), "var_1", "3em");
 
     model->setVariableName("var_1", "fstVariable");
     EXPECT_STREQ(model->data(model->index(0), QssdVariablesModel::VariableName)
@@ -143,8 +143,8 @@ TEST_F(TestQssdVariablesModel, TestSetVariableName)
 TEST_F(TestQssdVariablesModel, TestSetVariableNameToExistingName)
 {
     QSignalSpy chDataSigSpy(model, &QssdVariablesModel::dataChanged);
-    model->insertVariable("var_1", "3em");
-    model->insertVariable("color_var", "#bbccdd");
+    model->insertVariable(model->size(), "var_1", "3em");
+    model->insertVariable(model->size(), "color_var", "#bbccdd");
 
     model->setVariableName("var_1", "color_var");
     EXPECT_EQ(chDataSigSpy.count(), 0);
@@ -157,8 +157,8 @@ TEST_F(TestQssdVariablesModel, TestSetVariableNameToExistingName)
 
 TEST_F(TestQssdVariablesModel, TestRemoveVariable)
 {
-    model->insertVariable("var_1", "3em");
-    model->insertVariable("var_2", "#aabbcc");
+    model->insertVariable(model->size(), "var_1", "3em");
+    model->insertVariable(model->size(), "var_2", "#aabbcc");
 
     QSignalSpy removeSigSpy(model, &QssdVariablesModel::rowsRemoved);
 
@@ -179,7 +179,7 @@ TEST_F(TestQssdVariablesModel, TestRemoveVariable)
 
 TEST_F(TestQssdVariablesModel, TestNotExistingVariable)
 {
-    model->insertVariable("var_1", "3em");
+    model->insertVariable(model->size(), "var_1", "3em");
 
     QSignalSpy removeSigSpy(model, &QssdVariablesModel::rowsRemoved);
     model->removeVariable("wrongVar");
