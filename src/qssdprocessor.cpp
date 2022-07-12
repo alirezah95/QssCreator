@@ -3,8 +3,7 @@
 #include "iqssdvariablesmodel.h"
 #include <QTextEdit>
 
-QssdProcessor::QssdProcessor(QObject* parent)
-    : IQssdProcessor { parent }
+QssdProcessor::QssdProcessor(QObject* parent) : IQssdProcessor { parent }
 {
     mVarDefineRegex
         = QRegularExpression(R"(\$(\w*)[\s\n]*=[\s\n]*(#?[\w-]*);)");
@@ -12,8 +11,7 @@ QssdProcessor::QssdProcessor(QObject* parent)
     return;
 }
 
-QssdProcessor::QssdProcessor(
-    IQssdVariablesModel* varsModel, QObject* parent)
+QssdProcessor::QssdProcessor(IQssdVariablesModel* varsModel, QObject* parent)
     : QssdProcessor(parent)
 {
     setVariablesModel(varsModel);
@@ -65,7 +63,8 @@ void QssdProcessor::processDocumentVariables(QTextEdit* editor)
         auto matchIter = mVarDefineRegex.globalMatch(content);
         while (matchIter.hasNext()) {
             auto match = matchIter.next();
-            mVarsModel->insertVariable(match.captured(1), match.captured(2));
+            mVarsModel->insertVariable(
+                mVarsModel->size(), match.captured(1), match.captured(2));
         }
     }
     return;
