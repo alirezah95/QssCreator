@@ -7,10 +7,10 @@
  * \brief The IQssdVariablesModel class which is the abstract base class for
  * a model of the variables inside a \a\b QTextEdit
  * \details This class provides the interface required for a model of variables.
- * It will provide index-based and name-based access to the variables letting a
- * view change the name and also the value of the variables. Although some
- * invariants are supposed for the subclasses of this model and this interface
- * will make sure that those invariants will not be broken by the subclasses.
+ * There are some invariants required for the data (variables) integrity and
+ * validity and this interface will make sure that at least the methods
+ * signature will not allow breaking them. Subclasses of this interface should
+ * not break these invariants too.
  * One of this invariants is that for inserting a variable a valid \a name (non
  * empty) and a valid \a value (non empty) is required. So for this to always be
  * true the \a\b insertRows() of \a\b QAbstractListModel class must be overriden
@@ -40,7 +40,6 @@ public:
         const QModelIndex& index, int role) const override = 0;
 
     // not allowing insertRows overriding
-
     /*!
      * \brief Overrides \a\b QAbstactListModel::insertRows() and make it final
      * to make sure that this method won't do any insertion
