@@ -52,6 +52,18 @@ public:
         int row, int count, const QModelIndex& index) override final;
 
     /*!
+     * \brief Overrides \a\b QAbstractListModel::removeRows() and make it final
+     * to not allow sub-classes define it, for consistency with \ref
+     * insertRows().
+     * \param row
+     * \param count
+     * \param parent
+     * \return
+     */
+    virtual bool removeRows(
+        int row, int count, const QModelIndex& parent) override final;
+
+    /*!
      * \brief Finds the variable with \a varName if any, and returns its value.
      * If there is no variable with the given name an empty string is returned.
      * Calls \ref data() internally with proper value
@@ -121,17 +133,6 @@ public:
     virtual bool insertVariable(
         int row, const QString& name, const QString& value)
         = 0;
-
-    /*!
-     * \brief Overrides \a\b QAbstractListModel::removeRows() and make it pure
-     * virtual to make sure subclasses define it
-     * \param row
-     * \param count
-     * \param parent
-     * \return
-     */
-    virtual bool removeRows(
-        int row, int count, const QModelIndex& parent) override = 0;
 
     /*!
      * \brief Removes a variable from internal data

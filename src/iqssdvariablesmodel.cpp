@@ -13,3 +13,10 @@ bool IQssdVariablesModel::insertRows(
     // does nothing
     return false;
 }
+
+bool IQssdVariablesModel::removeRows(
+    int row, int count, const QModelIndex& parent)
+{
+    // does nothing
+    return false;
+}
