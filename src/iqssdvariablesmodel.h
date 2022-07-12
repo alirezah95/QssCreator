@@ -113,11 +113,14 @@ public:
     /*!
      * \brief Inserts a variable with the given \a name and \a value to the
      * internal data
-     * \param name
-     * \param value
+     * \param row The new variable will be inserted at this index
+     * \param name The name of the new variable
+     * \param value The value of the new variable
      * \return True if data inserted successfuly and false otherwise
      */
-    virtual bool insertVariable(const QString& name, const QString& value) = 0;
+    virtual bool insertVariable(
+        int row, const QString& name, const QString& value)
+        = 0;
 
     /*!
      * \brief Overrides \a\b QAbstractListModel::removeRows() and make it pure
