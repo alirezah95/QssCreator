@@ -34,21 +34,6 @@ QVariant QssdVariablesModel::data(const QModelIndex& index, int role) const
     }
 }
 
-bool QssdVariablesModel::removeRows(
-    int row, int count, const QModelIndex& parent)
-{
-    if (parent.isValid() || row < 0 || count <= 0
-        || row + count > mVariables.size()) {
-        return false;
-    }
-
-    beginRemoveRows(QModelIndex(), row, row + count);
-    mVariables.remove(row, count);
-    endRemoveRows();
-
-    return true;
-}
-
 // IQssdVariablesModel methods definition
 QString QssdVariablesModel::getVariableValue(const QString& varName) const
 {
@@ -144,7 +129,7 @@ bool QssdVariablesModel::setVariableName(
 }
 
 bool QssdVariablesModel::insertVariable(
-    const QString& name, const QString& value)
+    int row, const QString& name, const QString& value)
 {
     if (name.isEmpty() || value.isEmpty() || contains(name)) {
         return false;

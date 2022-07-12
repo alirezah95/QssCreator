@@ -99,18 +99,7 @@ public:
      * \return
      */
     virtual bool insertVariable(
-        const QString& name, const QString& value) override;
-
-    /*!
-     * \brief Implement \ref IQssdVariablesModel::removeRows() to remove rows of
-     * variables
-     * \param row
-     * \param count
-     * \param parent
-     * \return
-     */
-    virtual bool removeRows(
-        int row, int count, const QModelIndex& parent) override;
+        int row, const QString& name, const QString& value) override;
 
     /*!
      * \brief removeVariable
