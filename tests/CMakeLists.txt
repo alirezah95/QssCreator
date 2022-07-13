@@ -1,3 +1,25 @@
+if (WIN32)
+    if (NOT EXISTS ${CMAKE_SOURCE_DIR}/tests/googletest/.git)
+        find_package(Git)
+        if (GIT_FOUND)
+            execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init
+                --recursive
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/googletest/
+            RESULT_VARIABLE GOOGLE_TEST_OK)
+        if(NOT GOOGLE_TEST_OK EQUAL "0")
+            message(FATAL_ERROR "Could not update submodule googletest, aborting")
+        endif()
+        endif()
+    endif()
+    add_subdirectory(googletest/)
+    include_directories(
+        ${gtest_SOURCE_DIR}
+        ${gtest_SOURCE_DIR}/include
+        ${gmock_SOURCE_DIR}
+        ${gmock_SOURCE_DIR}/include
+    )
+endif()
+
 enable_testing()
 
 function(add_new_test testname)
