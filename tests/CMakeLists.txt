@@ -1,5 +1,5 @@
 if (WIN32)
-    if (NOT EXISTS ${CMAKE_SOURCE_DIR}/tests/googletests/.git)
+    if (NOT EXISTS ${CMAKE_SOURCE_DIR}/tests/googletest/.git)
         find_package(Git)
         if (GIT_FOUND)
             execute_process(COMMAND ${GIT_EXECUTABLE} submodules --init --recursive
@@ -10,7 +10,7 @@ if (WIN32)
         endif()
         endif()
     endif()
-    add_subdirectory(googletests/)
+    add_subdirectory(googletest/)
     include_directories(
         ${gtest_SOURCE_DIR}
         ${gtest_SOURCE_DIR}/include
