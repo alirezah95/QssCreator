@@ -1,3 +1,13 @@
+if (WIN32)
+    add_subdirectory(googletests/)
+    include_directories(
+        ${gtest_SOURCE_DIR}
+        ${gtest_SOURCE_DIR}/include
+        ${gmock_SOURCE_DIR}
+        ${gmock_SOURCE_DIR}/include
+    )
+endif()
+
 enable_testing()
 
 function(add_new_test testname)
