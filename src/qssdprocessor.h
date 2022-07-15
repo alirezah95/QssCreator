@@ -36,13 +36,13 @@ public:
      * returning a \a\b QString as the result
      * \return \a\b QString as the result of processing
      */
-    QString getProcessedDocumentContent(QTextEdit* editor);
+    // QString getProcessedDocumentContent(QTextEdit* editor);
 
     /*!
-     * \brief Implements \ref IQssdProcessor::processDocumentVariables() to
+     * \brief Implements \ref IQssdProcessor::processDocument() to
      * searches for the variables in the document and updates the vars model
      */
-    void processDocumentVariables(QTextEdit* editor);
+    void processDocument(QTextEdit* editor);
 
 private:
     QRegularExpression mVarDefineRegex; /*!< This regex is used to find the
