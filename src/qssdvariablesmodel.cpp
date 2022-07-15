@@ -34,6 +34,28 @@ QVariant QssdVariablesModel::data(const QModelIndex& index, int role) const
     }
 }
 
+void QssdVariablesModel::setVariables(const QVector<Variable>& vars)
+{
+    if (vars.size() == 0) {
+        return;
+    }
+
+    beginResetModel();
+    mVariables.resize(0);
+    for (const auto& var : vars) {
+        if (var.first.isEmpty() || var.second.isEmpty()) {
+            continue;
+        } else if (contains(var.first)) {
+            continue;
+        }
+
+        mVariables.emplace_back(var);
+    }
+    endResetModel();
+
+    return;
+}
+
 // IQssdVariablesModel methods definition
 QString QssdVariablesModel::getVariableValue(const QString& varName) const
 {

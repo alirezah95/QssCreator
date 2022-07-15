@@ -41,6 +41,12 @@ public:
     virtual QVariant data(const QModelIndex& index, int role) const override;
 
     /*!
+     * \brief setVariables
+     * \param vars
+     */
+    virtual void setVariables(const QVector<Variable>& vars) override;
+
+    /*!
      * \brief getVariableValue
      * \param varName
      * \return
