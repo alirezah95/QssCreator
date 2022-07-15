@@ -24,17 +24,10 @@ public:
     virtual void setVariablesModel(IQssdVariablesModel* varsModel) = 0;
 
     /*!
-     * \brief Processes the document, replaces all variables with theri values
-     * and returning a \a\b QString as the result
-     * \return \a\b QString as the result of processing
-     */
-    virtual QString getProcessedDocumentContent(QTextEdit* editor) = 0;
-
-    /*!
      * \brief Searches for the variables in the document and updates the vars
      * model
      */
-    virtual void processDocumentVariables(QTextEdit* editor) = 0;
+    virtual void processDocument(QTextEdit* editor) = 0;
 };
 
 #endif // IQSSDPREPROCESSOR_H
