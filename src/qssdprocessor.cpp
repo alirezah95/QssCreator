@@ -9,8 +9,8 @@ QssdProcessor::QssdProcessor(IQssdVariablesModel* varsModel, QObject* parent)
     : IQssdProcessor(parent)
 {
     mVarDefineRegex
-        = QRegularExpression(R"(\$(\w*)[\s\n]*=[\s\n]*(#?[\w-]*);)");
-    mVarUsageRegex = QRegularExpression(R"(\$\w*)");
+        = QRegularExpression(R"(\$([a-zA-Z]\w*)[\s\n]*=[\s\n]*(#?[\w-]*);)");
+    mVarUsageRegex = QRegularExpression(R"(\$([a-zA-Z]\w*))");
     setVariablesModel(varsModel);
     return;
 }
