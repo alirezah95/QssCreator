@@ -6,6 +6,10 @@
 class QTextEdit;
 class IQssdVariablesModel;
 
+/*!
+ * \brief The IQssdProcessor class providing the interface of a document
+ * processor which is used with a \a\b QTextDocument and \ref IQssdEditor
+ */
 class IQssdProcessor : public QObject
 {
     Q_OBJECT
