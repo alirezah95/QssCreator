@@ -14,85 +14,58 @@ class TestQssdProcessor : public Test
 public:
     void SetUp()
     {
-        editor = new QTextEdit("$Variable= 12px;"
-                               "$var_1=#ff22ee;$VAR_2");
-        editor->append(" = 12px;"
-                       "*{"
-                       "    background-color: $var_1;"
-                       "}"
-                       "*:disabled {"
-                       "    color: $VAR_2;"
-                       "}"
-                       "QFrame {"
-                       "    color: $Variable;"
-                       "    background-color: $VAR_2;"
-                       "}");
+        editor = new QTextEdit();
+        editor->document()->setPlainText("$var1 = #ff3320;\n"
+                                         "$var2 = red;\n"
+                                         "$var3 = 13px;\n"
+                                         "$var2 = 22;\n"
+                                         "$ = 2em;\n"
+                                         "$5thVar = 4em;\n");
 
         modelMock = new MockVariablesModel;
-        preProc = new QssdProcessor(modelMock);
+        proc = new QssdProcessor(modelMock);
     }
 
     void TearDown()
     {
-        delete preProc;
+        delete proc;
         delete editor;
         delete modelMock;
         return;
     }
 
-    QssdProcessor* preProc;
+    QssdProcessor* proc;
     QTextEdit* editor;
     MockVariablesModel* modelMock;
 };
 
-TEST_F(TestQssdProcessor, TestDifinitionRegex)
+TEST_F(TestQssdProcessor, TestProcessedDocument)
 {
-    editor->document()->setModified(true);
+    EXPECT_CALL(*modelMock, setVariables(_))
+        .WillOnce(Invoke([](const QVector<QPair<QString, QString>>& vars) {
+            EXPECT_EQ(vars.size(), 4);
 
-    EXPECT_CALL(*modelMock, size())
-        .WillOnce(Return(0))
-        .WillOnce(Return(1))
-        .WillOnce(Return(2));
+            EXPECT_STREQ(vars[0].first.toStdString().c_str(), "var1");
+            EXPECT_STREQ(vars[0].second.toStdString().c_str(), "#ff3320");
 
-    EXPECT_CALL(
-        *modelMock, insertVariable(0, QString("Variable"), QString("12px")))
-        .Times(1);
-    EXPECT_CALL(
-        *modelMock, insertVariable(1, QString("var_1"), QString("#ff22ee")))
-        .Times(1);
-    EXPECT_CALL(
-        *modelMock, insertVariable(2, QString("VAR_2"), QString("12px")))
-        .Times(1);
+            EXPECT_STREQ(vars[1].first.toStdString().c_str(), "var2");
+            EXPECT_STREQ(vars[1].second.toStdString().c_str(), "red");
 
-    editor->document()->setModified(false);
-    preProc->processDocument(editor->document(), true);
-}
+            EXPECT_STREQ(vars[2].first.toStdString().c_str(), "var3");
+            EXPECT_STREQ(vars[2].second.toStdString().c_str(), "13px");
 
-TEST_F(TestQssdProcessor, TestProcessedDocumentContent)
-{
-    EXPECT_CALL(*modelMock, getVariableValue(QString("Variable")))
-        .WillRepeatedly(Return("12px"));
-    EXPECT_CALL(*modelMock, getVariableValue(QString("var_1")))
-        .WillRepeatedly(Return("#ff22ee"));
-    EXPECT_CALL(*modelMock, getVariableValue(QString("VAR_2")))
-        .WillRepeatedly(Return("12px"));
+            EXPECT_STREQ(vars[3].first.toStdString().c_str(), "var2");
+            EXPECT_STREQ(vars[3].second.toStdString().c_str(), "22");
+        }));
+    auto content = proc->processDocument(editor->document(), true);
 
-    /*EXPECT_STREQ(
-        preProc->getProcessedDocumentContent(editor).toStdString().c_str(),
-        ""
-        ""
-        ""
-        "*{"
-        "    background-color: #ff22ee;"
-        "}"
-        "*:disabled {"
-        "    color: 12px;"
-        "}"
-        "QFrame {"
-        "    color: 12px;"
-        "    background-color: 12px;"
-        "}");
-        */
+    EXPECT_STREQ(content.toStdString().c_str(),
+        "\n"
+        "\n"
+        "\n"
+        "\n"
+        "$ = 2em;\n"
+        "$5thVar = 4em;\n");
 }
 
 int main(int argc, char* argv[])
