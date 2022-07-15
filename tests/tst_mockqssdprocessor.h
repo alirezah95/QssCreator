@@ -14,8 +14,8 @@ public:
     MOCK_METHOD(
         void, setVariablesModel, (IQssdVariablesModel * varsModel), (override));
 
-    MOCK_METHOD(void, processDocument, (QTextDocument * doc, bool updateModel),
-        (override));
+    MOCK_METHOD(QString, processDocument,
+        (QTextDocument * doc, bool updateModel), (override));
 };
 
 #endif
