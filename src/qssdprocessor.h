@@ -33,8 +33,9 @@ public:
     /*!
      * \brief Implements \ref IQssdProcessor::processDocument() to
      * searches for the variables in the document and updates the vars model
+     * \return A \a\b QString
      */
-    virtual void processDocument(
+    virtual QString processDocument(
         QTextDocument* doc, bool updateModel = true) override;
 
 private:

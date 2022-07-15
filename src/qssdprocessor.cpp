@@ -24,7 +24,7 @@ void QssdProcessor::setVariablesModel(IQssdVariablesModel* varsModel)
     return;
 }
 
-void QssdProcessor::processDocument(QTextDocument* doc, bool updateModel)
+QString QssdProcessor::processDocument(QTextDocument* doc, bool updateModel)
 {
     if (doc && mVarsModel) {
         QString content = doc->toPlainText();
@@ -58,7 +58,7 @@ void QssdProcessor::processDocument(QTextDocument* doc, bool updateModel)
                 usageMatch.capturedStart(), usageMatch.capturedLength(), value);
             usageMatch = mVarUsageRegex.match(content);
         }
-        return;
+        return content;
     }
-    return;
+    return QString();
 }
