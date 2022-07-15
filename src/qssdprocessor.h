@@ -21,28 +21,20 @@ class QssdProcessor : public IQssdProcessor
     Q_OBJECT
 public:
     QssdProcessor(IQssdVariablesModel* varsModel, QObject* parent = nullptr);
-    ~QssdProcessor();
+    virtual ~QssdProcessor();
 
     /*!
      * \brief Implements \ref IQssdProcessor::setVariablesModel to set the
      * list models of the variables
      * \param varsModel
      */
-    void setVariablesModel(IQssdVariablesModel* varsModel);
-
-    /*!
-     * \brief Implements \ref IQssdProcessor::getProcessedDocumentContent()
-     * to processes the document, replaces all variables with theri values and
-     * returning a \a\b QString as the result
-     * \return \a\b QString as the result of processing
-     */
-    // QString getProcessedDocumentContent(QTextEdit* editor);
+    virtual void setVariablesModel(IQssdVariablesModel* varsModel) override;
 
     /*!
      * \brief Implements \ref IQssdProcessor::processDocument() to
      * searches for the variables in the document and updates the vars model
      */
-    void processDocument(QTextEdit* editor);
+    virtual void processDocument(QTextDocument* doc, bool updateModel) override;
 
 private:
     QRegularExpression mVarDefineRegex; /*!< This regex is used to find the

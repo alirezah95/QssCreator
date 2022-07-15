@@ -22,41 +22,10 @@ void QssdProcessor::setVariablesModel(IQssdVariablesModel* varsModel)
     return;
 }
 
-// QString QssdProcessor::getProcessedDocumentContent(QTextEdit* editor)
-//{
-//     if (editor && mVarsModel) {
-//         QString content = editor->document()->toPlainText();
-
-//        // Deleting variables definitions
-//        auto definitionMatch = mVarDefineRegex.match(content);
-//        while (definitionMatch.hasMatch()) {
-//            content.replace(definitionMatch.capturedStart(),
-//                definitionMatch.capturedLength(), "");
-//            definitionMatch = mVarDefineRegex.match(content);
-//        }
-
-//        // Replacing variable usage with actual value
-//        auto usageMatch = mVarUsageRegex.match(content);
-//        while (usageMatch.hasMatch()) {
-//            // Get the variable value from the vars model
-//            QString value
-//                =
-//                mVarsModel->getVariableValue(usageMatch.captured().sliced(1));
-//            content.replace(
-//                usageMatch.capturedStart(), usageMatch.capturedLength(),
-//                value);
-//            usageMatch = mVarUsageRegex.match(content);
-//        }
-
-//        return content;
-//    }
-//    return QString();
-//}
-
-void QssdProcessor::processDocument(QTextEdit* editor)
+void QssdProcessor::processDocument(QTextDocument* doc, bool updateModel)
 {
-    if (editor && mVarsModel) {
-        const QString& content = editor->document()->toPlainText();
+    if (doc && mVarsModel) {
+        const QString& content = doc->document()->toPlainText();
         auto matchIter = mVarDefineRegex.globalMatch(content);
         while (matchIter.hasNext()) {
             auto match = matchIter.next();

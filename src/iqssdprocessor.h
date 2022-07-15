@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-class QTextEdit;
+class QTextDocument;
 class IQssdVariablesModel;
 
 /*!
@@ -27,7 +27,8 @@ public:
      * \brief Searches for the variables in the document and updates the vars
      * model
      */
-    virtual void processDocument(QTextEdit* editor) = 0;
+    virtual void processDocument(QTextDocument* editor, bool updateModel = true)
+        = 0;
 };
 
 #endif // IQSSDPREPROCESSOR_H
