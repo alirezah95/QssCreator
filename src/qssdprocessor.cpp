@@ -3,6 +3,8 @@
 #include "iqssdvariablesmodel.h"
 #include <QTextEdit>
 
+using Variable = QPair<QString, QString>;
+
 QssdProcessor::QssdProcessor(IQssdVariablesModel* varsModel, QObject* parent)
     : IQssdProcessor(parent)
 {
@@ -25,13 +27,38 @@ void QssdProcessor::setVariablesModel(IQssdVariablesModel* varsModel)
 void QssdProcessor::processDocument(QTextDocument* doc, bool updateModel)
 {
     if (doc && mVarsModel) {
-        const QString& content = doc->document()->toPlainText();
-        auto matchIter = mVarDefineRegex.globalMatch(content);
-        while (matchIter.hasNext()) {
-            auto match = matchIter.next();
-            mVarsModel->insertVariable(
-                mVarsModel->size(), match.captured(1), match.captured(2));
+        QString content = doc->toPlainText();
+
+        QVector<Variable> variables;
+
+        auto defMatch = mVarDefineRegex.match(content);
+        while (defMatch.hasMatch()) {
+            content.replace(
+                defMatch.capturedStart(), defMatch.capturedLength(), "");
+
+            if (updateModel) {
+                variables.emplace_back(
+                    Variable(defMatch.captured(1), defMatch.captured(2)));
+            }
+
+            defMatch = mVarDefineRegex.match(content, defMatch.capturedStart());
         }
+        if (updateModel && !variables.isEmpty()) {
+            // set model's data
+            //            mVarsModel->setVariables(variables);
+        }
+
+        // Replacing variable usage with actual value
+        auto usageMatch = mVarUsageRegex.match(content);
+        while (usageMatch.hasMatch()) {
+            // Get the variable value from the vars model
+            QString value
+                = mVarsModel->getVariableValue(usageMatch.captured().sliced(1));
+            content.replace(
+                usageMatch.capturedStart(), usageMatch.capturedLength(), value);
+            usageMatch = mVarUsageRegex.match(content);
+        }
+        return;
     }
     return;
 }
