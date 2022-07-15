@@ -1,13 +1,18 @@
 #include "qssdeditor.h"
 
+#include "iqssdprocessor.h"
+
 #include <QEvent>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QTextBlock>
 
-QssdEditor::QssdEditor(QWidget* parent)
-    : IQssdEditor(parent), mLineNumbersAreaWidget(new QWidget(this))
+QssdEditor::QssdEditor(IQssdProcessor* proc, QWidget* parent)
+    : IQssdEditor(parent), mLineNumbersAreaWidget(new QWidget(this)),
+      mProcessor(proc)
 {
+    mProcessor->setParent(this);
+
     QFont editorFont("Mono");
     editorFont.setStyleHint(QFont::Monospace);
     editorFont.setPointSize(13);
@@ -26,7 +31,21 @@ QssdEditor::QssdEditor(QWidget* parent)
     return;
 }
 
-QssdEditor::~QssdEditor() { }
+QssdEditor::~QssdEditor()
+{
+    if (mProcessor->parent() == this) {
+        delete mProcessor;
+    }
+    return;
+}
+
+void QssdEditor::setProcessor(IQssdProcessor* proc)
+{
+    if (proc != nullptr) {
+        mProcessor = proc;
+    }
+    return;
+}
 
 void QssdEditor::setLineNumbersFont(QFont font)
 {

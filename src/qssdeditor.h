@@ -16,8 +16,27 @@ class QssdEditor : public IQssdEditor
     Q_OBJECT
 
 public:
-    explicit QssdEditor(QWidget* parent = nullptr);
-    ~QssdEditor();
+    /*!
+     * \brief Cosntructs a \ref QssdEditor instance using the \a proc processor.
+     * Note that the QssEditor takes ownership of the processor (will delete it
+     * in ctor)
+     * \param proc A pointer to an instance of \ref IQssdProcessor
+     * \param parent
+     */
+    explicit QssdEditor(IQssdProcessor* proc, QWidget* parent = nullptr);
+    virtual ~QssdEditor();
+
+    /*!
+     * \brief setProcessor
+     * \param proc
+     */
+    virtual void setProcessor(IQssdProcessor* proc) override;
+
+    /*!
+     * \brief Getter for the \ref IQssdProcessor instance
+     * \return
+     */
+    virtual IQssdProcessor* getProcessor() const override { return mProcessor; }
 
     /*!
      * \brief Returns the width required for the line numbers area so that the
@@ -78,6 +97,11 @@ private:
                                       * numbers onto
                                       */
     int mLineNumbersAreaWidth = 0;
+
+    IQssdProcessor* mProcessor; /*!< An \ref IQssdProcessor object responsible
+                                 * for processing the content of the editor's
+                                 * docuemnt
+                                 */
 };
 
 #endif // STYLESHEETEDITOR_H
