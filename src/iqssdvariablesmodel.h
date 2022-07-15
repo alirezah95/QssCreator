@@ -64,6 +64,15 @@ public:
         int row, int count, const QModelIndex& parent) override final;
 
     /*!
+     * \brief Sets the internal variables to the \a vars and begin reseting
+     * model
+     * \note Sub classes should check for invalid name/value and existing
+     * variables
+     * \param vars A vector of the variables
+     */
+    virtual void setVariables(const QVector<QPair<QString, QString>>& vars) = 0;
+
+    /*!
      * \brief Finds the variable with \a varName if any, and returns its value.
      * If there is no variable with the given name an empty string is returned.
      * Calls \ref data() internally with proper value
