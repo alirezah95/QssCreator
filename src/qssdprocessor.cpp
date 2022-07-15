@@ -45,7 +45,7 @@ void QssdProcessor::processDocument(QTextDocument* doc, bool updateModel)
         }
         if (updateModel && !variables.isEmpty()) {
             // set model's data
-            //            mVarsModel->setVariables(variables);
+            mVarsModel->setVariables(variables);
         }
 
         // Replacing variable usage with actual value
