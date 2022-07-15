@@ -20,10 +20,11 @@ function(add_new_gtest testname)
     target_link_libraries(${testname} PRIVATE gmock gtest)
 endfunction()
 
-add_new_test(TestQssdEditor
+add_new_gtest(TestQssdEditor
     tst_qssdeditor.cpp
     ../src/qssdeditor.cpp
     ../src/iqssdeditor.cpp
+    ../src/iqssdprocessor.cpp
 )
 
 add_new_gtest(TestQssdFileOperations
