@@ -34,7 +34,8 @@ public:
      * \brief Implements \ref IQssdProcessor::processDocument() to
      * searches for the variables in the document and updates the vars model
      */
-    virtual void processDocument(QTextDocument* doc, bool updateModel) override;
+    virtual void processDocument(
+        QTextDocument* doc, bool updateModel = true) override;
 
 private:
     QRegularExpression mVarDefineRegex; /*!< This regex is used to find the
