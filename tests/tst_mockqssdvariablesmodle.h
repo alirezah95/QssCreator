@@ -14,6 +14,9 @@ public:
     MOCK_METHOD(
         QVariant, data, (const QModelIndex& index, int role), (const override));
 
+    MOCK_METHOD(void, setVariables,
+        ((const QVector<QPair<QString, QString>>& vars)), (override));
+
     MOCK_METHOD(
         QString, getVariableValue, (const QString& varName), (const override));
 

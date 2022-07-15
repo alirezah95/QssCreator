@@ -65,7 +65,7 @@ TEST_F(TestQssdProcessor, TestDifinitionRegex)
         .Times(1);
 
     editor->document()->setModified(false);
-    preProc->processDocument(editor);
+    preProc->processDocument(editor->document(), true);
 }
 
 TEST_F(TestQssdProcessor, TestProcessedDocumentContent)
