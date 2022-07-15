@@ -131,7 +131,7 @@ void MainWindow::openDocument()
             return;
         }
         // Update doc variables through processor
-        mDocProcessor->processDocument(mStyleEditor);
+        mDocProcessor->processDocument(mStyleEditor->document());
 
         updateWindowTitle();
     }
@@ -160,7 +160,7 @@ void MainWindow::save()
             return;
         }
         // Update doc variables through processor
-        mDocProcessor->processDocument(mStyleEditor);
+        mDocProcessor->processDocument(mStyleEditor->document());
     }
     return;
 }
@@ -182,7 +182,7 @@ void MainWindow::saveAs()
             return;
         }
         // Update doc variables through processor
-        mDocProcessor->processDocument(mStyleEditor);
+        mDocProcessor->processDocument(mStyleEditor->document());
         updateWindowTitle();
     }
     return;
