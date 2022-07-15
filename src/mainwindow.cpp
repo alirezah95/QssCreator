@@ -23,17 +23,16 @@
     connect(act, &QAction::triggered, mStyleEditor, &IQssdEditor::slot)
 
 MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
-    IUserDialogs* userDlgs, IQssdProcessor* proc, QWidget* parent)
+    IUserDialogs* userDlgs, QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), mStyleEditor(editor),
       mPreview(new WidgetsPreview), mDocOpers(docOper), mUserDlgs(userDlgs),
-      mDocProcessor(proc), mFindReplaceDlg(nullptr)
+      mFindReplaceDlg(nullptr)
 {
     ui->setupUi(this);
 
     mStyleEditor->setParent(this);
     mDocOpers->setParent(this);
     mUserDlgs->setParent(this);
-    mDocProcessor->setParent(this);
 
     auto splitter = new QSplitter;
     splitter->setChildrenCollapsible(false);
@@ -131,7 +130,7 @@ void MainWindow::openDocument()
             return;
         }
         // Update doc variables through processor
-        mDocProcessor->processDocument(mStyleEditor->document());
+        mStyleEditor->getProcessor()->processDocument(mStyleEditor->document());
 
         updateWindowTitle();
     }
@@ -160,7 +159,7 @@ void MainWindow::save()
             return;
         }
         // Update doc variables through processor
-        mDocProcessor->processDocument(mStyleEditor->document());
+        mStyleEditor->getProcessor()->processDocument(mStyleEditor->document());
     }
     return;
 }
@@ -182,7 +181,7 @@ void MainWindow::saveAs()
             return;
         }
         // Update doc variables through processor
-        mDocProcessor->processDocument(mStyleEditor->document());
+        mStyleEditor->getProcessor()->processDocument(mStyleEditor->document());
         updateWindowTitle();
     }
     return;

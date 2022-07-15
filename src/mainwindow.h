@@ -31,8 +31,7 @@ public:
      * \param parent
      */
     MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
-        IUserDialogs* userDlgs, IQssdProcessor* proc,
-        QWidget* parent = nullptr);
+        IUserDialogs* userDlgs, QWidget* parent = nullptr);
     ~MainWindow();
 
 private slots:
@@ -109,10 +108,6 @@ private:
                               * showing user dialogs for different kind of
                               * operations
                               */
-
-    IQssdProcessor* mDocProcessor; /*!< Pointer to a \ref IQssdProcessor
-                                       * used for processing editor's document
-                                       */
 
     FindReplaceDialog* mFindReplaceDlg; /*!< A \ref FindReplaceDialog to perform
                                          * find and replace
