@@ -26,8 +26,10 @@ public:
     /*!
      * \brief Searches for the variables in the document and updates the vars
      * model
+     * \return A \a\b QString containing the processed content of the document
      */
-    virtual void processDocument(QTextDocument* editor, bool updateModel = true)
+    virtual QString processDocument(
+        QTextDocument* editor, bool updateModel = true)
         = 0;
 };
 
