@@ -295,7 +295,7 @@ TEST_F(TestMainWindow, TestOpenDocumentWhenNoModified)
             editor->document()->setModified(false);
             return true;
         }));
-    EXPECT_CALL(*processorMock, processDocumentVariables(editorMock)).Times(1);
+    EXPECT_CALL(*processorMock, processDocument(editorMock)).Times(1);
 
     (*openBtnAct)->trigger();
 }
@@ -334,7 +334,7 @@ TEST_F(TestMainWindow, TestOpenDocumentWhenModified)
             editor->document()->setModified(false);
             return true;
         }));
-    EXPECT_CALL(*processorMock, processDocumentVariables(editorMock)).Times(1);
+    EXPECT_CALL(*processorMock, processDocument(editorMock)).Times(1);
     (*openBtnAct)->trigger();
 
     // When user clicks Yes
@@ -367,7 +367,7 @@ TEST_F(TestMainWindow, TestOpenDocumentWhenModified)
             editor->document()->setModified(false);
             return true;
         }));
-    EXPECT_CALL(*processorMock, processDocumentVariables(editorMock)).Times(2);
+    EXPECT_CALL(*processorMock, processDocument(editorMock)).Times(2);
     (*openBtnAct)->trigger();
 }
 
@@ -397,7 +397,7 @@ TEST_F(TestMainWindow, TestSaveDocument)
                 editor->document()->setModified(false);
                 return true;
             }));
-    EXPECT_CALL(*processorMock, processDocumentVariables(editorMock)).Times(1);
+    EXPECT_CALL(*processorMock, processDocument(editorMock)).Times(1);
 
     (*saveBtnAct)->trigger();
 }
