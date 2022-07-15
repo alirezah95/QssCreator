@@ -3,17 +3,12 @@
 #include "iqssdvariablesmodel.h"
 #include <QTextEdit>
 
-QssdProcessor::QssdProcessor(QObject* parent) : IQssdProcessor { parent }
+QssdProcessor::QssdProcessor(IQssdVariablesModel* varsModel, QObject* parent)
+    : IQssdProcessor(parent)
 {
     mVarDefineRegex
         = QRegularExpression(R"(\$(\w*)[\s\n]*=[\s\n]*(#?[\w-]*);)");
     mVarUsageRegex = QRegularExpression(R"(\$\w*)");
-    return;
-}
-
-QssdProcessor::QssdProcessor(IQssdVariablesModel* varsModel, QObject* parent)
-    : QssdProcessor(parent)
-{
     setVariablesModel(varsModel);
     return;
 }

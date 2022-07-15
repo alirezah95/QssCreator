@@ -20,7 +20,6 @@ class QssdProcessor : public IQssdProcessor
 {
     Q_OBJECT
 public:
-    explicit QssdProcessor(QObject* parent = nullptr);
     QssdProcessor(IQssdVariablesModel* varsModel, QObject* parent = nullptr);
     ~QssdProcessor();
 
