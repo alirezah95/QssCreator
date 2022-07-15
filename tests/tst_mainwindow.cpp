@@ -37,6 +37,7 @@ public:
     void TearDown()
     {
         delete mainWin;
+        delete processorMock;
         return;
     }
 
