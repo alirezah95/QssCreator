@@ -2,88 +2,88 @@
 #include <QSignalSpy>
 #include <QTest>
 
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
 #include "qssdeditor.h"
 
-class TestQssdEditor : public QObject
+#include "tst_mockqssdprocessor.h"
+#include "tst_mockqssdvariablesmodle.h"
+
+using namespace ::testing;
+
+class TestQssdEditor : public Test
 {
-    Q_OBJECT
-
 public:
-    TestQssdEditor();
-    ~TestQssdEditor();
-
-private slots:
-    void init()
+    void SetUp()
     {
-        editor = QSharedPointer<QssdEditor>(new QssdEditor());
-        return;
-    }
-    void cleanup()
-    {
-        editor.clear();
+        procMock = new MockQssdProcessor;
+        editor = new QssdEditor(procMock);
         return;
     }
 
-    void testBlockCount();
-    void testBlockCountChangedSignal();
-    void testGetLineNumberAreaWidth();
-    void testLineNumberAreaWidthJittering();
+    void TearDown()
+    {
+        delete editor;
 
-private:
-    QSharedPointer<QssdEditor> editor;
+        return;
+    }
+
+    MockQssdProcessor* procMock;
+    QssdEditor* editor;
 };
 
-TestQssdEditor::TestQssdEditor() { }
-
-TestQssdEditor::~TestQssdEditor() { }
-
-void TestQssdEditor::testBlockCount()
+TEST_F(TestQssdEditor, TestBlockCount)
 {
     for (int i = 0; i < 12; ++i) {
-        QTest::keyPress(editor.get(), Qt::Key_Enter);
+        QTest::keyPress(editor, Qt::Key_Enter);
     }
-    QCOMPARE(editor->document()->blockCount(), 13);
+    EXPECT_EQ(editor->document()->blockCount(), 13);
 }
 
-void TestQssdEditor::testBlockCountChangedSignal()
+TEST_F(TestQssdEditor, TestBlockCountChangedSignal)
 {
     QSignalSpy bcChanged(editor->document(), &QTextDocument::blockCountChanged);
 
     int keyPressTimes = 3;
     for (int i = 0; i < keyPressTimes; ++i) {
-        QTest::keyPress(editor.get(), Qt::Key_Enter);
+        QTest::keyPress(editor, Qt::Key_Enter);
     }
 
-    QCOMPARE(bcChanged.count(), keyPressTimes);
+    EXPECT_EQ(bcChanged.count(), keyPressTimes);
 }
 
-void TestQssdEditor::testGetLineNumberAreaWidth()
+TEST_F(TestQssdEditor, TestGetLineNumberAreaWidth)
 {
     for (int i = 0; i < 12; ++i) {
-        QTest::keyPress(editor.get(), Qt::Key_Enter);
+        QTest::keyPress(editor, Qt::Key_Enter);
     }
-    QCOMPARE(editor->getLineNumbersAreaWidth(),
+    EXPECT_EQ(editor->getLineNumbersAreaWidth(),
         QFontMetrics(editor->getLineNumbersFont()).boundingRect("0").width() * 2
             + 16);
 }
 
-void TestQssdEditor::testLineNumberAreaWidthJittering()
+TEST_F(TestQssdEditor, TestLineNumberAreaWidthJittering)
 {
     // Getting block count to 21
     for (int i = 0; i < 20; ++i) {
-        QTest::keyPress(editor.get(), Qt::Key_Enter);
+        QTest::keyPress(editor, Qt::Key_Enter);
     }
     int lnNumsAreaWidth1 = editor->getLineNumbersAreaWidth();
 
     // Getting block count to 28
     for (int i = 0; i < 7; ++i) {
-        QTest::keyPress(editor.get(), Qt::Key_Enter);
+        QTest::keyPress(editor, Qt::Key_Enter);
     }
     int lnNumsAreaWidth2 = editor->getLineNumbersAreaWidth();
 
-    QVERIFY(lnNumsAreaWidth1 == lnNumsAreaWidth2);
+    EXPECT_TRUE(lnNumsAreaWidth1 == lnNumsAreaWidth2);
 }
 
-QTEST_MAIN(TestQssdEditor);
+int main(int argc, char* argv[])
+{
+    QApplication app(argc, argv);
 
-#include "tst_qssdeditor.moc"
+    InitGoogleMock(&argc, argv);
+    return RUN_ALL_TESTS();
+}

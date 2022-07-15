@@ -22,13 +22,16 @@ class TestMainWindow : public ::testing::Test
 public:
     void SetUp()
     {
-        editorMock = new MockQssdEditor;
-        opersMock = new MockQssdFileOperations;
-        userDlgsMock = new MockUserDialogs;
         processorMock = new MockQssdProcessor;
 
-        mainWin = new MainWindow(
-            editorMock, opersMock, userDlgsMock, processorMock);
+        editorMock = new MockQssdEditor;
+        ON_CALL(*editorMock, getProcessor())
+            .WillByDefault(Return(processorMock));
+
+        opersMock = new MockQssdFileOperations;
+        userDlgsMock = new MockUserDialogs;
+
+        mainWin = new MainWindow(editorMock, opersMock, userDlgsMock);
     }
 
     void TearDown()
