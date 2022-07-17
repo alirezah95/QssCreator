@@ -49,6 +49,7 @@ add_new_gtest(TestMainWindow
     ../src/iqssdprocessor.cpp
     ../src/iuserdialogs.cpp
     ../src/findreplacedialog.cpp
+    ../src/qssdvariableitemdelegate.cpp
 )
 
 add_new_gtest(TestFindReplaceDialog
