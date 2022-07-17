@@ -5,8 +5,10 @@
 #include "findreplacedialog.h"
 #include "iqssdfileoperations.h"
 #include "iqssdprocessor.h"
+#include "iqssdvariablesmodel.h"
 #include "iuserdialogs.h"
 #include "qssdeditor.h"
+#include "qssdvariableitemdelegate.h"
 #include "widgetspreview.h"
 
 #include <QFileDialog>
@@ -39,11 +41,13 @@ MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
     splitter->addWidget(mStyleEditor);
     splitter->addWidget(mPreview);
 
-    auto hbox = new QHBoxLayout;
-    hbox->setContentsMargins(0, 0, 0, 0);
-    hbox->addWidget(splitter);
+    ui->centralwidget->layout()->addWidget(splitter);
 
-    ui->centralwidget->setLayout(hbox);
+    // Set variables view model to the model of the processor of the editor then
+    // set the variables model delegate
+    ui->variablesListVw->setModel(
+        mStyleEditor->getProcessor()->getVariablesModel());
+    ui->variablesListVw->setItemDelegate(new QssdVariableItemDelegate(this));
 
     updateWindowTitle();
 
