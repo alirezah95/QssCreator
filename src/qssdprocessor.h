@@ -31,6 +31,15 @@ public:
     virtual void setVariablesModel(IQssdVariablesModel* varsModel) override;
 
     /*!
+     * \brief Returns the variables model associated with this processor
+     * \return
+     */
+    virtual IQssdVariablesModel* getVariablesModel() const override
+    {
+        return mVarsModel;
+    }
+
+    /*!
      * \brief Implements \ref IQssdProcessor::processDocument() to
      * searches for the variables in the document and updates the vars model
      * \return A \a\b QString

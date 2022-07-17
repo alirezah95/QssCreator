@@ -24,6 +24,12 @@ public:
     virtual void setVariablesModel(IQssdVariablesModel* varsModel) = 0;
 
     /*!
+     * \brief getVariablesModel
+     * \return
+     */
+    virtual IQssdVariablesModel* getVariablesModel() const = 0;
+
+    /*!
      * \brief Searches for the variables in the document and updates the vars
      * model
      * \return A \a\b QString containing the processed content of the document
