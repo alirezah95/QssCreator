@@ -17,11 +17,6 @@ class QssdVariablesModel : public IQssdVariablesModel
     Q_OBJECT
 
 public:
-    enum Roles
-    {
-        VariableName = Qt::UserRole + 1,
-        VariableValue
-    };
     explicit QssdVariablesModel(QObject* parent = nullptr);
     virtual ~QssdVariablesModel();
 
