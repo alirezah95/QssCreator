@@ -71,6 +71,9 @@ set(PROJECT_SOURCES
 
         src/qssdvariablesmodel.h
         src/qssdvariablesmodel.cpp
+
+        src/qssdvariableitemdelegate.h
+        src/qssdvariableitemdelegate.cpp
 )
 
 qt_add_resources(PROJECT_SOURCES resources/res.qrc)
