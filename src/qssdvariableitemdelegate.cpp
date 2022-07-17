@@ -23,28 +23,29 @@ void QssdVariableItemDelegate::paint(QPainter* painter,
         painter->save();
         painter->fillRect(option.rect, option.palette.base());
 
-        QRectF leftHalf(option.rect.topLeft(),
-            QSize(option.rect.width() / 2 - 1, option.rect.height()));
-        painter->drawText(leftHalf, Qt::AlignLeft | Qt::AlignVCenter,
-            index.data(IQssdVariablesModel::VariableName).toString());
+        auto vName
+            = index.data(IQssdVariablesModel::VariableName).toString() + " := ";
+        auto vValue = index.data(IQssdVariablesModel::VariableValue).toString();
 
-        painter->drawLine(QPointF(leftHalf.right() + 1, leftHalf.top()),
-            QPointF(leftHalf.right() + 1, leftHalf.bottom()));
+        int nameWidth = option.fontMetrics.boundingRect(vName).width();
 
-        QRectF rightHalfRect(
-            leftHalf.topRight() + QPoint(2, 0), leftHalf.size());
-        painter->drawText(rightHalfRect, Qt::AlignCenter,
-            index.data(IQssdVariablesModel::VariableValue).toString());
+        // Draw var name + " := "
+        QRectF adjustedRect(option.rect.topLeft() + QPoint(2, 0),
+            option.rect.size() - QSize(2, 0));
+        painter->drawText(
+            adjustedRect, Qt::AlignLeft | Qt::AlignVCenter, vName);
 
-        auto bgOption(option);
-        bgOption.palette.setColor(
-            QPalette::Highlight, bgOption.palette.color(QPalette::Base));
+        // Draw var value
+        QRectF vValueRect(adjustedRect.topLeft() + QPoint(nameWidth, 0),
+            QSizeF(adjustedRect.width() - nameWidth, adjustedRect.height()));
+        painter->drawText(vValueRect, Qt::AlignLeft | Qt::AlignVCenter, vValue);
 
-        QPen rectPen;
-        rectPen.setColor(option.palette.color(QPalette::Highlight));
-        painter->setPen(rectPen);
-
+        // Draw the border it view item is selected
         if (option.state & QStyle::State_Selected) {
+            QPen rectPen;
+            rectPen.setColor(option.palette.color(QPalette::Highlight));
+            painter->setPen(rectPen);
+
             painter->drawRect(option.rect.adjusted(1, 1, -1, -1));
         }
 
@@ -57,4 +58,16 @@ void QssdVariableItemDelegate::paint(QPainter* painter,
 void QssdVariableItemDelegate::setModelData(
     QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
+}
+
+QSize QssdVariableItemDelegate::sizeHint(
+    const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+    return option.fontMetrics
+               .boundingRect(
+                   index.data(IQssdVariablesModel::VariableName).toString()
+                   + " := "
+                   + index.data(IQssdVariablesModel::VariableValue).toString())
+               .size()
+        + QSize(6, 6);
 }

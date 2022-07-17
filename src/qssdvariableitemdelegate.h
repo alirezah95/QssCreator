@@ -18,6 +18,9 @@ public:
     virtual void setModelData(QWidget* editor, QAbstractItemModel* model,
         const QModelIndex& index) const override;
 
+    virtual QSize sizeHint(const QStyleOptionViewItem& option,
+        const QModelIndex& index) const override;
+
 private:
     QLabel* lbl;
 };
