@@ -31,8 +31,8 @@ void QssdVariableItemDelegate::paint(QPainter* painter,
         int nameWidth = option.fontMetrics.boundingRect(vName).width();
 
         // Draw var name + " := "
-        QRectF adjustedRect(option.rect.topLeft() + QPoint(2, 0),
-            option.rect.size() - QSize(2, 0));
+        QRectF adjustedRect(option.rect.topLeft() + QPoint(4, 0),
+            option.rect.size() - QSize(8, 0));
         painter->drawText(
             adjustedRect, Qt::AlignLeft | Qt::AlignVCenter, vName);
 
@@ -43,7 +43,7 @@ void QssdVariableItemDelegate::paint(QPainter* painter,
             painter->save();
 
             // Draw a rectangle with the color specified by the var value
-            QRectF colorRect(vValueRect.topLeft() + QPoint(1, 1),
+            QRectF colorRect(vValueRect.topLeft() + QPoint(1, 2),
                 QSize(option.fontMetrics.boundingRect(vValue).width() + 4,
                     vValueRect.height() - 4));
             // Draw a rect border with text color
@@ -93,5 +93,5 @@ QSize QssdVariableItemDelegate::sizeHint(
                    + " := "
                    + index.data(IQssdVariablesModel::VariableValue).toString())
                .size()
-        + QSize(6, 6);
+        + QSize(12, 12);
 }
