@@ -42,10 +42,11 @@ function(add_new_gtest testname)
     target_link_libraries(${testname} PRIVATE gmock gtest)
 endfunction()
 
-add_new_test(TestQssdEditor
+add_new_gtest(TestQssdEditor
     tst_qssdeditor.cpp
     ../src/qssdeditor.cpp
     ../src/iqssdeditor.cpp
+    ../src/iqssdprocessor.cpp
 )
 
 add_new_gtest(TestQssdFileOperations
@@ -61,16 +62,38 @@ add_new_gtest(TestMainWindow
     tst_mockqssdeditor.h
     tst_mockqssdfileoperations.h
     tst_mockuserdialogs.h
+    tst_mockqssdprocessor.h
     ../src/mainwindow.cpp
     ../src/widgetspreview.cpp
     ../src/idocumentfile.cpp
     ../src/iqssdeditor.cpp
     ../src/iqssdfileoperations.cpp
+    ../src/iqssdprocessor.cpp
     ../src/iuserdialogs.cpp
     ../src/findreplacedialog.cpp
+    ../src/qssdvariableitemdelegate.cpp
 )
 
 add_new_gtest(TestFindReplaceDialog
     tst_findreplacedialog.cpp
     ../src/findreplacedialog.cpp
+)
+
+add_new_gtest(TestQssdVariable
+    tst_qssdvariable.cpp
+    ../src/qssdvariable.cpp
+)
+
+add_new_gtest(TestQssdProcessor
+    tst_qssdprocessor.cpp
+    tst_mockqssdvariablesmodle.h
+    ../src/iqssdvariablesmodel.cpp
+    ../src/qssdprocessor.cpp
+    ../src/iqssdprocessor.cpp
+)
+
+add_new_gtest(TestQssdVariablesModel
+    tst_qssdvariablesmodel.cpp
+    ../src/qssdvariablesmodel.cpp
+    ../src/iqssdvariablesmodel.cpp
 )

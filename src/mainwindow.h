@@ -7,7 +7,10 @@ class WidgetsPreview;
 class IQssdEditor;
 class IQssdFileOperations;
 class IUserDialogs;
+class IQssdProcessor;
+class IDocumentFile;
 class FindReplaceDialog;
+class QSplitter;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -32,6 +35,13 @@ public:
     MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
         IUserDialogs* userDlgs, QWidget* parent = nullptr);
     ~MainWindow();
+
+protected:
+    /*!
+     * \brief Overrides \a\b QWidget::closeEvent() to handle app closing
+     * \param ev
+     */
+    virtual void closeEvent(QCloseEvent* ev);
 
 private slots:
     /*!
@@ -78,6 +88,21 @@ private slots:
 
 private:
     /*!
+     * \brief Prompt user for saving current document
+     * \return \a True if user presses \a Save and saves the doc or presses \a
+     * No button. Returns \a false if user presses \a Cancel button or presses
+     * \a Save button but the save process goes wrong
+     */
+    bool maybeSave();
+
+    /*!
+     * \brief Saves the document using the \a docFile
+     * \param docFile
+     * \return True if saved successfully and false otherwise
+     */
+    bool saveDocument();
+
+    /*!
      * \brief reset
      */
     void reset();
@@ -89,6 +114,8 @@ private:
 
 private:
     Ui::MainWindow* ui;
+
+    QSplitter* mSplitter; /*!< A splitter for style editor and preview widget.*/
 
     IQssdEditor* mStyleEditor; /*!< A \ref StyleSheetEditor providing user
                                 * the ability to edit Qt style sheets.

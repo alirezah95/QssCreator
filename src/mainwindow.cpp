@@ -4,10 +4,14 @@
 #include "documentfile.h"
 #include "findreplacedialog.h"
 #include "iqssdfileoperations.h"
+#include "iqssdprocessor.h"
+#include "iqssdvariablesmodel.h"
 #include "iuserdialogs.h"
 #include "qssdeditor.h"
+#include "qssdvariableitemdelegate.h"
 #include "widgetspreview.h"
 
+#include <QCloseEvent>
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QSplitter>
@@ -33,16 +37,25 @@ MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
     mDocOpers->setParent(this);
     mUserDlgs->setParent(this);
 
-    auto splitter = new QSplitter;
-    splitter->setChildrenCollapsible(false);
-    splitter->addWidget(mStyleEditor);
-    splitter->addWidget(mPreview);
+    mSplitter = new QSplitter;
+    mSplitter->setChildrenCollapsible(false);
+    mSplitter->addWidget(mStyleEditor);
+    mSplitter->addWidget(mPreview);
+    mSplitter->setStretchFactor(mSplitter->indexOf(mStyleEditor), 1);
+    mSplitter->setStretchFactor(mSplitter->indexOf(mPreview), 0);
 
-    auto hbox = new QHBoxLayout;
-    hbox->setContentsMargins(0, 0, 0, 0);
-    hbox->addWidget(splitter);
+    ui->centralwidget->layout()->addWidget(mSplitter);
 
-    ui->centralwidget->setLayout(hbox);
+    setMinimumSize(QSize(ui->variablesListVw->maximumSize().width()
+            + mStyleEditor->minimumSizeHint().width()
+            + mPreview->minimumSizeHint().width(),
+        mStyleEditor->minimumSizeHint().height()));
+
+    // Set variables view model to the model of the processor of the editor then
+    // set the variables model delegate
+    ui->variablesListVw->setModel(
+        mStyleEditor->getProcessor()->getVariablesModel());
+    ui->variablesListVw->setItemDelegate(new QssdVariableItemDelegate(this));
 
     updateWindowTitle();
 
@@ -58,32 +71,20 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::closeEvent(QCloseEvent* ev)
+{
+    if (maybeSave()) {
+        ev->accept();
+    } else {
+        ev->ignore();
+    }
+}
+
 void MainWindow::newDocument()
 {
     if (mDocOpers) {
         if (mStyleEditor->document()->isModified()) {
-            /* If the document is modified and user presses No button on save
-             * dialog, new document should be created. On the other hand if the
-             * user press cancel the whole operation is canceled.
-             *
-             * If the use press Yes button there is two situations, one if the
-             * user choose a file name (path) that the file can be saved at, in
-             * this case the new document is created either. And if user cancel
-             * choosing save file path (for example by pressing escape) and so
-             * the file is not saved, new document should not be created and it
-             * should be like a Cancel button press.
-             */
-            if (auto button = mUserDlgs->question(this, tr("Save document"),
-                    tr("Save current document?"),
-                    QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
-                    QMessageBox::Yes);
-                button == QMessageBox::Yes) {
-                save();
-                if (mStyleEditor->document()->isModified()) {
-                    // The doc is not saved
-                    return;
-                }
-            } else if (button == QMessageBox::Cancel) {
+            if (!maybeSave()) {
                 return;
             }
         }
@@ -101,18 +102,7 @@ void MainWindow::openDocument()
 {
     if (mDocOpers && mUserDlgs) {
         if (mStyleEditor->document()->isModified()) {
-            // Show a save dialog
-            if (auto button = mUserDlgs->question(this, tr("Save document"),
-                    tr("Save current document?"),
-                    QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
-                    QMessageBox::Yes);
-                button == QMessageBox::Yes) {
-                save();
-                if (mStyleEditor->document()->isModified()) {
-                    // The doc is not saved
-                    return;
-                }
-            } else if (button == QMessageBox::Cancel) {
+            if (!maybeSave()) {
                 return;
             }
         }
@@ -128,6 +118,9 @@ void MainWindow::openDocument()
             qDebug() << "Error in opening file: " << docFile.fileName();
             return;
         }
+        // Set the stylesheet on the preview widget
+        mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
+
         updateWindowTitle();
     }
     return;
@@ -136,22 +129,9 @@ void MainWindow::openDocument()
 void MainWindow::save()
 {
     if (mDocOpers) {
-        QString saveFileName;
-        if (mStyleEditor->documentTitle() == DOC_UNTITLED) {
-            saveFileName = mUserDlgs->getSaveFileName(this, tr("Save File"),
-                QStandardPaths::writableLocation(
-                    QStandardPaths::DocumentsLocation),
-                DOC_FILTER);
-        } else {
-            saveFileName = mStyleEditor->documentTitle();
-        }
-        if (saveFileName.isEmpty()) {
-            return;
-        }
-        DocumentFile docFile(saveFileName);
-
-        if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
-            qDebug() << "Error in saving file: " << docFile.fileName();
+        if (saveDocument()) {
+            // Set the stylesheet on the preview widget
+            mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
         }
     }
     return;
@@ -167,12 +147,15 @@ void MainWindow::saveAs()
         if (saveAsFileName.isEmpty()) {
             return;
         }
-        DocumentFile docFile(saveAsFileName);
 
+        DocumentFile docFile(saveAsFileName);
         if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
             qDebug() << "Error in saving file: " << docFile.fileName();
             return;
         }
+
+        // Set the stylesheet on the preview widget
+        mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
         updateWindowTitle();
     }
     return;
@@ -199,6 +182,57 @@ void MainWindow::updateWindowTitle()
     setWindowTitle(docTitle
         + (mStyleEditor->document()->isModified() ? "* - " : " - ")
         + "Qss Creator");
+}
+
+bool MainWindow::maybeSave()
+{
+    /* If the document is modified and user presses No button on save
+     * dialog, new document should be created. On the other hand if the
+     * user press cancel the whole operation is canceled.
+     *
+     * If the use press Yes button there is two situations, one if the
+     * user choose a file name (path) that the file can be saved at, in
+     * this case the new document is created either. And if user cancel
+     * choosing save file path (for example by pressing escape) and so
+     * the file is not saved, new document should not be created and it
+     * should be like a Cancel button press.
+     */
+    if (mStyleEditor->document()->isModified()) {
+        if (auto btn = mUserDlgs->question(this, tr("Save Changes"),
+                tr("Document is not saved, do you want to save changes?"),
+                QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
+                QMessageBox::Yes);
+            btn == QMessageBox::Yes) {
+            return saveDocument();
+        } else if (btn == QMessageBox::No) {
+            return true;
+        } else /*(btn == QMessageBox::Cancel)*/ {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool MainWindow::saveDocument()
+{
+    QString saveFileName;
+    if (mStyleEditor->documentTitle() == DOC_UNTITLED) {
+        saveFileName = mUserDlgs->getSaveFileName(this, tr("Save File"),
+            QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
+            DOC_FILTER);
+    } else {
+        saveFileName = mStyleEditor->documentTitle();
+    }
+    if (saveFileName.isEmpty()) {
+        return false;
+    }
+
+    DocumentFile docFile(saveFileName);
+    if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
+        qDebug() << "Error in saving file: " << docFile.fileName();
+        return false;
+    }
+    return true;
 }
 
 void MainWindow::reset()

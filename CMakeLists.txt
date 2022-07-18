@@ -56,6 +56,24 @@ set(PROJECT_SOURCES
         src/iuserdialogs.cpp
 
         src/userdialogs.h
+
+        src/qssdvariable.h
+        src/qssdvariable.cpp
+
+        src/iqssdprocessor.h
+        src/iqssdprocessor.cpp
+
+        src/qssdprocessor.h
+        src/qssdprocessor.cpp
+
+        src/iqssdvariablesmodel.h
+        src/iqssdvariablesmodel.cpp
+
+        src/qssdvariablesmodel.h
+        src/qssdvariablesmodel.cpp
+
+        src/qssdvariableitemdelegate.h
+        src/qssdvariableitemdelegate.cpp
 )
 
 qt_add_resources(PROJECT_SOURCES resources/res.qrc)

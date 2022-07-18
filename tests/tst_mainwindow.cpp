@@ -12,6 +12,7 @@
 
 #include "tst_mockqssdeditor.h"
 #include "tst_mockqssdfileoperations.h"
+#include "tst_mockqssdprocessor.h"
 #include "tst_mockuserdialogs.h"
 
 using namespace ::testing;
@@ -21,7 +22,12 @@ class TestMainWindow : public ::testing::Test
 public:
     void SetUp()
     {
+        processorMock = new MockQssdProcessor;
+
         editorMock = new MockQssdEditor;
+        ON_CALL(*editorMock, getProcessor())
+            .WillByDefault(Return(processorMock));
+
         opersMock = new MockQssdFileOperations;
         userDlgsMock = new MockUserDialogs;
 
@@ -31,12 +37,14 @@ public:
     void TearDown()
     {
         delete mainWin;
+        delete processorMock;
         return;
     }
 
     MockQssdEditor* editorMock;
     MockQssdFileOperations* opersMock;
     MockUserDialogs* userDlgsMock;
+    MockQssdProcessor* processorMock;
 
     MainWindow* mainWin;
 };
@@ -291,6 +299,7 @@ TEST_F(TestMainWindow, TestOpenDocumentWhenNoModified)
             editor->document()->setModified(false);
             return true;
         }));
+    EXPECT_CALL(*editorMock, getQtStylesheet(true)).Times(1);
 
     (*openBtnAct)->trigger();
 }
@@ -329,6 +338,7 @@ TEST_F(TestMainWindow, TestOpenDocumentWhenModified)
             editor->document()->setModified(false);
             return true;
         }));
+    EXPECT_CALL(*editorMock, getQtStylesheet(true)).Times(1);
     (*openBtnAct)->trigger();
 
     // When user clicks Yes
@@ -361,6 +371,7 @@ TEST_F(TestMainWindow, TestOpenDocumentWhenModified)
             editor->document()->setModified(false);
             return true;
         }));
+    EXPECT_CALL(*editorMock, getQtStylesheet(true)).Times(1);
     (*openBtnAct)->trigger();
 }
 
@@ -390,8 +401,28 @@ TEST_F(TestMainWindow, TestSaveDocument)
                 editor->document()->setModified(false);
                 return true;
             }));
+    EXPECT_CALL(*editorMock, getQtStylesheet(true)).Times(1);
 
     (*saveBtnAct)->trigger();
+}
+
+TEST_F(TestMainWindow, TestCloseDocumentWhenSaveIsRequired)
+{
+    editorMock->insertPlainText("TestSaveAsDocument test case");
+
+    EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _))
+        .WillOnce(Return(QMessageBox::Yes));
+    EXPECT_CALL(*userDlgsMock, getSaveFileName(_, _, _, _, _, _))
+        .WillOnce(Return("/newdoc.qssd"));
+    EXPECT_CALL(*opersMock, saveDocument(_, _))
+        .WillOnce(Invoke([](const QTextEdit* editor, IDocumentFile* outFile) {
+            // Following line is needed otherwise successive tests
+            // won't go right
+            editor->document()->setModified(false);
+            return true;
+        }));
+
+    mainWin->close();
 }
 
 int main(int argc, char* argv[])

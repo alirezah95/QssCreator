@@ -16,8 +16,36 @@ class QssdEditor : public IQssdEditor
     Q_OBJECT
 
 public:
-    explicit QssdEditor(QWidget* parent = nullptr);
-    ~QssdEditor();
+    /*!
+     * \brief Cosntructs a \ref QssdEditor instance using the \a proc processor.
+     * Note that the QssEditor takes ownership of the processor (will delete it
+     * in ctor)
+     * \param proc A pointer to an instance of \ref IQssdProcessor
+     * \param parent
+     */
+    explicit QssdEditor(IQssdProcessor* proc, QWidget* parent = nullptr);
+    virtual ~QssdEditor();
+
+    /*!
+     * \brief setProcessor
+     * \param proc
+     */
+    virtual void setProcessor(IQssdProcessor* proc) override;
+
+    /*!
+     * \brief Getter for the \ref IQssdProcessor instance
+     * \return
+     */
+    virtual IQssdProcessor* getProcessor() const override { return mProcessor; }
+
+    /*!
+     * \brief getQtStylesheet
+     * \param update If true the \ref IQssdProcessor::processDocument() is
+     * called and then the result is returned otherwise the stylesheet stored in
+     * \ref mStylesheet is returned
+     * \return A \a\b QString to be used as the stylesheet for widgets
+     */
+    virtual QString getQtStylesheet(bool update = false) override;
 
     /*!
      * \brief Returns the width required for the line numbers area so that the
@@ -43,6 +71,13 @@ public:
     {
         return mLineNumbersAreaWidget->font();
     }
+
+    /*!
+     * \brief Reimplements \a\b QWidget::minimumSizeHint() to return minimum
+     * size required for editor
+     * \return
+     */
+    virtual QSize minimumSizeHint() const override { return QSize(450, 600); }
 
 protected:
     /*!
@@ -78,6 +113,15 @@ private:
                                       * numbers onto
                                       */
     int mLineNumbersAreaWidth = 0;
+
+    IQssdProcessor* mProcessor; /*!< An \ref IQssdProcessor object responsible
+                                 * for processing the content of the editor's
+                                 * docuemnt
+                                 */
+
+    QString mStylesheet; /*!< The Qt stylesheet that is obtained after compiling
+                          * the content of the document.
+                          */
 };
 
 #endif // STYLESHEETEDITOR_H
