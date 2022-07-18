@@ -39,7 +39,7 @@ public:
      * called and then the result is returned
      * \return A \a\b QString that can be set as the style sheet of a widget
      */
-    virtual QString getQtStylesheet(bool update = false);
+    virtual QString getQtStylesheet(bool update = false) = 0;
 
     /*!
      * \brief Returns the width of the area which the line numbers are drawn
