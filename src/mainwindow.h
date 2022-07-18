@@ -8,6 +8,7 @@ class IQssdEditor;
 class IQssdFileOperations;
 class IUserDialogs;
 class IQssdProcessor;
+class IDocumentFile;
 class FindReplaceDialog;
 
 QT_BEGIN_NAMESPACE
@@ -85,6 +86,21 @@ private slots:
     void updateWindowTitle();
 
 private:
+    /*!
+     * \brief Prompt user for saving current document
+     * \return \a True if user presses \a Save and saves the doc or presses \a
+     * No button. Returns \a false if user presses \a Cancel button or presses
+     * \a Save button but the save process goes wrong
+     */
+    bool maybeSave();
+
+    /*!
+     * \brief Saves the document using the \a docFile
+     * \param docFile
+     * \return True if saved successfully and false otherwise
+     */
+    bool saveDocument(IDocumentFile* docFile);
+
     /*!
      * \brief reset
      */
