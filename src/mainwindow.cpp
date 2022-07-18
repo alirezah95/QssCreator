@@ -133,8 +133,8 @@ void MainWindow::openDocument()
             qDebug() << "Error in opening file: " << docFile.fileName();
             return;
         }
-        // Update doc variables through processor
-        mStyleEditor->getProcessor()->processDocument(mStyleEditor->document());
+        // Set the stylesheet on the preview widget
+        mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
 
         updateWindowTitle();
     }
@@ -162,8 +162,8 @@ void MainWindow::save()
             qDebug() << "Error in saving file: " << docFile.fileName();
             return;
         }
-        // Update doc variables through processor
-        mStyleEditor->getProcessor()->processDocument(mStyleEditor->document());
+        // Set the stylesheet on the preview widget
+        mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
     }
     return;
 }
@@ -184,8 +184,8 @@ void MainWindow::saveAs()
             qDebug() << "Error in saving file: " << docFile.fileName();
             return;
         }
-        // Update doc variables through processor
-        mStyleEditor->getProcessor()->processDocument(mStyleEditor->document());
+        // Set the stylesheet on the preview widget
+        mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
         updateWindowTitle();
     }
     return;
