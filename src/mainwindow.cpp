@@ -158,12 +158,10 @@ void MainWindow::save()
         if (saveFileName.isEmpty()) {
             return;
         }
-        DocumentFile docFile(saveFileName);
 
-        if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
-            qDebug() << "Error in saving file: " << docFile.fileName();
-            return;
-        }
+        DocumentFile docFile(saveFileName);
+        saveDocument(&docFile);
+
         // Set the stylesheet on the preview widget
         mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
     }
@@ -180,12 +178,10 @@ void MainWindow::saveAs()
         if (saveAsFileName.isEmpty()) {
             return;
         }
-        DocumentFile docFile(saveAsFileName);
 
-        if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
-            qDebug() << "Error in saving file: " << docFile.fileName();
-            return;
-        }
+        DocumentFile docFile(saveAsFileName);
+        saveDocument(&docFile);
+
         // Set the stylesheet on the preview widget
         mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
         updateWindowTitle();
@@ -213,17 +209,18 @@ void MainWindow::updateWindowTitle()
 
     setWindowTitle(docTitle
         + (mStyleEditor->document()->isModified() ? "* - " : " - ")
-                   + "Qss Creator");
+        + "Qss Creator");
 }
 
-bool MainWindow::maybeSave()
-{
-
-}
+bool MainWindow::maybeSave() { }
 
 bool MainWindow::saveDocument(IDocumentFile* docFile)
 {
-
+    if (!mDocOpers->saveDocument(mStyleEditor, docFile)) {
+        qDebug() << "Error in saving file: " << docFile->fileName();
+        return false;
+    }
+    return true;
 }
 
 void MainWindow::reset()
