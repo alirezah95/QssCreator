@@ -66,7 +66,7 @@ bool QssdFileOperations::saveDocument(
 }
 
 bool QssdFileOperations::exportDocument(
-    const QTextEdit* editor, IDocumentFile* outFile)
+    const QString& docContent, IDocumentFile* outFile)
 {
     return true;
 }

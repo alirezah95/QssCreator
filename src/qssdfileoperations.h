@@ -52,7 +52,7 @@ public:
      * \return
      */
     virtual bool exportDocument(
-        const QTextEdit* editor, IDocumentFile* outFile) override;
+        const QString& docContent, IDocumentFile* outFile) override;
 };
 
 #endif // DOCUMENTOPERATIONS_H
