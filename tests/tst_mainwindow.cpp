@@ -406,6 +406,25 @@ TEST_F(TestMainWindow, TestSaveDocument)
     (*saveBtnAct)->trigger();
 }
 
+TEST_F(TestMainWindow, TestCloseDocumentWhenSaveIsRequired)
+{
+    editorMock->insertPlainText("TestSaveAsDocument test case");
+
+    EXPECT_CALL(*userDlgsMock, question(_, _, _, _, _))
+        .WillOnce(Return(QMessageBox::Yes));
+    EXPECT_CALL(*userDlgsMock, getSaveFileName(_, _, _, _, _, _))
+        .WillOnce(Return("/newdoc.qssd"));
+    EXPECT_CALL(*opersMock, saveDocument(_, _))
+        .WillOnce(Invoke([](const QTextEdit* editor, IDocumentFile* outFile) {
+            // Following line is needed otherwise successive tests
+            // won't go right
+            editor->document()->setModified(false);
+            return true;
+        }));
+
+    mainWin->close();
+}
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
