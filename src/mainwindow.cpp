@@ -69,27 +69,7 @@ void MainWindow::newDocument()
 {
     if (mDocOpers) {
         if (mStyleEditor->document()->isModified()) {
-            /* If the document is modified and user presses No button on save
-             * dialog, new document should be created. On the other hand if the
-             * user press cancel the whole operation is canceled.
-             *
-             * If the use press Yes button there is two situations, one if the
-             * user choose a file name (path) that the file can be saved at, in
-             * this case the new document is created either. And if user cancel
-             * choosing save file path (for example by pressing escape) and so
-             * the file is not saved, new document should not be created and it
-             * should be like a Cancel button press.
-             */
-            if (auto button = mUserDlgs->question(this, tr("Save document"),
-                    tr("Save current document?"),
-                    QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
-                    QMessageBox::Yes);
-                button == QMessageBox::Yes) {
-                if (!saveDocument()) {
-                    // The doc is not saved
-                    return;
-                }
-            } else if (button == QMessageBox::Cancel) {
+            if (!maybeSave()) {
                 return;
             }
         }
@@ -199,7 +179,31 @@ void MainWindow::updateWindowTitle()
         + "Qss Creator");
 }
 
-bool MainWindow::maybeSave() { }
+bool MainWindow::maybeSave()
+{
+    /* If the document is modified and user presses No button on save
+     * dialog, new document should be created. On the other hand if the
+     * user press cancel the whole operation is canceled.
+     *
+     * If the use press Yes button there is two situations, one if the
+     * user choose a file name (path) that the file can be saved at, in
+     * this case the new document is created either. And if user cancel
+     * choosing save file path (for example by pressing escape) and so
+     * the file is not saved, new document should not be created and it
+     * should be like a Cancel button press.
+     */
+    if (auto btn = mUserDlgs->question(this, tr("Save Changes"),
+            tr("Document is not saved, do you want to save changes?"),
+            QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
+            QMessageBox::Yes);
+        btn == QMessageBox::Yes) {
+        return saveDocument();
+    } else if (btn == QMessageBox::No) {
+        return true;
+    } else /*(btn == QMessageBox::Cancel)*/ {
+        return false;
+    }
+}
 
 bool MainWindow::saveDocument()
 {
