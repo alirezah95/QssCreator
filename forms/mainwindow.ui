@@ -28,7 +28,17 @@
      <number>4</number>
     </property>
     <item>
-     <widget class="QListView" name="variablesListVw"/>
+     <widget class="QListView" name="variablesListVw">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustToContents</enum>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
