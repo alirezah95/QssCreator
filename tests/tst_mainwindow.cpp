@@ -446,7 +446,7 @@ TEST_F(TestMainWindow, TestExportUntitledFile)
         .WillOnce(Return("/test.qssd"));
     EXPECT_CALL(*opersMock, saveDocument(_, _)).WillOnce(Return(true));
 
-    EXPECT_CALL(*opersMock, exportDocument(_, _))
+    EXPECT_CALL(*opersMock, writeToFile(_, _))
         .WillOnce(
             Invoke([](const QString& docCont, IDocumentFile* docFile) -> bool {
                 EXPECT_STREQ(

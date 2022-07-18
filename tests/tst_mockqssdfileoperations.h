@@ -17,7 +17,7 @@ public:
         (QTextEdit * editor, IDocumentFile* docFile), (override));
     MOCK_METHOD(bool, saveDocument,
         (const QTextEdit* editor, IDocumentFile* outFile), (override));
-    MOCK_METHOD(bool, exportDocument,
+    MOCK_METHOD(bool, writeToFile,
         (const QString& docContent, IDocumentFile* outFile), (override));
 };
 
