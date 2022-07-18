@@ -77,7 +77,7 @@ public:
      * size required for editor
      * \return
      */
-    virtual QSize minimumSizeHint() const override { return QSize(300, 400); }
+    virtual QSize minimumSizeHint() const override { return QSize(450, 600); }
 
 protected:
     /*!

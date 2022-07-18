@@ -23,7 +23,7 @@ public:
      * size required for preview widget
      * \return
      */
-    virtual QSize minimumSizeHint() const override { return QSize(300, 400); }
+    virtual QSize minimumSizeHint() const override { return QSize(350, 600); }
 
 private:
     Ui::WidgetsPreview* ui;
