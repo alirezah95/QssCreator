@@ -146,22 +146,7 @@ void MainWindow::openDocument()
 void MainWindow::save()
 {
     if (mDocOpers) {
-        QString saveFileName;
-        if (mStyleEditor->documentTitle() == DOC_UNTITLED) {
-            saveFileName = mUserDlgs->getSaveFileName(this, tr("Save File"),
-                QStandardPaths::writableLocation(
-                    QStandardPaths::DocumentsLocation),
-                DOC_FILTER);
-        } else {
-            saveFileName = mStyleEditor->documentTitle();
-        }
-        if (saveFileName.isEmpty()) {
-            return;
-        }
-
-        DocumentFile docFile(saveFileName);
-        saveDocument(&docFile);
-
+        saveDocument();
         // Set the stylesheet on the preview widget
         mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
     }
@@ -180,7 +165,10 @@ void MainWindow::saveAs()
         }
 
         DocumentFile docFile(saveAsFileName);
-        saveDocument(&docFile);
+        if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
+            qDebug() << "Error in saving file: " << docFile.fileName();
+            return;
+        }
 
         // Set the stylesheet on the preview widget
         mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
@@ -214,10 +202,23 @@ void MainWindow::updateWindowTitle()
 
 bool MainWindow::maybeSave() { }
 
-bool MainWindow::saveDocument(IDocumentFile* docFile)
+bool MainWindow::saveDocument()
 {
-    if (!mDocOpers->saveDocument(mStyleEditor, docFile)) {
-        qDebug() << "Error in saving file: " << docFile->fileName();
+    QString saveFileName;
+    if (mStyleEditor->documentTitle() == DOC_UNTITLED) {
+        saveFileName = mUserDlgs->getSaveFileName(this, tr("Save File"),
+            QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
+            DOC_FILTER);
+    } else {
+        saveFileName = mStyleEditor->documentTitle();
+    }
+    if (saveFileName.isEmpty()) {
+        return false;
+    }
+
+    DocumentFile docFile(saveFileName);
+    if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
+        qDebug() << "Error in saving file: " << docFile.fileName();
         return false;
     }
     return true;

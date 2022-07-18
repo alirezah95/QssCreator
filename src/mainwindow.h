@@ -99,7 +99,7 @@ private:
      * \param docFile
      * \return True if saved successfully and false otherwise
      */
-    bool saveDocument(IDocumentFile* docFile);
+    bool saveDocument();
 
     /*!
      * \brief reset
