@@ -176,7 +176,7 @@ void MainWindow::exportDocument()
     const QString& docTitle = mStyleEditor->documentTitle();
 
     DocumentFile exportDocFile(docTitle.sliced(0, docTitle.size() - 1));
-    if (!mDocOpers->exportDocument(exportContent, &exportDocFile)) {
+    if (!mDocOpers->writeToFile(exportContent, &exportDocFile)) {
         qDebug() << "Export failed";
     }
 }
