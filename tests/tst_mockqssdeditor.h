@@ -13,6 +13,7 @@ public:
 
     MOCK_METHOD(void, setProcessor, (IQssdProcessor*), (override));
     MOCK_METHOD(IQssdProcessor*, getProcessor, (), (const override));
+    MOCK_METHOD(QString, getQtStylesheet, (bool update), (override));
     MOCK_METHOD(int, getLineNumbersAreaWidth, (), (const override));
     MOCK_METHOD(void, setLineNumbersFont, (QFont font), (override));
     MOCK_METHOD(QFont, getLineNumbersFont, (), (const override));
