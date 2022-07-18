@@ -23,6 +23,7 @@ public:
     virtual QByteArray readAll() override;
 
     virtual qint64 write(const QByteArray& byteArray) override;
+    virtual qint64 write(const char* data, qint64 maxSize) override;
 };
 
 inline DocumentFile::DocumentFile(QObject* parent)
@@ -67,6 +68,11 @@ inline QByteArray DocumentFile::readAll()
 inline qint64 DocumentFile::write(const QByteArray& byteArray)
 {
     return file.write(byteArray);
+}
+
+inline qint64 DocumentFile::write(const char* data, qint64 maxSize)
+{
+    return file.write(data, maxSize);
 }
 
 #endif // DOCUMENTFILE_H
