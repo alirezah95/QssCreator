@@ -44,6 +44,11 @@ MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
 
     ui->centralwidget->layout()->addWidget(mSplitter);
 
+    setMinimumSize(QSize(ui->variablesListVw->maximumSize().width()
+            + mStyleEditor->minimumSizeHint().width()
+            + mPreview->minimumSizeHint().width(),
+        mStyleEditor->minimumSizeHint().height()));
+
     // Set variables view model to the model of the processor of the editor then
     // set the variables model delegate
     ui->variablesListVw->setModel(
