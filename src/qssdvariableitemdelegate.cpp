@@ -52,9 +52,8 @@ void QssdVariableItemDelegate::paint(QPainter* painter,
             painter->fillRect(colorRect.adjusted(1, 1, 0, 0), QBrush(bgColor));
 
             // Draw the value text inside the colorRect
-            QColor valueTxtColor;
-            valueTxtColor.setRgb(
-                bgColor.lightnessF() < 0.5 ? qRgb(1, 1, 1) : qRgb(0, 0, 0));
+            int lt = bgColor.lightness() < 128 ? 255 : 0;
+            QColor valueTxtColor(lt, lt, lt);
             painter->setPen(QPen(valueTxtColor));
             painter->drawText(colorRect, Qt::AlignVCenter, vValue);
 
