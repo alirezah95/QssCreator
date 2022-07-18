@@ -87,17 +87,7 @@ void MainWindow::openDocument()
 {
     if (mDocOpers && mUserDlgs) {
         if (mStyleEditor->document()->isModified()) {
-            // Show a save dialog
-            if (auto button = mUserDlgs->question(this, tr("Save document"),
-                    tr("Save current document?"),
-                    QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
-                    QMessageBox::Yes);
-                button == QMessageBox::Yes) {
-                if (!saveDocument()) {
-                    // The doc is not saved
-                    return;
-                }
-            } else if (button == QMessageBox::Cancel) {
+            if (!maybeSave()) {
                 return;
             }
         }
