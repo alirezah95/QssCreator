@@ -425,6 +425,35 @@ TEST_F(TestMainWindow, TestCloseDocumentWhenSaveIsRequired)
     mainWin->close();
 }
 
+TEST_F(TestMainWindow, TestExportUntitledFile)
+{
+    const auto& actions
+        = mainWin->findChild<QToolBar*>("mainToolBar")->actions();
+
+    auto exportAct = std::find_if(actions.begin(), actions.end(),
+        [](QAction* curr) { return curr->objectName() == "actionExport"; });
+
+    ASSERT_NE(exportAct, actions.end()) << "No \"export doc\" action.";
+
+    editorMock->insertPlainText("TestSaveAsDocument test case");
+    EXPECT_STREQ(
+        editorMock->documentTitle().toStdString().c_str(), DOC_UNTITLED);
+
+    EXPECT_CALL(*userDlgsMock, getSaveFileName(_, _, _, _, _, _))
+        .WillOnce(Return("/test.qssd"));
+    EXPECT_CALL(*opersMock, saveDocument(_, _)).WillOnce(Return(true));
+
+    EXPECT_CALL(*opersMock, exportDocument(_, _))
+        .WillOnce(
+            Invoke([](const QString& docCont, IDocumentFile* docFile) -> bool {
+                EXPECT_STREQ(
+                    docFile->fileName().toStdString().c_str(), "/test.qss");
+                return true;
+            }));
+
+    (*exportAct)->trigger();
+}
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
