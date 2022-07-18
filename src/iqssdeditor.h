@@ -33,6 +33,15 @@ public:
     virtual IQssdProcessor* getProcessor() const = 0;
 
     /*!
+     * \brief Returns the stylesheet that is obtained after processing the
+     * document.
+     * \param update If true the \ref IQssdProcessor::processDocument() is
+     * called and then the result is returned
+     * \return A \a\b QString that can be set as the style sheet of a widget
+     */
+    virtual QString getQtStylesheet(bool update = false);
+
+    /*!
      * \brief Returns the width of the area which the line numbers are drawn
      * onto it
      * \return An integer as the width of the area
