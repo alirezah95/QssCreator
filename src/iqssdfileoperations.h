@@ -49,7 +49,7 @@ public:
      * storage
      * \return True if successfull and false otherwise
      */
-    virtual bool exportDocument(const QString& doc, IDocumentFile* outFile) = 0;
+    virtual bool writeToFile(const QString& doc, IDocumentFile* outFile) = 0;
 };
 
 #endif

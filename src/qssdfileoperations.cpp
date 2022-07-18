@@ -65,7 +65,7 @@ bool QssdFileOperations::saveDocument(
     return true;
 }
 
-bool QssdFileOperations::exportDocument(
+bool QssdFileOperations::writeToFile(
     const QString& docContent, IDocumentFile* outFile)
 {
     if (!outFile) {

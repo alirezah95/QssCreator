@@ -51,7 +51,7 @@ public:
      * \param outFile
      * \return
      */
-    virtual bool exportDocument(
+    virtual bool writeToFile(
         const QString& docContent, IDocumentFile* outFile) override;
 };
 
