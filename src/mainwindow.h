@@ -34,6 +34,13 @@ public:
         IUserDialogs* userDlgs, QWidget* parent = nullptr);
     ~MainWindow();
 
+protected:
+    /*!
+     * \brief Overrides \a\b QWidget::closeEvent() to handle app closing
+     * \param ev
+     */
+    virtual void closeEvent(QCloseEvent* ev);
+
 private slots:
     /*!
      * \brief Calls \ref DocumentOperations::newDocument(QTextEdit*)

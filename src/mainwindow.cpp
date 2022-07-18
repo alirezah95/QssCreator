@@ -63,6 +63,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::closeEvent(QCloseEvent* ev) { }
+
 void MainWindow::newDocument()
 {
     if (mDocOpers) {
