@@ -404,6 +404,9 @@ TEST_F(TestMainWindow, TestSaveDocument)
     EXPECT_CALL(*editorMock, getQtStylesheet(true)).Times(1);
 
     (*saveBtnAct)->trigger();
+
+    EXPECT_STREQ(
+        editorMock->documentTitle().toStdString().c_str(), "/newdoc.qssd");
 }
 
 TEST_F(TestMainWindow, TestCloseDocumentWhenSaveIsRequired)
