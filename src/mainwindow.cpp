@@ -161,7 +161,22 @@ void MainWindow::saveAs()
     return;
 }
 
-void MainWindow::exportDocument() { }
+void MainWindow::exportDocument()
+{
+    if (mStyleEditor->documentTitle() == DOC_UNTITLED) {
+        // First save the document. Update var model is needed => call save()
+        save();
+    }
+    const QString& exportContent
+        = mStyleEditor->getQtStylesheet(mStyleEditor->document()->isModified());
+
+    const QString& docTitle = mStyleEditor->documentTitle();
+
+    DocumentFile exportDocFile(docTitle.sliced(0, docTitle.size() - 1));
+    if (!mDocOpers->exportDocument(exportContent, &exportDocFile)) {
+        qDebug() << "Export failed";
+    }
+}
 
 void MainWindow::updateWindowTitle()
 {
@@ -253,6 +268,7 @@ void MainWindow::setupConnections()
     ACT_CONNECT_THIS(ui->actionOpenFile, openDocument);
     ACT_CONNECT_THIS(ui->actionSave, save);
     ACT_CONNECT_THIS(ui->actionSaveAs, saveAs);
+    ACT_CONNECT_THIS(ui->actionExport, exportDocument);
 
     ACT_CONNECT_EDITOR(ui->actionUndo, undo);
     ACT_CONNECT_EDITOR(ui->actionRedo, redo);
