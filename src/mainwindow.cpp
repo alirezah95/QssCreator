@@ -41,6 +41,8 @@ MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
     mSplitter->setChildrenCollapsible(false);
     mSplitter->addWidget(mStyleEditor);
     mSplitter->addWidget(mPreview);
+    mSplitter->setStretchFactor(mSplitter->indexOf(mStyleEditor), 1);
+    mSplitter->setStretchFactor(mSplitter->indexOf(mPreview), 0);
 
     ui->centralwidget->layout()->addWidget(mSplitter);
 
