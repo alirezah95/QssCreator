@@ -11,6 +11,7 @@
 #include "qssdvariableitemdelegate.h"
 #include "widgetspreview.h"
 
+#include <QCloseEvent>
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QSplitter>
@@ -63,7 +64,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::closeEvent(QCloseEvent* ev) { }
+void MainWindow::closeEvent(QCloseEvent* ev)
+{
+    if (maybeSave()) {
+        ev->accept();
+    } else {
+        ev->ignore();
+    }
+}
 
 void MainWindow::newDocument()
 {
@@ -182,17 +190,20 @@ bool MainWindow::maybeSave()
      * the file is not saved, new document should not be created and it
      * should be like a Cancel button press.
      */
-    if (auto btn = mUserDlgs->question(this, tr("Save Changes"),
-            tr("Document is not saved, do you want to save changes?"),
-            QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
-            QMessageBox::Yes);
-        btn == QMessageBox::Yes) {
-        return saveDocument();
-    } else if (btn == QMessageBox::No) {
-        return true;
-    } else /*(btn == QMessageBox::Cancel)*/ {
-        return false;
+    if (mStyleEditor->document()->isModified()) {
+        if (auto btn = mUserDlgs->question(this, tr("Save Changes"),
+                tr("Document is not saved, do you want to save changes?"),
+                QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
+                QMessageBox::Yes);
+            btn == QMessageBox::Yes) {
+            return saveDocument();
+        } else if (btn == QMessageBox::No) {
+            return true;
+        } else /*(btn == QMessageBox::Cancel)*/ {
+            return false;
+        }
     }
+    return true;
 }
 
 bool MainWindow::saveDocument()
