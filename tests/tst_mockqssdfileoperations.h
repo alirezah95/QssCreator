@@ -18,7 +18,7 @@ public:
     MOCK_METHOD(bool, saveDocument,
         (const QTextEdit* editor, IDocumentFile* outFile), (override));
     MOCK_METHOD(bool, exportDocument,
-        (const QTextEdit* editor, IDocumentFile* outFile), (override));
+        (const QString& docContent, IDocumentFile* outFile), (override));
 };
 
 #endif // TST_MOCKQSSDFILEOPERATIONS_H
