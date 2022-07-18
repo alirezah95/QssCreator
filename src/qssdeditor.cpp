@@ -49,7 +49,7 @@ void QssdEditor::setProcessor(IQssdProcessor* proc)
 
 QString QssdEditor::getQtStylesheet(bool update)
 {
-    if (update) {
+    if (update || mStylesheet.isEmpty()) {
         mStylesheet = mProcessor->processDocument(this->document(), true);
     }
     return mStylesheet;
