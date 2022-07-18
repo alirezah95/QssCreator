@@ -47,6 +47,11 @@ void QssdEditor::setProcessor(IQssdProcessor* proc)
     return;
 }
 
+QString QssdEditor::getQtStylesheet(bool update)
+{
+
+}
+
 void QssdEditor::setLineNumbersFont(QFont font)
 {
     mLineNumbersAreaWidget->setFont(font);

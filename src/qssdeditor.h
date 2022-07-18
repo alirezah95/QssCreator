@@ -39,6 +39,15 @@ public:
     virtual IQssdProcessor* getProcessor() const override { return mProcessor; }
 
     /*!
+     * \brief getQtStylesheet
+     * \param update If true the \ref IQssdProcessor::processDocument() is
+     * called and then the result is returned otherwise the stylesheet stored in
+     * \ref mStylesheet is returned
+     * \return A \a\b QString to be used as the stylesheet for widgets
+     */
+    virtual QString getQtStylesheet(bool update = false) override;
+
+    /*!
      * \brief Returns the width required for the line numbers area so that the
      * numbers are properly shown on it.
      * \return An integer as the width
@@ -102,6 +111,10 @@ private:
                                  * for processing the content of the editor's
                                  * docuemnt
                                  */
+
+    QString mStylesheet; /*!< The Qt stylesheet that is obtained after compiling
+                          * the content of the document.
+                          */
 };
 
 #endif // STYLESHEETEDITOR_H
