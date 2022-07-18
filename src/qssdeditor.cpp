@@ -49,7 +49,10 @@ void QssdEditor::setProcessor(IQssdProcessor* proc)
 
 QString QssdEditor::getQtStylesheet(bool update)
 {
-
+    if (update) {
+        mStylesheet = mProcessor->processDocument(this->document(), true);
+    }
+    return mStylesheet;
 }
 
 void QssdEditor::setLineNumbersFont(QFont font)
