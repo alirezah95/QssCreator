@@ -153,10 +153,13 @@ void MainWindow::saveAs()
             qDebug() << "Error in saving file: " << docFile.fileName();
             return;
         }
+        if (saveAsFileName != mStyleEditor->documentTitle()) {
+            mStyleEditor->setDocumentTitle(saveAsFileName);
+            updateWindowTitle();
+        }
 
         // Set the stylesheet on the preview widget
         mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
-        updateWindowTitle();
     }
     return;
 }
@@ -246,6 +249,10 @@ bool MainWindow::saveDocument()
     if (!mDocOpers->saveDocument(mStyleEditor, &docFile)) {
         qDebug() << "Error in saving file: " << docFile.fileName();
         return false;
+    }
+    if (saveFileName != mStyleEditor->documentTitle()) {
+        mStyleEditor->setDocumentTitle(saveFileName);
+        updateWindowTitle();
     }
     return true;
 }
