@@ -146,9 +146,10 @@ void MainWindow::openDocument()
 void MainWindow::save()
 {
     if (mDocOpers) {
-        saveDocument();
-        // Set the stylesheet on the preview widget
-        mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
+        if (saveDocument()) {
+            // Set the stylesheet on the preview widget
+            mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
+        }
     }
     return;
 }
