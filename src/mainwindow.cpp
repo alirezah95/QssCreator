@@ -37,12 +37,12 @@ MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
     mDocOpers->setParent(this);
     mUserDlgs->setParent(this);
 
-    auto splitter = new QSplitter;
-    splitter->setChildrenCollapsible(false);
-    splitter->addWidget(mStyleEditor);
-    splitter->addWidget(mPreview);
+    mSplitter = new QSplitter;
+    mSplitter->setChildrenCollapsible(false);
+    mSplitter->addWidget(mStyleEditor);
+    mSplitter->addWidget(mPreview);
 
-    ui->centralwidget->layout()->addWidget(splitter);
+    ui->centralwidget->layout()->addWidget(mSplitter);
 
     // Set variables view model to the model of the processor of the editor then
     // set the variables model delegate

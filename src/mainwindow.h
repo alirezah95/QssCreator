@@ -10,6 +10,7 @@ class IUserDialogs;
 class IQssdProcessor;
 class IDocumentFile;
 class FindReplaceDialog;
+class QSplitter;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -113,6 +114,8 @@ private:
 
 private:
     Ui::MainWindow* ui;
+
+    QSplitter* mSplitter; /*!< A splitter for style editor and preview widget.*/
 
     IQssdEditor* mStyleEditor; /*!< A \ref StyleSheetEditor providing user
                                 * the ability to edit Qt style sheets.
