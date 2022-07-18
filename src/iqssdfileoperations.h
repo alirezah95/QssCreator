@@ -42,16 +42,14 @@ public:
         = 0;
 
     /*!
-     * \brief Export the current document as a <em>Qt style sheet</em> docuemnt
+     * \brief Export the current document as a <em>Qt style sheet</em> document
      * to the file specified in \ref IDocumentFile
-     * \param editor Pointer to a \a\b QTextEdit of which the document is going
-     * to be exported to \a outFile
+     * \param doc A \a\b QString containing the export content
      * \param outFile An \ref IDocumentFile used to export the document to file
      * storage
      * \return True if successfull and false otherwise
      */
-    virtual bool exportDocument(const QTextEdit* editor, IDocumentFile* outFile)
-        = 0;
+    virtual bool exportDocument(const QString& doc, IDocumentFile* outFile) = 0;
 };
 
 #endif
