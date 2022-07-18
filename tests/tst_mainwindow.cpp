@@ -299,8 +299,7 @@ TEST_F(TestMainWindow, TestOpenDocumentWhenNoModified)
             editor->document()->setModified(false);
             return true;
         }));
-    EXPECT_CALL(*processorMock, processDocument(editorMock->document(), true))
-        .Times(1);
+    EXPECT_CALL(*editorMock, getQtStylesheet(true)).Times(1);
 
     (*openBtnAct)->trigger();
 }
@@ -339,8 +338,7 @@ TEST_F(TestMainWindow, TestOpenDocumentWhenModified)
             editor->document()->setModified(false);
             return true;
         }));
-    EXPECT_CALL(*processorMock, processDocument(editorMock->document(), true))
-        .Times(1);
+    EXPECT_CALL(*editorMock, getQtStylesheet(true)).Times(1);
     (*openBtnAct)->trigger();
 
     // When user clicks Yes
@@ -373,8 +371,7 @@ TEST_F(TestMainWindow, TestOpenDocumentWhenModified)
             editor->document()->setModified(false);
             return true;
         }));
-    EXPECT_CALL(*processorMock, processDocument(editorMock->document(), true))
-        .Times(2);
+    EXPECT_CALL(*editorMock, getQtStylesheet(true)).Times(1);
     (*openBtnAct)->trigger();
 }
 
@@ -404,8 +401,7 @@ TEST_F(TestMainWindow, TestSaveDocument)
                 editor->document()->setModified(false);
                 return true;
             }));
-    EXPECT_CALL(*processorMock, processDocument(editorMock->document(), true))
-        .Times(1);
+    EXPECT_CALL(*editorMock, getQtStylesheet(true)).Times(1);
 
     (*saveBtnAct)->trigger();
 }
