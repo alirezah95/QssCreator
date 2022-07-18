@@ -85,8 +85,7 @@ void MainWindow::newDocument()
                     QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
                     QMessageBox::Yes);
                 button == QMessageBox::Yes) {
-                save();
-                if (mStyleEditor->document()->isModified()) {
+                if (!saveDocument()) {
                     // The doc is not saved
                     return;
                 }
@@ -114,8 +113,7 @@ void MainWindow::openDocument()
                     QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
                     QMessageBox::Yes);
                 button == QMessageBox::Yes) {
-                save();
-                if (mStyleEditor->document()->isModified()) {
+                if (!saveDocument()) {
                     // The doc is not saved
                     return;
                 }
