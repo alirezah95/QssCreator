@@ -72,6 +72,13 @@ public:
         return mLineNumbersAreaWidget->font();
     }
 
+    /*!
+     * \brief Reimplements \a\b QWidget::minimumSizeHint() to return minimum
+     * size required for editor
+     * \return
+     */
+    virtual QSize minimumSizeHint() const override { return QSize(300, 400); }
+
 protected:
     /*!
      * \brief Reimplements \a\b QWidget::eventFilter(QObject*, QEvent*)
