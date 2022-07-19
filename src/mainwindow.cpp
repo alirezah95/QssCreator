@@ -11,11 +11,15 @@
 #include "qssdvariableitemdelegate.h"
 #include "widgetspreview.h"
 
+#include <QCheckBox>
 #include <QCloseEvent>
 #include <QFileDialog>
 #include <QHBoxLayout>
+#include <QLineEdit>
+#include <QPushButton>
 #include <QSplitter>
 #include <QStandardPaths>
+#include <QWidgetAction>
 
 /* To create connections between toolbar actions and this class */
 #define ACT_CONNECT_THIS(act, slot)                                            \
@@ -56,6 +60,8 @@ MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
     ui->variablesListVw->setModel(
         mStyleEditor->getProcessor()->getVariablesModel());
     ui->variablesListVw->setItemDelegate(new QssdVariableItemDelegate(this));
+
+    setUpToolbar();
 
     updateWindowTitle();
 
@@ -199,12 +205,37 @@ void MainWindow::updateWindowTitle()
 
     setWindowTitle(docTitle
         + (mStyleEditor->document()->isModified() ? "* - " : " - ")
-                   + "Qss Creator");
+        + "Qss Creator");
 }
 
 void MainWindow::setUpToolbar()
 {
+    QCheckBox* exportChBox = new QCheckBox;
+    exportChBox->setText(tr("&Auto Export"));
+    mAutoExportCheckAct = new QWidgetAction(this);
+    mAutoExportCheckAct->setDefaultWidget(exportChBox);
 
+    QLineEdit* exportLEdit = new QLineEdit;
+    exportLEdit->setMinimumWidth(200);
+    exportLEdit->setMaximumWidth(450);
+    QFont expLEditFont(font().family());
+    expLEditFont.setPixelSize(15);
+    exportLEdit->setFont(expLEditFont);
+    mAutoExportLEditAct = new QWidgetAction(this);
+    mAutoExportLEditAct->setDefaultWidget(exportLEdit);
+
+    QPushButton* browseBtn = new QPushButton;
+    browseBtn->setText(tr("&Select"));
+    mAutoExportBrowseBtnAct = new QWidgetAction(this);
+    mAutoExportBrowseBtnAct->setDefaultWidget(browseBtn);
+
+    exportLEdit->setFixedHeight(browseBtn->sizeHint().height());
+
+    ui->mainToolBar->addAction(mAutoExportCheckAct);
+    ui->mainToolBar->addAction(mAutoExportLEditAct);
+    ui->mainToolBar->addAction(mAutoExportBrowseBtnAct);
+
+    return;
 }
 
 bool MainWindow::maybeSave()
@@ -269,6 +300,9 @@ void MainWindow::reset()
     ui->actionCopy->setEnabled(false);
     ui->actionCut->setEnabled(false);
     ui->actionSave->setEnabled(false);
+
+    mAutoExportLEditAct->setEnabled(false);
+    mAutoExportBrowseBtnAct->setEnabled(false);
 
     return;
 }
@@ -351,6 +385,13 @@ void MainWindow::setupConnections()
             mFindReplaceDlg->setFindText(selTxt);
         }
     });
+
+    // Connection for auto export actions
+    connect(qobject_cast<QCheckBox*>(mAutoExportCheckAct->defaultWidget()),
+        &QCheckBox::toggled, this, [this](bool checked) {
+            mAutoExportLEditAct->setEnabled(checked);
+            mAutoExportBrowseBtnAct->setEnabled(checked);
+        });
 
     return;
 }
