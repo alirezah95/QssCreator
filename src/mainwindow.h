@@ -153,8 +153,8 @@ private:
                                          * set the file path of auto export.
                                          */
 
-    QWidgetAction* mAutoExportBrowseBtn; /*!< A button to browse the auto export
-                                          * file path.
-                                          */
+    QWidgetAction* mAutoExportBrowseBtnAct; /*!< A button to browse the auto
+                                             * export file path.
+                                             */
 };
 #endif // MAINWINDOW_H
