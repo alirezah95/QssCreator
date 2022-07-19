@@ -138,6 +138,10 @@ void MainWindow::save()
         if (saveDocument()) {
             // Set the stylesheet on the preview widget
             mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
+            // Export document if auto export is enabled
+            if (mAutoExportCheckBox->isChecked()) {
+                exportDocument();
+            }
         }
     }
     return;
