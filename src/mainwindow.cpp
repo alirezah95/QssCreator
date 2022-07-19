@@ -392,6 +392,18 @@ void MainWindow::setupConnections()
             mAutoExportLEditAct->setEnabled(checked);
             mAutoExportBrowseBtnAct->setEnabled(checked);
         });
+    connect(mAutoExportLEdit, &QLineEdit::editingFinished, this, [this] {
+        // Make line edit red if file path is not valid
+        QFile file(mAutoExportLEdit->text());
+        if (!file.open(QFile::ReadWrite)) {
+            // Make line edit red
+            mAutoExportLEdit->setStyleSheet("QLineEdit {"
+                                            "border: 1px solid red;"
+                                            "}");
+        } else {
+            mAutoExportLEdit->setStyleSheet("");
+        }
+    });
 
     return;
 }
