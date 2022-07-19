@@ -211,22 +211,28 @@ void MainWindow::updateWindowTitle()
 void MainWindow::setUpToolbar()
 {
     mAutoExportCheckBox = new QCheckBox;
+    mAutoExportCheckBox->setObjectName("aExpChBox");
     mAutoExportCheckBox->setText(tr("&Auto Export"));
     mAutoExportCheckAct = new QWidgetAction(this);
+    mAutoExportCheckAct->setObjectName("aExpChBoxAct");
     mAutoExportCheckAct->setDefaultWidget(mAutoExportCheckBox);
 
     mAutoExportLEdit = new QLineEdit;
+    mAutoExportLEdit->setObjectName("aExpLEdit");
     mAutoExportLEdit->setMinimumWidth(200);
     mAutoExportLEdit->setMaximumWidth(450);
     QFont expLEditFont(font().family());
     expLEditFont.setPixelSize(15);
     mAutoExportLEdit->setFont(expLEditFont);
     mAutoExportLEditAct = new QWidgetAction(this);
+    mAutoExportLEditAct->setObjectName("aExpLEditAct");
     mAutoExportLEditAct->setDefaultWidget(mAutoExportLEdit);
 
     mAutoExportBrowseBtn = new QPushButton;
+    mAutoExportBrowseBtn->setObjectName("aExpBrowseBtn");
     mAutoExportBrowseBtn->setText(tr("&Select"));
     mAutoExportBrowseBtnAct = new QWidgetAction(this);
+    mAutoExportBrowseBtnAct->setObjectName("aExpBrowseBtnAct");
     mAutoExportBrowseBtnAct->setDefaultWidget(mAutoExportBrowseBtn);
 
     mAutoExportLEdit->setFixedHeight(mAutoExportBrowseBtn->sizeHint().height());
