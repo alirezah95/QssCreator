@@ -65,8 +65,20 @@ bool QssdFileOperations::saveDocument(
     return true;
 }
 
-bool QssdFileOperations::exportDocument(
-    const QTextEdit* editor, IDocumentFile* outFile)
+bool QssdFileOperations::writeToFile(
+    const QString& docContent, IDocumentFile* outFile)
 {
+    if (!outFile) {
+        return false;
+    }
+
+    if (!outFile->open(QFile::WriteOnly)) {
+        return false;
+    }
+
+    const auto& docContByteArr = docContent.toUtf8();
+    if (outFile->write(docContByteArr) != docContByteArr.length()) {
+        return false;
+    }
     return true;
 }

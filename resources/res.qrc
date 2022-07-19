@@ -19,5 +19,6 @@
         <file>icons/open-document.png</file>
         <file>icons/new-file.png</file>
         <file>icons/find-replace.png</file>
+        <file>icons/export.svg</file>
     </qresource>
 </RCC>

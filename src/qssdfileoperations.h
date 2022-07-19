@@ -51,8 +51,8 @@ public:
      * \param outFile
      * \return
      */
-    virtual bool exportDocument(
-        const QTextEdit* editor, IDocumentFile* outFile) override;
+    virtual bool writeToFile(
+        const QString& docContent, IDocumentFile* outFile) override;
 };
 
 #endif // DOCUMENTOPERATIONS_H

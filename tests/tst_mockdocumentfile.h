@@ -17,4 +17,5 @@ public:
     MOCK_METHOD(void, setFileName, (const QString& fileName));
     MOCK_METHOD(QByteArray, readAll, ());
     MOCK_METHOD(qint64, write, (const QByteArray& byteArray));
+    MOCK_METHOD(qint64, write, (const char* data, qint64 maxSize));
 };
