@@ -238,7 +238,7 @@
   <action name="actionPaste">
    <property name="icon">
     <iconset resource="../resources/res.qrc">
-     <normaloff>:/icons/copy-to-clipboard.png</normaloff>:/icons/copy-to-clipboard.png</iconset>
+     <normaloff>:/icons/paste.png</normaloff>:/icons/paste.png</iconset>
    </property>
    <property name="text">
     <string>Paste</string>
