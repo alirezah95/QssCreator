@@ -403,10 +403,12 @@ void MainWindow::setupConnections()
         QFile file(mAutoExportLEdit->text());
         if (!file.open(QFile::ReadWrite)) {
             // Make line edit red
+            mIsAutoExportFilePathValid = false;
             mAutoExportLEdit->setStyleSheet("QLineEdit {"
                                             "border: 1px solid red;"
                                             "}");
         } else {
+            mIsAutoExportFilePathValid = true;
             mAutoExportLEdit->setStyleSheet("");
         }
     });

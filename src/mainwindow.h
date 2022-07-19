@@ -40,6 +40,15 @@ public:
         IUserDialogs* userDlgs, QWidget* parent = nullptr);
     ~MainWindow();
 
+    /*!
+     * \brief Getter for validity of auto export file path
+     * \return
+     */
+    bool isAutoExportFilePathValid() const
+    {
+        return mIsAutoExportFilePathValid;
+    }
+
 protected:
     /*!
      * \brief Overrides \a\b QWidget::closeEvent() to handle app closing
@@ -147,6 +156,11 @@ private:
     FindReplaceDialog* mFindReplaceDlg; /*!< A \ref FindReplaceDialog to perform
                                          * find and replace
                                          */
+
+    bool mIsAutoExportFilePathValid = false; /*!< A boolean variable indicating
+                                              * if the file path for auto export
+                                              * is valid
+                                              */
 
     QCheckBox* mAutoExportCheckBox; /*!< Checkbox for set/unset auto export*/
     QWidgetAction* mAutoExportCheckAct; /*!< A checkbox \a\b QWidgetAction to
