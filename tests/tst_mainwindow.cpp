@@ -1,8 +1,14 @@
 #include <QAction>
 #include <QApplication>
+#include <QCheckBox>
 #include <QClipboard>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSignalSpy>
+#include <QStandardPaths>
 #include <QTest>
 #include <QToolBar>
+#include <QWidgetAction>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -455,6 +461,82 @@ TEST_F(TestMainWindow, TestExportUntitledFile)
             }));
 
     (*exportAct)->trigger();
+}
+
+TEST_F(TestMainWindow, TestAutoExportChBox)
+{
+    auto* aExpChBox = mainWin->findChild<QCheckBox*>("aExpChBox");
+    auto* aExpLEditAct = mainWin->findChild<QWidgetAction*>("aExpLEditAct");
+    auto* aExpBrowseBtnAct
+        = mainWin->findChild<QWidgetAction*>("aExpBrowseBtnAct");
+
+    ASSERT_NE(aExpChBox, nullptr);
+
+    EXPECT_FALSE(aExpLEditAct->isEnabled());
+    EXPECT_FALSE(aExpBrowseBtnAct->isEnabled());
+
+    aExpChBox->setChecked(true);
+
+    EXPECT_TRUE(aExpLEditAct->isEnabled());
+    EXPECT_TRUE(aExpBrowseBtnAct->isEnabled());
+}
+
+TEST_F(TestMainWindow, TestAutoExportLineEditInvalidFilePath)
+{
+    auto* aExpChBox = mainWin->findChild<QCheckBox*>("aExpChBox");
+    auto* aExpLEdit = mainWin->findChild<QLineEdit*>("aExpLEdit");
+    auto* aExpLEditAct = mainWin->findChild<QWidgetAction*>("aExpLEditAct");
+    auto* aExpBrowseBtnAct
+        = mainWin->findChild<QWidgetAction*>("aExpBrowseBtnAct");
+
+    ASSERT_NE(aExpChBox, nullptr);
+    aExpChBox->setChecked(true);
+
+    QSignalSpy editFinishSpy(aExpLEdit, &QLineEdit::editingFinished);
+    aExpLEdit->setText("/invalidPath.qss");
+    QTest::keyPress(aExpLEdit, Qt::Key_Enter);
+
+    EXPECT_EQ(editFinishSpy.count(), 1);
+    EXPECT_FALSE(mainWin->isAutoExportFilePathValid());
+}
+
+TEST_F(TestMainWindow, TestAutoExportLineEditValidFilePath)
+{
+    auto* aExpChBox = mainWin->findChild<QCheckBox*>("aExpChBox");
+    auto* aExpLEdit = mainWin->findChild<QLineEdit*>("aExpLEdit");
+    auto* aExpLEditAct = mainWin->findChild<QWidgetAction*>("aExpLEditAct");
+
+    ASSERT_NE(aExpChBox, nullptr);
+    aExpChBox->setChecked(true);
+
+    QSignalSpy editFinishSpy(aExpLEdit, &QLineEdit::editingFinished);
+    aExpLEdit->setText(
+        QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
+        + "/validPath.qss");
+    QTest::keyPress(aExpLEdit, Qt::Key_Enter);
+
+    EXPECT_EQ(editFinishSpy.count(), 1);
+    EXPECT_TRUE(mainWin->isAutoExportFilePathValid());
+}
+
+TEST_F(TestMainWindow, TestAutoExportBrowseButton)
+{
+    auto* aExpChBox = mainWin->findChild<QCheckBox*>("aExpChBox");
+    auto* aExpLEdit = mainWin->findChild<QLineEdit*>("aExpLEdit");
+    auto* aExpLEditAct = mainWin->findChild<QWidgetAction*>("aExpLEditAct");
+    auto* aExpBrowseBtn = mainWin->findChild<QPushButton*>("aExpBrowseBtn");
+
+    ASSERT_NE(aExpChBox, nullptr);
+    aExpChBox->setChecked(true);
+
+    QSignalSpy editFinishSpy(aExpLEdit, &QLineEdit::editingFinished);
+
+    EXPECT_CALL(*userDlgsMock, getSaveFileName(_, _, _, _, _, _))
+        .WillOnce(Return("/test.qss"));
+
+    aExpBrowseBtn->click();
+
+    EXPECT_EQ(editFinishSpy.count(), 1);
 }
 
 int main(int argc, char* argv[])

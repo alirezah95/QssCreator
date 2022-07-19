@@ -11,6 +11,10 @@ class IQssdProcessor;
 class IDocumentFile;
 class FindReplaceDialog;
 class QSplitter;
+class QWidgetAction;
+class QCheckBox;
+class QPushButton;
+class QLineEdit;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -35,6 +39,15 @@ public:
     MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
         IUserDialogs* userDlgs, QWidget* parent = nullptr);
     ~MainWindow();
+
+    /*!
+     * \brief Getter for validity of auto export file path
+     * \return
+     */
+    bool isAutoExportFilePathValid() const
+    {
+        return mIsAutoExportFilePathValid;
+    }
 
 protected:
     /*!
@@ -88,6 +101,11 @@ private slots:
 
 private:
     /*!
+     * \brief Set up the actions and items in the main toolbar
+     */
+    void setUpToolbar();
+
+    /*!
      * \brief Prompt user for saving current document
      * \return \a True if user presses \a Save and saves the doc or presses \a
      * No button. Returns \a false if user presses \a Cancel button or presses
@@ -138,5 +156,25 @@ private:
     FindReplaceDialog* mFindReplaceDlg; /*!< A \ref FindReplaceDialog to perform
                                          * find and replace
                                          */
+
+    bool mIsAutoExportFilePathValid = false; /*!< A boolean variable indicating
+                                              * if the file path for auto export
+                                              * is valid
+                                              */
+
+    QCheckBox* mAutoExportCheckBox; /*!< Checkbox for set/unset auto export*/
+    QWidgetAction* mAutoExportCheckAct; /*!< A checkbox \a\b QWidgetAction to
+                                         * enable/disable automatic export.
+                                         */
+
+    QLineEdit* mAutoExportLEdit; /*!< Line edit for setting auto export path.*/
+    QWidgetAction* mAutoExportLEditAct; /*!< A line edit \a\b QWidgetAction to
+                                         * set the file path of auto export.
+                                         */
+
+    QPushButton* mAutoExportBrowseBtn; /*!< Button for selecting export path*/
+    QWidgetAction* mAutoExportBrowseBtnAct; /*!< A button to browse the auto
+                                             * export file path.
+                                             */
 };
 #endif // MAINWINDOW_H

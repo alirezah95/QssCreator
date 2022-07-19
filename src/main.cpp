@@ -6,10 +6,14 @@
 #include "userdialogs.h"
 
 #include <QApplication>
+#include <QSettings>
 
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
+
+    a.setOrganizationName("Indie");
+    a.setApplicationName("Qss Creator");
 
     auto varsModel = new QssdVariablesModel(&a);
     auto processor = new QssdProcessor(varsModel);

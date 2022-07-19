@@ -11,11 +11,15 @@
 #include "qssdvariableitemdelegate.h"
 #include "widgetspreview.h"
 
+#include <QCheckBox>
 #include <QCloseEvent>
 #include <QFileDialog>
 #include <QHBoxLayout>
+#include <QLineEdit>
+#include <QPushButton>
 #include <QSplitter>
 #include <QStandardPaths>
+#include <QWidgetAction>
 
 /* To create connections between toolbar actions and this class */
 #define ACT_CONNECT_THIS(act, slot)                                            \
@@ -56,6 +60,8 @@ MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
     ui->variablesListVw->setModel(
         mStyleEditor->getProcessor()->getVariablesModel());
     ui->variablesListVw->setItemDelegate(new QssdVariableItemDelegate(this));
+
+    setUpToolbar();
 
     updateWindowTitle();
 
@@ -132,6 +138,10 @@ void MainWindow::save()
         if (saveDocument()) {
             // Set the stylesheet on the preview widget
             mPreview->setStyleSheet(mStyleEditor->getQtStylesheet(true));
+            // Export document if auto export is enabled
+            if (mAutoExportCheckBox->isChecked()) {
+                exportDocument();
+            }
         }
     }
     return;
@@ -175,7 +185,9 @@ void MainWindow::exportDocument()
 
     const QString& docTitle = mStyleEditor->documentTitle();
 
-    DocumentFile exportDocFile(docTitle.sliced(0, docTitle.size() - 1));
+    DocumentFile exportDocFile(mIsAutoExportFilePathValid
+            ? mAutoExportLEdit->text()
+            : docTitle.sliced(0, docTitle.size() - 1));
     if (!mDocOpers->writeToFile(exportContent, &exportDocFile)) {
         qDebug() << "Export failed";
     }
@@ -200,6 +212,42 @@ void MainWindow::updateWindowTitle()
     setWindowTitle(docTitle
         + (mStyleEditor->document()->isModified() ? "* - " : " - ")
         + "Qss Creator");
+}
+
+void MainWindow::setUpToolbar()
+{
+    mAutoExportCheckBox = new QCheckBox;
+    mAutoExportCheckBox->setObjectName("aExpChBox");
+    mAutoExportCheckBox->setText(tr("&Auto Export"));
+    mAutoExportCheckAct = new QWidgetAction(this);
+    mAutoExportCheckAct->setObjectName("aExpChBoxAct");
+    mAutoExportCheckAct->setDefaultWidget(mAutoExportCheckBox);
+
+    mAutoExportLEdit = new QLineEdit;
+    mAutoExportLEdit->setObjectName("aExpLEdit");
+    mAutoExportLEdit->setMinimumWidth(200);
+    mAutoExportLEdit->setMaximumWidth(450);
+    QFont expLEditFont(font().family());
+    expLEditFont.setPixelSize(15);
+    mAutoExportLEdit->setFont(expLEditFont);
+    mAutoExportLEditAct = new QWidgetAction(this);
+    mAutoExportLEditAct->setObjectName("aExpLEditAct");
+    mAutoExportLEditAct->setDefaultWidget(mAutoExportLEdit);
+
+    mAutoExportBrowseBtn = new QPushButton;
+    mAutoExportBrowseBtn->setObjectName("aExpBrowseBtn");
+    mAutoExportBrowseBtn->setText(tr("&Select"));
+    mAutoExportBrowseBtnAct = new QWidgetAction(this);
+    mAutoExportBrowseBtnAct->setObjectName("aExpBrowseBtnAct");
+    mAutoExportBrowseBtnAct->setDefaultWidget(mAutoExportBrowseBtn);
+
+    mAutoExportLEdit->setFixedHeight(mAutoExportBrowseBtn->sizeHint().height());
+
+    ui->mainToolBar->addAction(mAutoExportCheckAct);
+    ui->mainToolBar->addAction(mAutoExportLEditAct);
+    ui->mainToolBar->addAction(mAutoExportBrowseBtnAct);
+
+    return;
 }
 
 bool MainWindow::maybeSave()
@@ -264,6 +312,9 @@ void MainWindow::reset()
     ui->actionCopy->setEnabled(false);
     ui->actionCut->setEnabled(false);
     ui->actionSave->setEnabled(false);
+
+    mAutoExportLEditAct->setEnabled(false);
+    mAutoExportBrowseBtnAct->setEnabled(false);
 
     return;
 }
@@ -344,6 +395,40 @@ void MainWindow::setupConnections()
         if (auto selTxt = mStyleEditor->textCursor().selectedText();
             !selTxt.isEmpty()) {
             mFindReplaceDlg->setFindText(selTxt);
+        }
+    });
+
+    // Connection for auto export actions
+    connect(
+        mAutoExportCheckBox, &QCheckBox::toggled, this, [this](bool checked) {
+            mAutoExportLEditAct->setEnabled(checked);
+            mAutoExportBrowseBtnAct->setEnabled(checked);
+        });
+    connect(mAutoExportLEdit, &QLineEdit::editingFinished, this, [this] {
+        // Make line edit red if file path is not valid
+        QFile file(mAutoExportLEdit->text());
+        if (!file.open(QFile::ReadWrite)) {
+            // Make line edit red
+            mIsAutoExportFilePathValid = false;
+            mAutoExportLEdit->setStyleSheet("QLineEdit {"
+                                            "border: 1px solid red;"
+                                            "}");
+        } else {
+            mIsAutoExportFilePathValid = true;
+            mAutoExportLEdit->setStyleSheet("");
+        }
+    });
+    connect(mAutoExportBrowseBtn, &QPushButton::clicked, this, [this] {
+        if (mUserDlgs) {
+            auto auExpFilePath
+                = mUserDlgs->getSaveFileName(this, tr("Save File"),
+                    QStandardPaths::writableLocation(
+                        QStandardPaths::DocumentsLocation),
+                    DOC_FILTER);
+            if (!auExpFilePath.isEmpty()) {
+                mAutoExportLEdit->setText(auExpFilePath);
+                emit mAutoExportLEdit->editingFinished();
+            }
         }
     });
 
