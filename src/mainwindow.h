@@ -12,6 +12,9 @@ class IDocumentFile;
 class FindReplaceDialog;
 class QSplitter;
 class QWidgetAction;
+class QCheckBox;
+class QPushButton;
+class QLineEdit;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -145,14 +148,17 @@ private:
                                          * find and replace
                                          */
 
+    QCheckBox* mAutoExportCheckBox; /*!< Checkbox for set/unset auto export*/
     QWidgetAction* mAutoExportCheckAct; /*!< A checkbox \a\b QWidgetAction to
                                          * enable/disable automatic export.
                                          */
 
+    QLineEdit* mAutoExportLEdit; /*!< Line edit for setting auto export path.*/
     QWidgetAction* mAutoExportLEditAct; /*!< A line edit \a\b QWidgetAction to
                                          * set the file path of auto export.
                                          */
 
+    QPushButton* mAutoExportBrowseBtn; /*!< Button for selecting export path*/
     QWidgetAction* mAutoExportBrowseBtnAct; /*!< A button to browse the auto
                                              * export file path.
                                              */
