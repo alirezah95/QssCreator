@@ -78,6 +78,7 @@
    <addaction name="separator"/>
    <addaction name="actionIncreaseFont"/>
    <addaction name="actionDecreaseFont"/>
+   <addaction name="separator"/>
   </widget>
   <action name="actionNewFile">
    <property name="icon">
