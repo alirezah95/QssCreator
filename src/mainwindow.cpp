@@ -412,6 +412,19 @@ void MainWindow::setupConnections()
             mAutoExportLEdit->setStyleSheet("");
         }
     });
+    connect(mAutoExportBrowseBtn, &QPushButton::clicked, this, [this] {
+        if (mUserDlgs) {
+            auto auExpFilePath
+                = mUserDlgs->getSaveFileName(this, tr("Save File"),
+                    QStandardPaths::writableLocation(
+                        QStandardPaths::DocumentsLocation),
+                    DOC_FILTER);
+            if (!auExpFilePath.isEmpty()) {
+                mAutoExportLEdit->setText(auExpFilePath);
+                emit mAutoExportLEdit->editingFinished();
+            }
+        }
+    });
 
     return;
 }
