@@ -11,6 +11,7 @@ class IQssdProcessor;
 class IDocumentFile;
 class FindReplaceDialog;
 class QSplitter;
+class QWidgetAction;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -88,6 +89,11 @@ private slots:
 
 private:
     /*!
+     * \brief Set up the actions and items in the main toolbar
+     */
+    void setUpToolbar();
+
+    /*!
      * \brief Prompt user for saving current document
      * \return \a True if user presses \a Save and saves the doc or presses \a
      * No button. Returns \a false if user presses \a Cancel button or presses
@@ -138,5 +144,17 @@ private:
     FindReplaceDialog* mFindReplaceDlg; /*!< A \ref FindReplaceDialog to perform
                                          * find and replace
                                          */
+
+    QWidgetAction* mAutoExportCheckAct; /*!< A checkbox \a\b QWidgetAction to
+                                         * enable/disable automatic export.
+                                         */
+
+    QWidgetAction* mAutoExportLEditAct; /*!< A line edit \a\b QWidgetAction to
+                                         * set the file path of auto export.
+                                         */
+
+    QWidgetAction* mAutoExportBrowseBtn; /*!< A button to browse the auto export
+                                          * file path.
+                                          */
 };
 #endif // MAINWINDOW_H

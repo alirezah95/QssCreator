@@ -199,7 +199,12 @@ void MainWindow::updateWindowTitle()
 
     setWindowTitle(docTitle
         + (mStyleEditor->document()->isModified() ? "* - " : " - ")
-        + "Qss Creator");
+                   + "Qss Creator");
+}
+
+void MainWindow::setUpToolbar()
+{
+
 }
 
 bool MainWindow::maybeSave()
