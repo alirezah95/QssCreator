@@ -210,26 +210,26 @@ void MainWindow::updateWindowTitle()
 
 void MainWindow::setUpToolbar()
 {
-    QCheckBox* exportChBox = new QCheckBox;
-    exportChBox->setText(tr("&Auto Export"));
+    mAutoExportCheckBox = new QCheckBox;
+    mAutoExportCheckBox->setText(tr("&Auto Export"));
     mAutoExportCheckAct = new QWidgetAction(this);
-    mAutoExportCheckAct->setDefaultWidget(exportChBox);
+    mAutoExportCheckAct->setDefaultWidget(mAutoExportCheckBox);
 
-    QLineEdit* exportLEdit = new QLineEdit;
-    exportLEdit->setMinimumWidth(200);
-    exportLEdit->setMaximumWidth(450);
+    mAutoExportLEdit = new QLineEdit;
+    mAutoExportLEdit->setMinimumWidth(200);
+    mAutoExportLEdit->setMaximumWidth(450);
     QFont expLEditFont(font().family());
     expLEditFont.setPixelSize(15);
-    exportLEdit->setFont(expLEditFont);
+    mAutoExportLEdit->setFont(expLEditFont);
     mAutoExportLEditAct = new QWidgetAction(this);
-    mAutoExportLEditAct->setDefaultWidget(exportLEdit);
+    mAutoExportLEditAct->setDefaultWidget(mAutoExportLEdit);
 
-    QPushButton* browseBtn = new QPushButton;
-    browseBtn->setText(tr("&Select"));
+    mAutoExportBrowseBtn = new QPushButton;
+    mAutoExportBrowseBtn->setText(tr("&Select"));
     mAutoExportBrowseBtnAct = new QWidgetAction(this);
-    mAutoExportBrowseBtnAct->setDefaultWidget(browseBtn);
+    mAutoExportBrowseBtnAct->setDefaultWidget(mAutoExportBrowseBtn);
 
-    exportLEdit->setFixedHeight(browseBtn->sizeHint().height());
+    mAutoExportLEdit->setFixedHeight(mAutoExportBrowseBtn->sizeHint().height());
 
     ui->mainToolBar->addAction(mAutoExportCheckAct);
     ui->mainToolBar->addAction(mAutoExportLEditAct);
@@ -387,8 +387,8 @@ void MainWindow::setupConnections()
     });
 
     // Connection for auto export actions
-    connect(qobject_cast<QCheckBox*>(mAutoExportCheckAct->defaultWidget()),
-        &QCheckBox::toggled, this, [this](bool checked) {
+    connect(
+        mAutoExportCheckBox, &QCheckBox::toggled, this, [this](bool checked) {
             mAutoExportLEditAct->setEnabled(checked);
             mAutoExportBrowseBtnAct->setEnabled(checked);
         });
