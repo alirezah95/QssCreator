@@ -155,14 +155,17 @@ void FindReplaceDialog::findAllOccurences(const QString& text)
 
         currCursor = editorDoc->find(text, currCursor, findFlags);
     }
-    mTextEdit->setExtraSelections(extraSelcts);
+    if (extraSelcts.size() > 0) {
+        mTextEdit->setExtraSelections(extraSelcts);
 
-    // If the actual cursor in the editor is at the end of document, then the if
-    // statement in the while loop will never evaluate to true even if there are
-    // occurences. So in that case (if there are occurences) the first occurence
-    // index should be stored in mCurrentOccurenceIndex
-    if (mCurrentOccurenceIndex == -1 && extraSelcts.size() > 0) {
-        mCurrentOccurenceIndex = 0;
+        // If the actual cursor in the editor is at the end of document, then
+        // the if statement in the while loop will never evaluate to true even
+        // if there are occurences. So in that case (if there are occurences)
+        // the first occurence index should be stored in mCurrentOccurenceIndex
+        if (mCurrentOccurenceIndex == -1) {
+            mCurrentOccurenceIndex = 0;
+        }
+        mTextEdit->setTextCursor(extraSelcts[mCurrentOccurenceIndex].cursor);
     }
     return;
 }
@@ -173,17 +176,18 @@ void FindReplaceDialog::onFindNextButtonPressed()
         return;
     }
 
-    QFlags<QTextDocument::FindFlag> findFlags;
-    if (ui->matchCaseChBox->isChecked()) {
-        findFlags |= QTextDocument::FindCaseSensitively;
+    const auto& allOccurences = mTextEdit->extraSelections();
+    if (allOccurences.size() == 0) {
+        // No match is found by findAllOccurences()
+        return;
     }
-    if (ui->wholeWordChBox->isChecked()) {
-        findFlags |= QTextDocument::FindWholeWords;
+    // Increase current occurence index
+    mCurrentOccurenceIndex++;
+    if (mCurrentOccurenceIndex >= allOccurences.size()) {
+        mCurrentOccurenceIndex = 0;
     }
+    mTextEdit->setTextCursor(allOccurences[mCurrentOccurenceIndex].cursor);
 
-    findTextAndSetCursor(
-        mOccurenceCursor.isNull() ? mTextEdit->textCursor() : mOccurenceCursor,
-        findFlags);
     return;
 }
 
@@ -193,17 +197,18 @@ void FindReplaceDialog::onFindPrevButtonPressed()
         return;
     }
 
-    QFlags<QTextDocument::FindFlag> findFlags(QTextDocument::FindBackward);
-    if (ui->matchCaseChBox->isChecked()) {
-        findFlags |= QTextDocument::FindCaseSensitively;
+    const auto& allOccurences = mTextEdit->extraSelections();
+    if (allOccurences.size() == 0) {
+        // No match is found by findAllOccurences()
+        return;
     }
-    if (ui->wholeWordChBox->isChecked()) {
-        findFlags |= QTextDocument::FindWholeWords;
+    // Increase current occurence index
+    mCurrentOccurenceIndex--;
+    if (mCurrentOccurenceIndex < 0) {
+        mCurrentOccurenceIndex = allOccurences.size() - 1;
     }
+    mTextEdit->setTextCursor(allOccurences[mCurrentOccurenceIndex].cursor);
 
-    findTextAndSetCursor(
-        mOccurenceCursor.isNull() ? mTextEdit->textCursor() : mOccurenceCursor,
-        findFlags);
     return;
 }
 
