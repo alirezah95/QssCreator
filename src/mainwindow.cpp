@@ -17,6 +17,7 @@
 #include <QHBoxLayout>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSettings>
 #include <QSplitter>
 #include <QStandardPaths>
 #include <QWidgetAction>
@@ -69,11 +70,14 @@ MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
 
     setupConnections();
 
+    readSettings();
+
     return;
 }
 
 MainWindow::~MainWindow()
 {
+    writeSettings();
     delete ui;
 }
 
@@ -433,4 +437,37 @@ void MainWindow::setupConnections()
     });
 
     return;
+}
+
+void MainWindow::readSettings()
+{
+    QSettings s;
+
+    s.beginGroup("window");
+    setGeometry(QSettings()
+                    .value("geometry", QRect(QPoint(40, 40), minimumSize()))
+                    .toRect());
+    s.endGroup();
+
+    s.beginGroup("editor");
+    QFont editorDefaultFont;
+    editorDefaultFont.setFamily(s.value("font/family", "Mono").toString());
+    editorDefaultFont.setPointSize(s.value("font/ps", 12).toInt());
+    editorDefaultFont.setStyleHint(QFont::Monospace);
+    mStyleEditor->setFont(editorDefaultFont);
+    s.endGroup();
+}
+
+void MainWindow::writeSettings()
+{
+    QSettings s;
+
+    s.beginGroup("window");
+    s.setValue("geometry", geometry());
+    s.endGroup();
+
+    s.beginGroup("editor");
+    s.setValue("font/family", mStyleEditor->font().family());
+    s.setValue("font/ps", mStyleEditor->font().pointSize());
+    s.endGroup();
 }
