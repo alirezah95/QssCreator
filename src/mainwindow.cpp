@@ -38,6 +38,11 @@ MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
 {
     ui->setupUi(this);
 
+    QFont editorDefaultFont("Mono");
+    editorDefaultFont.setStyleHint(QFont::Monospace);
+    editorDefaultFont.setPointSize(11);
+    mStyleEditor->setFont(editorDefaultFont);
+
     mStyleEditor->setParent(this);
     mDocOpers->setParent(this);
     mUserDlgs->setParent(this);
