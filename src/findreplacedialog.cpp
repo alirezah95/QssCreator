@@ -49,9 +49,18 @@ FindReplaceDialog::~FindReplaceDialog()
 
 void FindReplaceDialog::setTextEdit(QTextEdit* txtEdit)
 {
+    if (mTextEdit) {
+        // Disconnect all connections
+        mTextEdit->disconnect(this);
+    }
+    mOccurenceCursor = QTextCursor();
     mTextEdit = txtEdit;
 
     if (mTextEdit) {
+        mOccurenceCursor = mTextEdit->textCursor();
+        mOccurenceCursor.movePosition(QTextCursor::Start);
+        mOccurenceCursor.clearSelection();
+
         connect(mTextEdit->document(), &QTextDocument::contentsChange, this,
             [this](int from, int charsRemoved, int charsAdded) {
                 if (charsRemoved || charsAdded) {
@@ -136,7 +145,7 @@ void FindReplaceDialog::findAllOccurences(const QString& text)
     }
     mTextEdit->setExtraSelections(extraSelcts);
 
-    mOccurenceCursor = QTextCursor();
+    mOccurenceCursor.clearSelection();
     return;
 }
 
@@ -180,7 +189,15 @@ void FindReplaceDialog::onFindPrevButtonPressed()
     return;
 }
 
-void FindReplaceDialog::onReplaceButtonPressed() { }
+void FindReplaceDialog::onReplaceButtonPressed()
+{
+    if (mOccurenceCursor.isNull() || mOccurenceCursor != mTextEdit->textCursor()
+        || !mTextEdit->textCursor().hasSelection()) {
+        return;
+    }
+    mOccurenceCursor.insertText(ui->replaceLEdit->text());
+    return;
+}
 
 void FindReplaceDialog::onFindReplaceButtonPressed() { }
 
