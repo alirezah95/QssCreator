@@ -262,7 +262,7 @@ TEST_F(TestFindReplaceDialog, TestTextOccurencesEdited)
 
 TEST_F(TestFindReplaceDialog, TestReplace)
 {
-    editor->insertPlainText("cross-platform for creating gui for Linux,etc");
+    editor->insertPlainText("cross-platform for creating gui for Linux, etc");
     editor->moveCursor(QTextCursor::Start);
 
     auto findLEdit = frDialog->findChild<QLineEdit*>("findLEdit");
@@ -279,18 +279,10 @@ TEST_F(TestFindReplaceDialog, TestReplace)
     findLEdit->setText("for");
 
     replaceLEdit->setText("***");
-
-    findNxtBtn->click();
     replaceBtn->click();
 
     EXPECT_STREQ(editor->document()->toPlainText().toStdString().c_str(),
         "cross-plat***m for creating gui for Linux, etc");
-
-    findNxtBtn->click();
-    replaceBtn->click();
-
-    EXPECT_STREQ(editor->document()->toPlainText().toStdString().c_str(),
-        "cross-plat***m *** creating gui for Linux, etc");
 }
 
 int main(int argc, char* argv[])
