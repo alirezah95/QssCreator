@@ -229,6 +229,9 @@ void FindReplaceDialog::onReplaceButtonPressed()
         return;
     }
     currOccurCursor.insertText(ui->replaceLEdit->text());
+
+    // Invalidate current occurence for next replace
+    mCurrentOccurenceIndex = -1;
     return;
 }
 
