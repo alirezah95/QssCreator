@@ -97,6 +97,13 @@ private:
         const QTextCursor& from, QFlags<QTextDocument::FindFlag> flags);
 
     /*!
+     * \brief Search through the find occurences (extra selections of editor)
+     * and find the index of the first cursor of which the anchor is after
+     * editor's current text cursor's position
+     */
+    void updateCurrentOccureneceIndex();
+
+    /*!
      * \brief Resets all selections and extra selections (as a result of find
      * procedures) on the mTextEdit
      */

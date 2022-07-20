@@ -181,10 +181,16 @@ void FindReplaceDialog::onFindNextButtonPressed()
         // No match is found by findAllOccurences()
         return;
     }
-    // Increase current occurence index
-    mCurrentOccurenceIndex++;
-    if (mCurrentOccurenceIndex >= allOccurences.size()) {
-        mCurrentOccurenceIndex = 0;
+
+    // If there are occurences but mCurrOccurence is -1 (invalid), update it
+    if (mCurrentOccurenceIndex == -1) {
+        updateCurrentOccureneceIndex();
+    } else {
+        // Increase current occurence index
+        mCurrentOccurenceIndex++;
+        if (mCurrentOccurenceIndex >= allOccurences.size()) {
+            mCurrentOccurenceIndex = 0;
+        }
     }
     mTextEdit->setTextCursor(allOccurences[mCurrentOccurenceIndex].cursor);
 
@@ -202,10 +208,16 @@ void FindReplaceDialog::onFindPrevButtonPressed()
         // No match is found by findAllOccurences()
         return;
     }
-    // Increase current occurence index
-    mCurrentOccurenceIndex--;
-    if (mCurrentOccurenceIndex < 0) {
-        mCurrentOccurenceIndex = allOccurences.size() - 1;
+
+    // If there are occurences but mCurrOccurence is -1 (invalid), update it
+    if (mCurrentOccurenceIndex == -1) {
+        updateCurrentOccureneceIndex();
+    } else {
+        // Increase current occurence index
+        mCurrentOccurenceIndex--;
+        if (mCurrentOccurenceIndex < 0) {
+            mCurrentOccurenceIndex = allOccurences.size() - 1;
+        }
     }
     mTextEdit->setTextCursor(allOccurences[mCurrentOccurenceIndex].cursor);
 
@@ -255,6 +267,18 @@ void FindReplaceDialog::findTextAndSetCursor(
         mTextEdit->setTextCursor(found);
     }
     return;
+}
+
+void FindReplaceDialog::updateCurrentOccureneceIndex()
+{
+    const auto& editorTextCursor = mTextEdit->textCursor();
+    const auto& allOccurences = mTextEdit->extraSelections();
+    for (int i = 0; i < allOccurences.size(); ++i) {
+        if (allOccurences[i].cursor.anchor() > editorTextCursor.position()) {
+            mCurrentOccurenceIndex = i;
+            return;
+        }
+    }
 }
 
 void FindReplaceDialog::resetTextEdit()
