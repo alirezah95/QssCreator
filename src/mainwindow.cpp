@@ -17,6 +17,7 @@
 #include <QHBoxLayout>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSettings>
 #include <QSplitter>
 #include <QStandardPaths>
 #include <QWidgetAction>
@@ -69,11 +70,14 @@ MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
 
     setupConnections();
 
+    readSettings();
+
     return;
 }
 
 MainWindow::~MainWindow()
 {
+    writeSettings();
     delete ui;
 }
 
@@ -435,4 +439,14 @@ void MainWindow::setupConnections()
     return;
 }
 
-void MainWindow::readSettings() { }
+void MainWindow::readSettings()
+{
+    if (QSettings().contains("window/geometry")) {
+        setGeometry(QSettings().value("window/geometry").toRect());
+    }
+}
+
+void MainWindow::writeSettings()
+{
+    QSettings().setValue("window/geometry", geometry());
+}
