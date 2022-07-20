@@ -30,6 +30,23 @@ public:
     FindReplaceDialog* frDialog;
 };
 
+TEST_F(TestFindReplaceDialog, TestFindAllOccurencesSettingCurrentOccurIndex)
+{
+    editor->insertPlainText("cross-platform for creating gui for Linux,etc");
+
+    auto edtCurs = editor->textCursor(); // is at the end of document
+    edtCurs.movePosition(QTextCursor::Start);
+    edtCurs.movePosition(QTextCursor::NextWord, QTextCursor::MoveAnchor, 4);
+    editor->setTextCursor(edtCurs);
+    // Now the cursor is at the start of "creating" word in document
+
+    auto findLEdit = frDialog->findChild<QLineEdit*>("findLEdit");
+    ASSERT_NE(findLEdit, nullptr) << "No find line edit";
+    findLEdit->setText("for");
+
+    EXPECT_EQ(frDialog->getCurrentOccurenceIndex(), 2);
+}
+
 TEST_F(TestFindReplaceDialog, TestFindAllOccurencesNoFlags)
 {
     editor->insertPlainText("cross-platform for creating gui for Linux, etc");
@@ -41,12 +58,7 @@ TEST_F(TestFindReplaceDialog, TestFindAllOccurencesNoFlags)
     auto extraSelects = editor->extraSelections();
 
     EXPECT_EQ(extraSelects.size(), 3);
-
-    for (auto& selection : extraSelects) {
-        selection.cursor.insertText("***");
-    }
-    EXPECT_STREQ(editor->document()->toPlainText().toStdString().c_str(),
-        "cross-plat***m *** creating gui *** Linux, etc");
+    EXPECT_EQ(frDialog->getCurrentOccurenceIndex(), 0);
 }
 
 TEST_F(TestFindReplaceDialog, TestFindAllOccurencesWholeWord)
@@ -95,21 +107,18 @@ TEST_F(TestFindReplaceDialog, TestFindNext)
     ASSERT_NE(findLEdit, nullptr) << "No find line edit";
     ASSERT_NE(findNxtBtn, nullptr) << "No find next button";
 
-    frDialog->setTextEdit(nullptr); // To prevent findAllOccurences() running
     findLEdit->setText("for");
-    frDialog->setTextEdit(editor);
 
     findNxtBtn->click();
 
     auto findCursor = editor->textCursor();
-    findCursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
-    EXPECT_STREQ(findCursor.selectedText().toStdString().c_str(), "form");
+    EXPECT_STREQ(findCursor.selectedText().toStdString().c_str(), "for");
 
     // Perform another find operation
     findNxtBtn->click();
     findCursor = editor->textCursor();
     findCursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
-    EXPECT_STREQ(findCursor.selectedText().toStdString().c_str(), "for");
+    EXPECT_STREQ(findCursor.selectedText().toStdString().c_str(), "form");
 }
 
 TEST_F(TestFindReplaceDialog, TestFindNextWholeMatchCase)
@@ -154,9 +163,7 @@ TEST_F(TestFindReplaceDialog, TestFindPrev)
     ASSERT_NE(findLEdit, nullptr) << "No find line edit";
     ASSERT_NE(findPrevBtn, nullptr) << "No find previous button";
 
-    frDialog->setTextEdit(nullptr); // To prevent findAllOccurences() running
     findLEdit->setText("graph");
-    frDialog->setTextEdit(editor);
 
     findPrevBtn->click();
 
@@ -213,7 +220,7 @@ TEST_F(TestFindReplaceDialog, FindNextWithSelection)
     frDialog->setTextEdit(editor);
 
     findNxtBtn->click();
-    EXPECT_FALSE(editor->textCursor().hasSelection());
+    EXPECT_TRUE(editor->textCursor().hasSelection());
 }
 
 TEST_F(TestFindReplaceDialog, TestSetFindText)
@@ -228,7 +235,7 @@ TEST_F(TestFindReplaceDialog, TestSetFindText)
 
     frDialog->setFindText("Qt");
 
-    EXPECT_FALSE(editor->textCursor().hasSelection());
+    EXPECT_TRUE(editor->textCursor().hasSelection());
 }
 
 TEST_F(TestFindReplaceDialog, TestTextOccurencesEdited)
@@ -251,6 +258,39 @@ TEST_F(TestFindReplaceDialog, TestTextOccurencesEdited)
     // delete all the text
     editor->setPlainText("for Linux, etc");
     EXPECT_EQ(editor->extraSelections().size(), 1);
+}
+
+TEST_F(TestFindReplaceDialog, TestReplace)
+{
+    editor->insertPlainText("cross-platform for creating gui for Linux,etc");
+    editor->moveCursor(QTextCursor::Start);
+
+    auto findLEdit = frDialog->findChild<QLineEdit*>("findLEdit");
+    auto replaceLEdit = frDialog->findChild<QLineEdit*>("replaceLEdit");
+
+    auto findNxtBtn = frDialog->findChild<QPushButton*>("findNxtBtn");
+    auto replaceBtn = frDialog->findChild<QPushButton*>("replaceBtn");
+
+    ASSERT_NE(findLEdit, nullptr) << "No find line edit";
+    ASSERT_NE(replaceLEdit, nullptr) << "No replace line edit";
+    ASSERT_NE(findNxtBtn, nullptr) << "No find next button";
+    ASSERT_NE(replaceBtn, nullptr) << "No replace button";
+
+    findLEdit->setText("for");
+
+    replaceLEdit->setText("***");
+
+    findNxtBtn->click();
+    replaceBtn->click();
+
+    EXPECT_STREQ(editor->document()->toPlainText().toStdString().c_str(),
+        "cross-plat***m for creating gui for Linux, etc");
+
+    findNxtBtn->click();
+    replaceBtn->click();
+
+    EXPECT_STREQ(editor->document()->toPlainText().toStdString().c_str(),
+        "cross-plat***m *** creating gui for Linux, etc");
 }
 
 int main(int argc, char* argv[])
