@@ -247,7 +247,11 @@ void FindReplaceDialog::onReplaceButtonPressed()
     return;
 }
 
-void FindReplaceDialog::onFindReplaceButtonPressed() { }
+void FindReplaceDialog::onFindReplaceButtonPressed()
+{
+    onReplaceButtonPressed();
+    onFindNextButtonPressed();
+}
 
 void FindReplaceDialog::findTextAndSetCursor(
     const QTextCursor& from, QFlags<QTextDocument::FindFlag> flags)
@@ -274,7 +278,7 @@ void FindReplaceDialog::updateCurrentOccureneceIndex()
     const auto& editorTextCursor = mTextEdit->textCursor();
     const auto& allOccurences = mTextEdit->extraSelections();
     for (int i = 0; i < allOccurences.size(); ++i) {
-        if (allOccurences[i].cursor.anchor() > editorTextCursor.position()) {
+        if (allOccurences[i].cursor.anchor() >= editorTextCursor.position()) {
             mCurrentOccurenceIndex = i;
             return;
         }
