@@ -242,8 +242,13 @@ void FindReplaceDialog::onReplaceButtonPressed()
     }
     currOccurCursor.insertText(ui->replaceLEdit->text());
 
-    // Invalidate current occurence for next replace
+    // Invalidate current occurence for next replace and also resets editor's
+    // cursor moving to next occurence which findAllOccurences() causes it
     mCurrentOccurenceIndex = -1;
+    auto editCurs = mTextEdit->textCursor();
+    editCurs.setPosition(currOccurCursor.position());
+    mTextEdit->setTextCursor(editCurs);
+
     return;
 }
 
