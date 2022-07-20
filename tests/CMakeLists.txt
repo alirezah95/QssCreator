@@ -47,6 +47,7 @@ add_new_gtest(TestQssdEditor
     ../src/qssdeditor.cpp
     ../src/iqssdeditor.cpp
     ../src/iqssdprocessor.cpp
+    ../src/qssdsyntaxhighlighter.cpp
 )
 
 add_new_gtest(TestQssdFileOperations
