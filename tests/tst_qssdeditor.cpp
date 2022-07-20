@@ -59,8 +59,7 @@ TEST_F(TestQssdEditor, TestGetLineNumberAreaWidth)
         QTest::keyPress(editor, Qt::Key_Enter);
     }
     EXPECT_EQ(editor->getLineNumbersAreaWidth(),
-        QFontMetrics(editor->getLineNumbersFont()).boundingRect("0").width() * 2
-            + 16);
+        QFontMetrics(editor->font()).boundingRect("0").width() * 2 + 16);
 }
 
 TEST_F(TestQssdEditor, TestLineNumberAreaWidthJittering)
