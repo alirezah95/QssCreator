@@ -23,6 +23,8 @@ FindReplaceDialog::FindReplaceDialog(QWidget* parent)
         &FindReplaceDialog::onReplaceButtonPressed);
     connect(ui->findReplaceBtn, &QPushButton::clicked, this,
         &FindReplaceDialog::onFindReplaceButtonPressed);
+    connect(ui->replaceAllBtn, &QPushButton::clicked, this,
+        &FindReplaceDialog::onReplaceAllButtonPressed);
 
     connect(ui->findLEdit, &QLineEdit::textChanged, this,
         &FindReplaceDialog::findAllOccurences);
@@ -49,9 +51,18 @@ FindReplaceDialog::~FindReplaceDialog()
 
 void FindReplaceDialog::setTextEdit(QTextEdit* txtEdit)
 {
+    if (mTextEdit) {
+        // Disconnect all connections
+        mTextEdit->disconnect(this);
+    }
+    mOccurenceCursor = QTextCursor();
     mTextEdit = txtEdit;
 
     if (mTextEdit) {
+        mOccurenceCursor = mTextEdit->textCursor();
+        mOccurenceCursor.movePosition(QTextCursor::Start);
+        mOccurenceCursor.clearSelection();
+
         connect(mTextEdit->document(), &QTextDocument::contentsChange, this,
             [this](int from, int charsRemoved, int charsAdded) {
                 if (charsRemoved || charsAdded) {
@@ -105,11 +116,15 @@ void FindReplaceDialog::findAllOccurences(const QString& text)
         return;
     }
 
-    // Clear text edit selection if any
+    // Clear text edit selection if any, and clear extra selections
     if (auto cursor = mTextEdit->textCursor(); cursor.hasSelection()) {
         cursor.clearSelection();
         mTextEdit->setTextCursor(cursor);
     }
+    mTextEdit->setExtraSelections({});
+
+    // Set occurence index to -1
+    mCurrentOccurenceIndex = -1;
 
     // To hold the occurences as extra selections
     QList<QTextEdit::ExtraSelection> extraSelcts;
@@ -123,6 +138,8 @@ void FindReplaceDialog::findAllOccurences(const QString& text)
         findFlags |= QTextDocument::FindFlag::FindWholeWords;
     }
 
+    QTextCursor editorCurrentCursor = mTextEdit->textCursor();
+
     auto editorDoc = mTextEdit->document();
     // Get the cursor to the begining of the document
     QTextCursor currCursor(editorDoc->begin());
@@ -132,9 +149,27 @@ void FindReplaceDialog::findAllOccurences(const QString& text)
         QTextEdit::ExtraSelection selection = { currCursor, mFindFormat };
         extraSelcts.push_back(selection);
 
+        // If currCursor is after the actual current cursor of the text edit its
+        // index should be stored as the current occurence index
+        if (mCurrentOccurenceIndex == -1
+            && currCursor.anchor() >= editorCurrentCursor.position()) {
+            mCurrentOccurenceIndex = extraSelcts.size() - 1;
+        }
+
         currCursor = editorDoc->find(text, currCursor, findFlags);
     }
-    mTextEdit->setExtraSelections(extraSelcts);
+    if (extraSelcts.size() > 0) {
+        mTextEdit->setExtraSelections(extraSelcts);
+
+        // If the actual cursor in the editor is at the end of document, then
+        // the if statement in the while loop will never evaluate to true even
+        // if there are occurences. So in that case (if there are occurences)
+        // the first occurence index should be stored in mCurrentOccurenceIndex
+        if (mCurrentOccurenceIndex == -1) {
+            mCurrentOccurenceIndex = 0;
+        }
+        mTextEdit->setTextCursor(extraSelcts[mCurrentOccurenceIndex].cursor);
+    }
     return;
 }
 
@@ -144,20 +179,24 @@ void FindReplaceDialog::onFindNextButtonPressed()
         return;
     }
 
-    QFlags<QTextDocument::FindFlag> findFlags;
-    if (ui->matchCaseChBox->isChecked()) {
-        findFlags |= QTextDocument::FindCaseSensitively;
-    }
-    if (ui->wholeWordChBox->isChecked()) {
-        findFlags |= QTextDocument::FindWholeWords;
-    }
-
-    QTextCursor current = mTextEdit->textCursor();
-    if (current.isNull()) {
+    const auto& allOccurences = mTextEdit->extraSelections();
+    if (allOccurences.size() == 0) {
+        // No match is found by findAllOccurences()
         return;
     }
 
-    findTextAndSetCursor(current, findFlags);
+    // If there are occurences but mCurrOccurence is -1 (invalid), update it
+    if (mCurrentOccurenceIndex == -1) {
+        updateCurrentOccureneceIndex();
+    } else {
+        // Increase current occurence index
+        mCurrentOccurenceIndex++;
+        if (mCurrentOccurenceIndex >= allOccurences.size()) {
+            mCurrentOccurenceIndex = 0;
+        }
+    }
+    mTextEdit->setTextCursor(allOccurences[mCurrentOccurenceIndex].cursor);
+
     return;
 }
 
@@ -167,26 +206,83 @@ void FindReplaceDialog::onFindPrevButtonPressed()
         return;
     }
 
-    QFlags<QTextDocument::FindFlag> findFlags(QTextDocument::FindBackward);
-    if (ui->matchCaseChBox->isChecked()) {
-        findFlags |= QTextDocument::FindCaseSensitively;
-    }
-    if (ui->wholeWordChBox->isChecked()) {
-        findFlags |= QTextDocument::FindWholeWords;
-    }
-
-    QTextCursor current = mTextEdit->textCursor();
-    if (current.isNull()) {
+    const auto& allOccurences = mTextEdit->extraSelections();
+    if (allOccurences.size() == 0) {
+        // No match is found by findAllOccurences()
         return;
     }
 
-    findTextAndSetCursor(current, findFlags);
+    // If there are occurences but mCurrOccurence is -1 (invalid), update it
+    if (mCurrentOccurenceIndex == -1) {
+        updateCurrentOccureneceIndex();
+    } else {
+        // Increase current occurence index
+        mCurrentOccurenceIndex--;
+        if (mCurrentOccurenceIndex < 0) {
+            mCurrentOccurenceIndex = allOccurences.size() - 1;
+        }
+    }
+    mTextEdit->setTextCursor(allOccurences[mCurrentOccurenceIndex].cursor);
+
     return;
 }
 
-void FindReplaceDialog::onReplaceButtonPressed() { }
+void FindReplaceDialog::onReplaceButtonPressed()
+{
+    if (mCurrentOccurenceIndex == -1) {
+        return;
+    }
+    const auto& allOccurences = mTextEdit->extraSelections();
+    if (allOccurences.size() == 0) {
+        // No match is found by findAllOccurences()
+        return;
+    }
 
-void FindReplaceDialog::onFindReplaceButtonPressed() { }
+    QTextCursor currOccurCursor = allOccurences[mCurrentOccurenceIndex].cursor;
+    if (currOccurCursor != mTextEdit->textCursor()
+        || !mTextEdit->textCursor().hasSelection()) {
+        return;
+    }
+    currOccurCursor.insertText(ui->replaceLEdit->text());
+
+    // Invalidate current occurence for next replace and also resets editor's
+    // cursor moving to next occurence which findAllOccurences() causes it
+    mCurrentOccurenceIndex = -1;
+    auto editCurs = mTextEdit->textCursor();
+    editCurs.setPosition(currOccurCursor.position());
+    mTextEdit->setTextCursor(editCurs);
+
+    return;
+}
+
+void FindReplaceDialog::onFindReplaceButtonPressed()
+{
+    onReplaceButtonPressed();
+    onFindNextButtonPressed();
+}
+
+void FindReplaceDialog::onReplaceAllButtonPressed()
+{
+    if (!mTextEdit) {
+        return;
+    }
+    auto allOccurences = mTextEdit->extraSelections();
+    if (allOccurences.size() == 0) {
+        return;
+    }
+
+    const auto& replaceTxt = ui->replaceLEdit->text();
+    for (int i = 0; i < allOccurences.size(); ++i) {
+        QTextCursor& cursor = allOccurences[i].cursor;
+        cursor.beginEditBlock();
+        cursor.insertText(replaceTxt);
+    }
+
+    for (int i = 0; i < allOccurences.size(); ++i) {
+        QTextCursor& cursor = allOccurences[i].cursor;
+        cursor.endEditBlock();
+    }
+}
 
 void FindReplaceDialog::findTextAndSetCursor(
     const QTextCursor& from, QFlags<QTextDocument::FindFlag> flags)
@@ -201,9 +297,27 @@ void FindReplaceDialog::findTextAndSetCursor(
         = mTextEdit->document()->find(ui->findLEdit->text(), from, flags);
 
     if (!found.isNull()) {
+        // Save a copy of it
+        mOccurenceCursor = found;
         mTextEdit->setTextCursor(found);
     }
     return;
+}
+
+void FindReplaceDialog::updateCurrentOccureneceIndex()
+{
+    mCurrentOccurenceIndex = -1;
+    const auto& editorTextCursor = mTextEdit->textCursor();
+    const auto& allOccurences = mTextEdit->extraSelections();
+    for (int i = 0; i < allOccurences.size(); ++i) {
+        if (allOccurences[i].cursor.anchor() >= editorTextCursor.position()) {
+            mCurrentOccurenceIndex = i;
+            return;
+        }
+    }
+    if (mCurrentOccurenceIndex == -1 && allOccurences.size() > 0) {
+        mCurrentOccurenceIndex = 0;
+    }
 }
 
 void FindReplaceDialog::resetTextEdit()

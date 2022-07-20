@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QTextCharFormat>
+#include <QTextCursor>
 #include <QTextDocument>
 
 namespace Ui {
@@ -38,6 +39,8 @@ public:
      * \param text
      */
     void setFindText(const QString& text);
+
+    int getCurrentOccurenceIndex() const { return mCurrentOccurenceIndex; }
 
 protected:
     /*!
@@ -83,6 +86,12 @@ private slots:
      */
     void onFindReplaceButtonPressed();
 
+    /*!
+     * \brief Replaces all the occurences of find operation with the text in
+     * replace line edit
+     */
+    void onReplaceAllButtonPressed();
+
 private:
     /*!
      * \brief Performs the find and move the \ref mTextEdit current cursor to
@@ -92,6 +101,13 @@ private:
      */
     void findTextAndSetCursor(
         const QTextCursor& from, QFlags<QTextDocument::FindFlag> flags);
+
+    /*!
+     * \brief Search through the find occurences (extra selections of editor)
+     * and find the index of the first cursor of which the anchor is after
+     * editor's current text cursor's position
+     */
+    void updateCurrentOccureneceIndex();
 
     /*!
      * \brief Resets all selections and extra selections (as a result of find
@@ -107,6 +123,16 @@ private:
     QTextCharFormat mFindFormat; /*!< The format that is used for highlighting
                                   * text occurences.
                                   */
+
+    QTextCursor mOccurenceCursor; /*!< Holds a copy of the current occurence
+                                   * cursor which if found after find next, find
+                                   * previous or replace and find methods.
+                                   */
+
+    int mCurrentOccurenceIndex = -1; /*!< Holds the index of current occurence
+                                      * in the list of text edit extra
+                                      * selections
+                                      */
 };
 
 #endif // FINDREPLACEDIALOG_H

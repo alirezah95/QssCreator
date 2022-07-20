@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>457</width>
-    <height>236</height>
+    <width>420</width>
+    <height>258</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -103,7 +103,14 @@
        <item>
         <widget class="QPushButton" name="findReplaceBtn">
          <property name="text">
-          <string>Find &amp;&amp; Repl&amp;ace</string>
+          <string>Repl&amp;ace &amp;&amp; Find</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="replaceAllBtn">
+         <property name="text">
+          <string>Replace &amp;All</string>
          </property>
         </widget>
        </item>
