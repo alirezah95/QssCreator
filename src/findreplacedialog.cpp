@@ -154,12 +154,9 @@ void FindReplaceDialog::onFindNextButtonPressed()
         findFlags |= QTextDocument::FindWholeWords;
     }
 
-    QTextCursor current = mTextEdit->textCursor();
-    if (current.isNull()) {
-        return;
-    }
-
-    findTextAndSetCursor(current, findFlags);
+    findTextAndSetCursor(
+        mOccurenceCursor.isNull() ? mTextEdit->textCursor() : mOccurenceCursor,
+        findFlags);
     return;
 }
 
@@ -177,12 +174,9 @@ void FindReplaceDialog::onFindPrevButtonPressed()
         findFlags |= QTextDocument::FindWholeWords;
     }
 
-    QTextCursor current = mTextEdit->textCursor();
-    if (current.isNull()) {
-        return;
-    }
-
-    findTextAndSetCursor(current, findFlags);
+    findTextAndSetCursor(
+        mOccurenceCursor.isNull() ? mTextEdit->textCursor() : mOccurenceCursor,
+        findFlags);
     return;
 }
 
