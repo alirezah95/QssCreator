@@ -40,7 +40,7 @@ MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
 
     QFont editorDefaultFont("Mono");
     editorDefaultFont.setStyleHint(QFont::Monospace);
-    editorDefaultFont.setPointSize(11);
+    editorDefaultFont.setPointSize(12);
     mStyleEditor->setFont(editorDefaultFont);
 
     mStyleEditor->setParent(this);
