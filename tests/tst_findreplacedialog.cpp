@@ -311,6 +311,28 @@ TEST_F(TestFindReplaceDialog, TestReplaceFind)
         "cross-plat***m *** creating gui for Linux, etc");
 }
 
+TEST_F(TestFindReplaceDialog, TestReplaceAll)
+{
+    editor->insertPlainText("cross-platform for creating gui for Linux, etc");
+    editor->moveCursor(QTextCursor::Start);
+
+    auto findLEdit = frDialog->findChild<QLineEdit*>("findLEdit");
+    auto replaceLEdit = frDialog->findChild<QLineEdit*>("replaceLEdit");
+
+    auto replaceAllBtn = frDialog->findChild<QPushButton*>("replaceAllBtn");
+
+    ASSERT_NE(findLEdit, nullptr) << "No find line edit";
+    ASSERT_NE(replaceLEdit, nullptr) << "No replace line edit";
+    ASSERT_NE(replaceAllBtn, nullptr) << "No replaceAll button";
+
+    findLEdit->setText("for");
+    replaceLEdit->setText("***");
+
+    replaceAllBtn->click();
+    EXPECT_STREQ(editor->document()->toPlainText().toStdString().c_str(),
+        "cross-plat***m *** creating gui *** Linux, etc");
+}
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
