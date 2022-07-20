@@ -442,29 +442,32 @@ void MainWindow::setupConnections()
 void MainWindow::readSettings()
 {
     QSettings s;
-    if (s.contains("window/geometry")) {
-        setGeometry(QSettings().value("window/geometry").toRect());
-    }
 
-    if (s.contains("editor/font")) {
+    s.beginGroup("window");
+    setGeometry(QSettings()
+                    .value("geometry", QRect(QPoint(40, 40), minimumSize()))
+                    .toRect());
+    s.endGroup();
 
-        mStyleEditor->setFont(s.value("editor/font").to)
-    } else {
-        QFont editorDefaultFont("Mono");
-        editorDefaultFont.setStyleHint(QFont::Monospace);
-        editorDefaultFont.setPointSize(12);
-        mStyleEditor->setFont(editorDefaultFont);
-    }
+    s.beginGroup("editor");
+    QFont editorDefaultFont;
+    editorDefaultFont.setFamily(s.value("font/family", "Mono").toString());
+    editorDefaultFont.setPointSize(s.value("font/ps", 12).toInt());
+    editorDefaultFont.setStyleHint(QFont::Monospace);
+    mStyleEditor->setFont(editorDefaultFont);
+    s.endGroup();
 }
 
 void MainWindow::writeSettings()
 {
     QSettings s;
+
     s.beginGroup("window");
     s.setValue("geometry", geometry());
     s.endGroup();
 
     s.beginGroup("editor");
-    s.setValue("font/pointsize", mStyleEditor->font().pointSize());
     s.setValue("font/family", mStyleEditor->font().family());
+    s.setValue("font/ps", mStyleEditor->font().pointSize());
+    s.endGroup();
 }
