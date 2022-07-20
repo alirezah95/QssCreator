@@ -29,6 +29,10 @@ private:
     };
 
     QVector<HighlightRule> mHlRules;
+
+    QRegularExpression mCommentStartRegex;
+    QRegularExpression mCommentEndRegex;
+    QTextCharFormat mMultiLnCommentFormat;
 };
 
 #endif // QSSDSYNTAXHIGHLIGHTER_H
