@@ -36,6 +36,11 @@ QssdSyntaxHighlighter::QssdSyntaxHighlighter(QTextDocument* parent)
     stringLiteral.setForeground(QColor("#c27800"));
     stringLiteral.setFontWeight(QFont::Bold);
     mHlRules.emplaceBack(R"(\".*\")", stringLiteral);
+
+    // Fnction call format
+    QTextCharFormat funcCallFormat;
+    funcCallFormat.setForeground(Qt::darkBlue);
+    mHlRules.emplaceBack(R"(([a-zA-z_]\w*)\((.*)(\)))", funcCallFormat, 1);
 }
 
 void QssdSyntaxHighlighter::highlightBlock(const QString& text)
