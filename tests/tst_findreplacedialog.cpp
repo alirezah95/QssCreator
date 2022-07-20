@@ -96,14 +96,20 @@ TEST_F(TestFindReplaceDialog, TestFindNext)
     ASSERT_NE(findNxtBtn, nullptr) << "No find next button";
 
     frDialog->setTextEdit(nullptr); // To prevent findAllOccurences() running
-    findLEdit->setText("graph");
+    findLEdit->setText("for");
     frDialog->setTextEdit(editor);
 
     findNxtBtn->click();
 
     auto findCursor = editor->textCursor();
     findCursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
-    EXPECT_STREQ(findCursor.selectedText().toStdString().c_str(), "graphical");
+    EXPECT_STREQ(findCursor.selectedText().toStdString().c_str(), "form");
+
+    // Perform another find operation
+    findNxtBtn->click();
+    findCursor = editor->textCursor();
+    findCursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
+    EXPECT_STREQ(findCursor.selectedText().toStdString().c_str(), "for");
 }
 
 TEST_F(TestFindReplaceDialog, TestFindNextWholeMatchCase)
