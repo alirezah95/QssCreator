@@ -35,7 +35,7 @@ QssdSyntaxHighlighter::QssdSyntaxHighlighter(QTextDocument* parent)
     QTextCharFormat stringLiteral;
     stringLiteral.setForeground(QColor("#c27800"));
     stringLiteral.setFontWeight(QFont::Bold);
-    mHlRules.emplaceBack(R"(\".*\")", stringLiteral);
+    mHlRules.emplaceBack(R"(".[^"\n]*")", stringLiteral);
 
     // Fnction call format
     QTextCharFormat funcCallFormat;
