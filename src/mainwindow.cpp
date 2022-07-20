@@ -38,11 +38,6 @@ MainWindow::MainWindow(IQssdEditor* editor, IQssdFileOperations* docOper,
 {
     ui->setupUi(this);
 
-    QFont editorDefaultFont("Mono");
-    editorDefaultFont.setStyleHint(QFont::Monospace);
-    editorDefaultFont.setPointSize(12);
-    mStyleEditor->setFont(editorDefaultFont);
-
     mStyleEditor->setParent(this);
     mDocOpers->setParent(this);
     mUserDlgs->setParent(this);
@@ -446,12 +441,30 @@ void MainWindow::setupConnections()
 
 void MainWindow::readSettings()
 {
-    if (QSettings().contains("window/geometry")) {
+    QSettings s;
+    if (s.contains("window/geometry")) {
         setGeometry(QSettings().value("window/geometry").toRect());
+    }
+
+    if (s.contains("editor/font")) {
+
+        mStyleEditor->setFont(s.value("editor/font").to)
+    } else {
+        QFont editorDefaultFont("Mono");
+        editorDefaultFont.setStyleHint(QFont::Monospace);
+        editorDefaultFont.setPointSize(12);
+        mStyleEditor->setFont(editorDefaultFont);
     }
 }
 
 void MainWindow::writeSettings()
 {
-    QSettings().setValue("window/geometry", geometry());
+    QSettings s;
+    s.beginGroup("window");
+    s.setValue("geometry", geometry());
+    s.endGroup();
+
+    s.beginGroup("editor");
+    s.setValue("font/pointsize", mStyleEditor->font().pointSize());
+    s.setValue("font/family", mStyleEditor->font().family());
 }
