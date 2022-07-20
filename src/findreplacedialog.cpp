@@ -23,6 +23,8 @@ FindReplaceDialog::FindReplaceDialog(QWidget* parent)
         &FindReplaceDialog::onReplaceButtonPressed);
     connect(ui->findReplaceBtn, &QPushButton::clicked, this,
         &FindReplaceDialog::onFindReplaceButtonPressed);
+    connect(ui->replaceAllBtn, &QPushButton::clicked, this,
+        &FindReplaceDialog::onReplaceAllButtonPressed);
 
     connect(ui->findLEdit, &QLineEdit::textChanged, this,
         &FindReplaceDialog::findAllOccurences);
@@ -114,11 +116,12 @@ void FindReplaceDialog::findAllOccurences(const QString& text)
         return;
     }
 
-    // Clear text edit selection if any
+    // Clear text edit selection if any, and clear extra selections
     if (auto cursor = mTextEdit->textCursor(); cursor.hasSelection()) {
         cursor.clearSelection();
         mTextEdit->setTextCursor(cursor);
     }
+    mTextEdit->setExtraSelections({});
 
     // Set occurence index to -1
     mCurrentOccurenceIndex = -1;
@@ -256,6 +259,29 @@ void FindReplaceDialog::onFindReplaceButtonPressed()
 {
     onReplaceButtonPressed();
     onFindNextButtonPressed();
+}
+
+void FindReplaceDialog::onReplaceAllButtonPressed()
+{
+    if (!mTextEdit) {
+        return;
+    }
+    auto allOccurences = mTextEdit->extraSelections();
+    if (allOccurences.size() == 0) {
+        return;
+    }
+
+    const auto& replaceTxt = ui->replaceLEdit->text();
+    for (int i = 0; i < allOccurences.size(); ++i) {
+        QTextCursor& cursor = allOccurences[i].cursor;
+        cursor.beginEditBlock();
+        cursor.insertText(replaceTxt);
+    }
+
+    for (int i = 0; i < allOccurences.size(); ++i) {
+        QTextCursor& cursor = allOccurences[i].cursor;
+        cursor.endEditBlock();
+    }
 }
 
 void FindReplaceDialog::findTextAndSetCursor(

@@ -86,6 +86,12 @@ private slots:
      */
     void onFindReplaceButtonPressed();
 
+    /*!
+     * \brief Replaces all the occurences of find operation with the text in
+     * replace line edit
+     */
+    void onReplaceAllButtonPressed();
+
 private:
     /*!
      * \brief Performs the find and move the \ref mTextEdit current cursor to
