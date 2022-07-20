@@ -214,11 +214,21 @@ void FindReplaceDialog::onFindPrevButtonPressed()
 
 void FindReplaceDialog::onReplaceButtonPressed()
 {
-    if (mOccurenceCursor.isNull() || mOccurenceCursor != mTextEdit->textCursor()
+    if (mCurrentOccurenceIndex == -1) {
+        return;
+    }
+    const auto& allOccurences = mTextEdit->extraSelections();
+    if (allOccurences.size() == 0) {
+        // No match is found by findAllOccurences()
+        return;
+    }
+
+    QTextCursor currOccurCursor = allOccurences[mCurrentOccurenceIndex].cursor;
+    if (currOccurCursor != mTextEdit->textCursor()
         || !mTextEdit->textCursor().hasSelection()) {
         return;
     }
-    mOccurenceCursor.insertText(ui->replaceLEdit->text());
+    currOccurCursor.insertText(ui->replaceLEdit->text());
     return;
 }
 
