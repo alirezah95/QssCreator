@@ -1,6 +1,7 @@
 #include "qssdeditor.h"
 
 #include "iqssdprocessor.h"
+#include "qssdsyntaxhighlighter.h"
 
 #include <QEvent>
 #include <QPaintEvent>
@@ -23,6 +24,8 @@ QssdEditor::QssdEditor(IQssdProcessor* proc, QWidget* parent)
     });
 
     setLineWrapMode(QTextEdit::NoWrap);
+
+    auto highlighter = new QssdSyntaxHighlighter(document());
     return;
 }
 
