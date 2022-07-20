@@ -3,8 +3,8 @@
 
 #include <QTextEdit>
 
-#define FONT_MAX_POINT_SIZE 32
-#define FONT_MIN_POINT_SIZE 8
+#define FONT_MAX_POINT_SIZE 28
+#define FONT_MIN_POINT_SIZE 11
 
 class IQssdProcessor;
 
