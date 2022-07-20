@@ -86,6 +86,13 @@ protected:
      */
     void scrollContentsBy(int dx, int dy) override;
 
+    /*!
+     * \brief Overriedes \a\b QTextEdit::changeEvent() to handle font change,
+     * style change, and etc
+     * \param event
+     */
+    void changeEvent(QEvent* event) override;
+
 private slots:
     /*!
      * \brief Sets a margin to the text edit to make enough room for line

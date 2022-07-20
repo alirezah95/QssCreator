@@ -107,6 +107,16 @@ void QssdEditor::scrollContentsBy(int dx, int dy)
     return QTextEdit::scrollContentsBy(dx, dy);
 }
 
+void QssdEditor::changeEvent(QEvent* event)
+{
+    if (event->type() == QEvent::FontChange) {
+        // Set line numbers area to have the save font
+        mLineNumbersAreaWidget->setFont(font());
+    } else {
+        IQssdEditor::changeEvent(event);
+    }
+}
+
 void QssdEditor::updateLineNumbersAreaWidth()
 {
     auto lnNumbersStr = QString::number(qMax(1, document()->blockCount()));
