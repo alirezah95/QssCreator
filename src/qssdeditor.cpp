@@ -112,6 +112,8 @@ void QssdEditor::changeEvent(QEvent* event)
     if (event->type() == QEvent::FontChange) {
         // Set line numbers area to have the save font
         mLineNumbersAreaWidget->setFont(font());
+        updateLineNumbersAreaWidth();
+        IQssdEditor::changeEvent(event);
     } else {
         IQssdEditor::changeEvent(event);
     }
