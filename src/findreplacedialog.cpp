@@ -135,6 +135,8 @@ void FindReplaceDialog::findAllOccurences(const QString& text)
         currCursor = editorDoc->find(text, currCursor, findFlags);
     }
     mTextEdit->setExtraSelections(extraSelcts);
+
+    mOccurenceCursor = QTextCursor();
     return;
 }
 
@@ -201,6 +203,8 @@ void FindReplaceDialog::findTextAndSetCursor(
         = mTextEdit->document()->find(ui->findLEdit->text(), from, flags);
 
     if (!found.isNull()) {
+        // Save a copy of it
+        mOccurenceCursor = found;
         mTextEdit->setTextCursor(found);
     }
     return;

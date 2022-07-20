@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QTextCharFormat>
+#include <QTextCursor>
 #include <QTextDocument>
 
 namespace Ui {
@@ -107,6 +108,11 @@ private:
     QTextCharFormat mFindFormat; /*!< The format that is used for highlighting
                                   * text occurences.
                                   */
+
+    QTextCursor mOccurenceCursor; /*!< Holds a copy of the current occurence
+                                   * cursor which if found after find next, find
+                                   * previous or replace and find methods.
+                                   */
 };
 
 #endif // FINDREPLACEDIALOG_H
