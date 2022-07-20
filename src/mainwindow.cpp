@@ -434,3 +434,5 @@ void MainWindow::setupConnections()
 
     return;
 }
+
+void MainWindow::readSettings() { }

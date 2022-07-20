@@ -124,11 +124,22 @@ private:
      * \brief reset
      */
     void reset();
+
     /*!
      * \brief A private method to create all signal/slot connection and is used
      * to tidy ctor up
      */
     void setupConnections();
+
+    /*!
+     * \brief Reads the settings from \a\b QSettings and apply them
+     */
+    void readSettings();
+
+    /*!
+     * \brief Write the settings to \a\b QSettings
+     */
+    void writeSettings();
 
 private:
     Ui::MainWindow* ui;
