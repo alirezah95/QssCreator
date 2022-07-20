@@ -13,11 +13,6 @@ QssdEditor::QssdEditor(IQssdProcessor* proc, QWidget* parent)
 {
     mProcessor->setParent(this);
 
-    QFont editorFont("Mono");
-    editorFont.setStyleHint(QFont::Monospace);
-    editorFont.setPointSize(13);
-    setLineNumbersFont(editorFont);
-
     mLineNumbersAreaWidget->installEventFilter(this);
 
     updateLineNumbersAreaWidth();
@@ -53,12 +48,6 @@ QString QssdEditor::getQtStylesheet(bool update)
         mStylesheet = mProcessor->processDocument(this->document(), true);
     }
     return mStylesheet;
-}
-
-void QssdEditor::setLineNumbersFont(QFont font)
-{
-    mLineNumbersAreaWidget->setFont(font);
-    return;
 }
 
 bool QssdEditor::eventFilter(QObject* obj, QEvent* event)

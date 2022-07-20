@@ -58,21 +58,6 @@ public:
     };
 
     /*!
-     * \brief Implements \ref IQssdEditor::setLineNumbersFont(QFont)
-     * \param font
-     */
-    virtual void setLineNumbersFont(QFont font) override;
-
-    /*!
-     * \brief Implements \ref IQssdEditor::getLineNumbersFont()
-     * \return
-     */
-    virtual QFont getLineNumbersFont() const override
-    {
-        return mLineNumbersAreaWidget->font();
-    }
-
-    /*!
      * \brief Reimplements \a\b QWidget::minimumSizeHint() to return minimum
      * size required for editor
      * \return
