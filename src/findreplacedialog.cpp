@@ -120,6 +120,9 @@ void FindReplaceDialog::findAllOccurences(const QString& text)
         mTextEdit->setTextCursor(cursor);
     }
 
+    // Set occurence index to -1
+    mCurrentOccurenceIndex = -1;
+
     // To hold the occurences as extra selections
     QList<QTextEdit::ExtraSelection> extraSelcts;
 
@@ -132,6 +135,8 @@ void FindReplaceDialog::findAllOccurences(const QString& text)
         findFlags |= QTextDocument::FindFlag::FindWholeWords;
     }
 
+    QTextCursor editorCurrentCursor = mTextEdit->textCursor();
+
     auto editorDoc = mTextEdit->document();
     // Get the cursor to the begining of the document
     QTextCursor currCursor(editorDoc->begin());
@@ -141,11 +146,24 @@ void FindReplaceDialog::findAllOccurences(const QString& text)
         QTextEdit::ExtraSelection selection = { currCursor, mFindFormat };
         extraSelcts.push_back(selection);
 
+        // If currCursor is after the actual current cursor of the text edit its
+        // index should be stored as the current occurence index
+        if (mCurrentOccurenceIndex == -1
+            && currCursor.anchor() >= editorCurrentCursor.position()) {
+            mCurrentOccurenceIndex = extraSelcts.size() - 1;
+        }
+
         currCursor = editorDoc->find(text, currCursor, findFlags);
     }
     mTextEdit->setExtraSelections(extraSelcts);
 
-    mOccurenceCursor.clearSelection();
+    // If the actual cursor in the editor is at the end of document, then the if
+    // statement in the while loop will never evaluate to true even if there are
+    // occurences. So in that case (if there are occurences) the first occurence
+    // index should be stored in mCurrentOccurenceIndex
+    if (mCurrentOccurenceIndex == -1 && extraSelcts.size() > 0) {
+        mCurrentOccurenceIndex = 0;
+    }
     return;
 }
 

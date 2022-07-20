@@ -40,6 +40,8 @@ public:
      */
     void setFindText(const QString& text);
 
+    int getCurrentOccurenceIndex() const { return mCurrentOccurenceIndex; }
+
 protected:
     /*!
      * \brief Reimplement \a\b QDialog::showEvent(QShowEvent*) to resize dialog
@@ -113,6 +115,11 @@ private:
                                    * cursor which if found after find next, find
                                    * previous or replace and find methods.
                                    */
+
+    int mCurrentOccurenceIndex = -1; /*!< Holds the index of current occurence
+                                      * in the list of text edit extra
+                                      * selections
+                                      */
 };
 
 #endif // FINDREPLACEDIALOG_H
