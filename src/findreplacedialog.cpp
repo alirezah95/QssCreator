@@ -275,6 +275,7 @@ void FindReplaceDialog::findTextAndSetCursor(
 
 void FindReplaceDialog::updateCurrentOccureneceIndex()
 {
+    mCurrentOccurenceIndex = -1;
     const auto& editorTextCursor = mTextEdit->textCursor();
     const auto& allOccurences = mTextEdit->extraSelections();
     for (int i = 0; i < allOccurences.size(); ++i) {
@@ -282,6 +283,9 @@ void FindReplaceDialog::updateCurrentOccureneceIndex()
             mCurrentOccurenceIndex = i;
             return;
         }
+    }
+    if (mCurrentOccurenceIndex == -1 && allOccurences.size() > 0) {
+        mCurrentOccurenceIndex = 0;
     }
 }
 
