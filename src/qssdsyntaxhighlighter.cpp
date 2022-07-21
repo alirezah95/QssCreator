@@ -23,7 +23,7 @@ QssdSyntaxHighlighter::QssdSyntaxHighlighter(QTextDocument* parent)
     // Color hash format
     QTextCharFormat colorHashFormat;
     colorHashFormat.setForeground(QColor(Qt::darkBlue));
-    colorHashFormat.setFontItalic(true);
+    colorHashFormat.setFontWeight(QFont::Bold);
     mHlRules.emplaceBack(R"(\B#([a-fA-F0-9]{2}){3,4}\b)", colorHashFormat);
 
     // Length format
