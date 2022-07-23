@@ -11,8 +11,15 @@ if (WIN32)
         endif()
         endif()
     endif()
-    add_subdirectory(googletest/)
-    include_directories(
+
+    # Building googletest as object library
+    set(gtest_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest)
+    set(gmock_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googlemock)
+    add_library(googletest OBJECT
+        ${gtest_SOURCE_DIR}/src/gtest-all.cc
+        ${gmock_SOURCE_DIR}/src/gmock-all.cc
+    )
+    target_include_directories(googletest PRIVATE
         ${gtest_SOURCE_DIR}
         ${gtest_SOURCE_DIR}/include
         ${gmock_SOURCE_DIR}
@@ -38,8 +45,14 @@ function(add_new_test testname)
 endfunction()
 
 function(add_new_gtest testname)
-    add_new_test(${testname} ${ARGN})
-    target_link_libraries(${testname} PRIVATE gmock gtest)
+    add_new_test(${testname}
+        ${ARGN}
+        $<TARGET_OBJECTS:googletest>
+    )
+    target_include_directories(${testname} PRIVATE
+        ${gtest_SOURCE_DIR}/include
+        ${gmock_SOURCE_DIR}/include
+    )
 endfunction()
 
 add_new_gtest(TestQssdEditor
