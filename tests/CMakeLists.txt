@@ -54,6 +54,7 @@ function(add_new_gtest testname)
         add_new_test(${testname}
             ${ARGN}
         )
+        target_link_libraries(${testname} PRIVATE gtest gmock)
     endif()
     target_include_directories(${testname} PRIVATE
         ${gtest_SOURCE_DIR}/include
