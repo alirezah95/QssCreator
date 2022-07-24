@@ -45,10 +45,17 @@ function(add_new_test testname)
 endfunction()
 
 function(add_new_gtest testname)
-    add_new_test(${testname}
-        ${ARGN}
-        $<TARGET_OBJECTS:googletest>
-    )
+    if (WIN32)
+        add_new_test(${testname}
+            ${ARGN}
+            $<TARGET_OBJECTS:googletest>
+        )
+    elseif (${CMAKE_HOST_SYSTEM_NAME} MATCHES "Linux")
+        add_new_test(${testname}
+            ${ARGN}
+        )
+        target_link_libraries(${testname} PRIVATE gtest gmock)
+    endif()
     target_include_directories(${testname} PRIVATE
         ${gtest_SOURCE_DIR}/include
         ${gmock_SOURCE_DIR}/include
