@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(QssCreator VERSION 0.1.0.0 LANGUAGES CXX)
+project(QssCreator VERSION 0.2.0 LANGUAGES CXX)
 
-configure_file(version.h.in versino.h)
+configure_file(version.h.in version.h)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
