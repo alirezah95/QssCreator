@@ -74,6 +74,9 @@ set(PROJECT_SOURCES
 
         src/qssdvariableitemdelegate.h
         src/qssdvariableitemdelegate.cpp
+
+        src/qssdsyntaxhighlighter.h
+        src/qssdsyntaxhighlighter.cpp
 )
 
 qt_add_resources(PROJECT_SOURCES resources/res.qrc)
