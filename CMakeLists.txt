@@ -81,11 +81,24 @@ set(PROJECT_SOURCES
 
 qt_add_resources(PROJECT_SOURCES resources/res.qrc)
 
+# Setting windows icon
+set(APP_ICON_RESOURCE_WINDOWS
+    "${CMAKE_SOURCE_DIR}/resources/appicon/Resource.rc"
+)
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(QssCreator
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-    )
+    if (WIN32)
+        qt_add_executable(QssCreator
+            MANUAL_FINALIZATION
+            ${PROJECT_SOURCES}
+            ${APP_ICON_RESOURCE_WINDOWS}
+        )
+    else()
+        qt_add_executable(QssCreator
+            MANUAL_FINALIZATION
+            ${PROJECT_SOURCES}
+        )
+    endif()
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET QssCreator APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
