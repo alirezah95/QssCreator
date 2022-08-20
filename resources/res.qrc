@@ -20,5 +20,6 @@
         <file>icons/new-file.png</file>
         <file>icons/find-replace.png</file>
         <file>icons/export.svg</file>
+        <file>icons/icon.svg</file>
     </qresource>
 </RCC>
